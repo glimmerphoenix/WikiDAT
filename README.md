@@ -3,7 +3,7 @@ WikiDAT
 
 <b>Wikipedia Data Analysis Toolkit</b>
 
-<b>Author</b>: Felipe Ortega.
+<b>Authors</b>: Felipe Ortega, Aaron Halfaker.
 <b>License</b>: GPLv3 (http://www.gnu.org/licenses/gpl.txt).
 
 The aim of WikiDAT is to create an extensible toolkit for Wikipedia Data 
