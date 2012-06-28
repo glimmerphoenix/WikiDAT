@@ -1,0 +1,101 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="fur">
+  <siteinfo>
+    <sitename>Vichipedie</sitename>
+    <base>http://fur.wikipedia.org/wiki/Pagjine_princip%C3%A2l</base>
+    <generator>MediaWiki 1.19wmf1</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Speciâl</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Discussion</namespace>
+      <namespace key="2" case="first-letter">Utent</namespace>
+      <namespace key="3" case="first-letter">Discussion utent</namespace>
+      <namespace key="4" case="first-letter">Vichipedie</namespace>
+      <namespace key="5" case="first-letter">Discussion Vichipedie</namespace>
+      <namespace key="6" case="first-letter">Figure</namespace>
+      <namespace key="7" case="first-letter">Discussion figure</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">Discussion MediaWiki</namespace>
+      <namespace key="10" case="first-letter">Model</namespace>
+      <namespace key="11" case="first-letter">Discussion model</namespace>
+      <namespace key="12" case="first-letter">Jutori</namespace>
+      <namespace key="13" case="first-letter">Discussion jutori</namespace>
+      <namespace key="14" case="first-letter">Categorie</namespace>
+      <namespace key="15" case="first-letter">Discussion categorie</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Pagjine principâl</title>
+    <ns>0</ns>
+    <id>1</id>
+      <sha1 />
+    <restrictions>edit=autoconfirmed:move=autoconfirmed</restrictions>
+    <revision>
+      <id>1</id>
+      <timestamp>2005-01-25T06:55:26Z</timestamp>
+      <contributor>
+        <ip>24.251.243.233</ip>
+      </contributor>
+      <text xml:space="preserve">'''Benvignût al Vichipedìe furlan!'''
+
+[[Friûl]], [[Lenghe Furlane]], [[Culture Furlane]], [[Statût regjonâl]], [[Europe]]
+
+[[Paîs Basc]]</text>
+    </revision>
+    <revision>
+      <id>3</id>
+      <timestamp>2005-01-25T20:43:22Z</timestamp>
+      <contributor>
+        <ip>24.251.243.233</ip>
+      </contributor>
+      <comment> Wikipedia:𐍂𐌰𐌶𐌳𐌰𐌲𐌰𐍂𐌿𐌽𐌹 Wikipedia:𐌱𐌰𐌿𐍂𐌲𐍃 𐌱𐍂𐌿𐌽𐌽𐌰 "Wikipedia:𐍆𐌰𐌿𐍂𐌰𐌼𐌴𐌻𐌴𐌹𐌽𐍉𐍃"</comment>
+      <text xml:space="preserve">'''Benvignût al Vichipedìe furlan!'''
+
+{| width=&quot;100%&quot; cellspacing=&quot;0&quot; cellpadding=&quot;5&quot; style=&quot;border:1px solid #996600;&quot; 
+|-
+! bgcolor=&quot;#ECE5CA&quot; style=&quot;border-bottom:1px solid #996600; font: 125% Verdana; color:black&quot; |Enciclopedìe
+|- 
+| bgcolor=&quot;#FAF9EC&quot; style=&quot;font: 95% Verdana;&quot;|
+{{WikipediaTOC}}&lt;div style=&quot;float: right;&quot;&gt;&lt;small&gt;[{{SERVER}}{{localurl:Template:WikipediaTOC|action=edit}}   Modificâ]&lt;/small&gt;&lt;/div&gt;&lt;/td&gt;
+|}
+
+
+[[Friûl]], [[Lenghe Furlane]], [[Culture Furlane]], [[Statût regjonâl]], [[Europe]]
+
+[[Paîs Basc]]</text>
+    </revision>
+    <revision>
+      <id>7</id>
+      <timestamp>2005-01-26T00:16:36Z</timestamp>
+      <contributor>
+        <ip>24.251.243.233</ip>
+      </contributor>
+      <text xml:space="preserve">'''Benvignût al Vichipedìe furlan!'''
+
+{| width=&quot;100%&quot; cellspacing=&quot;0&quot; cellpadding=&quot;5&quot; style=&quot;border:1px solid #996600;&quot; 
+|-
+! bgcolor=&quot;#ECE5CA&quot; style=&quot;border-bottom:1px solid #996600; font: 125% Verdana; color:black&quot; |Enciclopedìe
+|- 
+| bgcolor=&quot;#FAF9EC&quot; style=&quot;font: 95% Verdana;&quot;|
+{{WikipediaTOC}}&lt;div style=&quot;float: right;&quot;&gt;&lt;small&gt;[{{SERVER}}{{localurl:Template:WikipediaTOC|action=edit}}   Modificâ]&lt;/small&gt;&lt;/div&gt;&lt;/td&gt;
+|}
+
+[[Paîs Basc]]</text>
+    </revision>
+    <revision>
+      <id>12</id>
+      <timestamp>2005-01-26T00:24:29Z</timestamp>
+      <contributor>
+        <ip>24.251.243.233</ip>
+      </contributor>
+      <text xml:space="preserve">{| width=&quot;100%&quot; cellspacing=&quot;0&quot; cellpadding=&quot;5&quot; style=&quot;border:1px solid #996600;&quot; 
+|-
+! bgcolor=&quot;#ECE5CA&quot; style=&quot;border-bottom:1px solid #996600; font: 125% Verdana; color:black&quot; |Enciclopedìe
+|- 
+| bgcolor=&quot;#FAF9EC&quot; style=&quot;font: 95% Verdana;&quot;|
+{{WikipediaTOC}}&lt;div style=&quot;float: right;&quot;&gt;&lt;small&gt;[{{SERVER}}{{localurl:Template:WikipediaTOC|action=edit}}   Modificâ]&lt;/small&gt;&lt;/div&gt;&lt;/td&gt;
+|}</text>
+    </revision>
+  </page>
+</mediawiki>

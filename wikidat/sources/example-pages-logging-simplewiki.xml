@@ -1,0 +1,5000 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <base>http://simple.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.20wmf4</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+    <logitem>
+      <id>1</id>
+      <timestamp>2004-12-23T07:28:37Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy items - content was: '#redirect [[Template:1911]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:1911</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>2</id>
+      <timestamp>2004-12-23T07:30:05Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy items - content was: '#redirect [[Wikipedia:MediaWiki namespace]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:All messages</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>3</id>
+      <timestamp>2004-12-23T07:30:18Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy items - content was: '#redirect [[Wikipedia:MediaWiki namespace]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:All system messages</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>4</id>
+      <timestamp>2004-12-23T07:32:41Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy items - content was: '#redirect [[Template:CompactTOC]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:CompactTOC</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>5</id>
+      <timestamp>2004-12-23T07:32:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy items - content was: '#redirect [[Template:TOC]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:TOC</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>6</id>
+      <timestamp>2004-12-23T07:47:48Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy items - content was: 'About Wikipedia'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Aboutwikipedia</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>7</id>
+      <timestamp>2004-12-23T07:50:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#redirect [[Wikipedia talk:Deletion log]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Wikipedia talk:Deletion log/Archive1</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>8</id>
+      <timestamp>2004-12-23T08:02:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Footer SolarSystem]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Footer SolarSystem</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>9</id>
+      <timestamp>2004-12-23T08:04:45Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Disambig]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Disambig</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>10</id>
+      <timestamp>2004-12-23T08:05:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Disputed]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Disputed</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>11</id>
+      <timestamp>2004-12-23T08:06:16Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>temp, for merging with older message - content was: 'From {{SITENAME}}'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Tagline</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>12</id>
+      <timestamp>2004-12-23T08:07:27Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[MediaWiki:Tagline]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Fromwikipedia</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>13</id>
+      <timestamp>2004-12-23T08:07:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>1 revisions restored</comment>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>MediaWiki:Tagline</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>14</id>
+      <timestamp>2004-12-23T08:13:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Months]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Months</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>15</id>
+      <timestamp>2004-12-23T08:14:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:NPOV]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:NPOV</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>16</id>
+      <timestamp>2004-12-23T08:15:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:PD]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:PD</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>17</id>
+      <timestamp>2004-12-23T08:15:55Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '{{msg:test}} [[User:GrazingshipIV|GrazingshipIV]] 03:51, 10 May 2004 (UTC)'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User talk:200.83.128.133</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>18</id>
+      <timestamp>2004-12-23T08:16:06Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Test]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Test</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>19</id>
+      <timestamp>2004-12-23T08:16:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Sandbox]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Sandbox</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>20</id>
+      <timestamp>2004-12-23T08:16:58Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Spoiler]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Spoiler</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>21</id>
+      <timestamp>2004-12-23T08:18:24Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Stub]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Stub</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>22</id>
+      <timestamp>2004-12-23T08:19:17Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Wikipedialang]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Wikipedialang</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>23</id>
+      <timestamp>2004-12-23T08:19:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Wikitopics]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Wikitopics</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>24</id>
+      <timestamp>2004-12-23T08:28:19Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:En]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:En</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>25</id>
+      <timestamp>2004-12-23T08:29:58Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: 'All text is available under the terms of the &amp;lt;a class=internal href='/wiki/GNU_FDL'&amp;gt;GNU Free Documentation License&amp;lt;/a&amp;gt;.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Gnunote</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>26</id>
+      <timestamp>2004-12-23T08:30:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Gnunote]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Gnunote</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>27</id>
+      <timestamp>2004-12-23T08:30:48Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '&amp;lt;!-- Interlanguage links --&amp;gt;'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Ilink</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>28</id>
+      <timestamp>2004-12-23T08:31:03Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>clearing MediaWiki namespace of legacy Template-related items - content was: '#redirect [[Template:Ilink]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Ilink</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>29</id>
+      <timestamp>2004-12-23T08:36:01Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'To use the word community really doesn't fit considering that God is believed by Christians to be one being that exists in three persons(see Trinity).'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Community</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>30</id>
+      <timestamp>2004-12-23T16:14:58Z</timestamp>
+      <contributor>
+        <username>Angela</username>
+        <id>2</id>
+      </contributor>
+      <comment>user image moved to commons. Deleted at user's request</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Quadell.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>31</id>
+      <timestamp>2004-12-23T18:23:39Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'i lick weenus, will you lick mine?'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Druidry</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>32</id>
+      <timestamp>2004-12-23T18:24:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'are you a jew'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User talk:217.231.203.75</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>33</id>
+      <timestamp>2004-12-24T13:00:49Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>incorrect capitolization - content was: '#REDIRECT [[Drinking water]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Drinking Water</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>34</id>
+      <timestamp>2004-12-24T13:13:27Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Yo Mama happened!'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>1847</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>35</id>
+      <timestamp>2004-12-24T13:14:12Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>to merge histories</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Quechua language</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>36</id>
+      <timestamp>2004-12-24T13:15:23Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>Quechua language</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>37</id>
+      <timestamp>2004-12-27T04:36:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '2 famous whales have exploded.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Exploding whale</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>38</id>
+      <timestamp>2004-12-27T04:41:31Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>cipyvio from http://www.iwasm.org/airspace/bios/tereshk.htm</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Valentina Tereshkova</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>39</id>
+      <timestamp>2004-12-27T04:43:05Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'penis'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Military jargon</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>40</id>
+      <timestamp>2004-12-27T23:12:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Taekwondo</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>41</id>
+      <timestamp>2004-12-28T08:31:51Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: ''''testing rss''' ''italic'' [[underline]] [link]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>RSS</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>42</id>
+      <timestamp>2004-12-30T16:52:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'a hard drive is a hard drive'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Hard drive</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>43</id>
+      <timestamp>2004-12-31T20:06:02Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '----'''Bold text'''[[Link title]][http://www.example.com link title]== Headline text ==[[Image:Example.jpg]][[Media:Example.mp3]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Great Chilean Earthquake</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>44</id>
+      <timestamp>2004-12-31T20:06:41Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'kittah - slang for kitty'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Kittah</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>45</id>
+      <timestamp>2005-01-01T21:02:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'What kind of STUPID name is that'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Starfish Galaxy</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>46</id>
+      <timestamp>2005-01-01T21:03:35Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'What the fuckWhy are they letting people submit pages they can crash the server :Ohanyou is not pronounced hanyoo kthx'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Carina Dwarf</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>47</id>
+      <timestamp>2005-01-01T21:03:49Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'U STOEL MAH NAEMOk il stop now :)'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Draco Dwarf</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>48</id>
+      <timestamp>2005-01-01T21:15:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>plagarized/copyvio from http://www.geocities.com/CapitolHill/5260/chomsky.html</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Air India flight 182</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>49</id>
+      <timestamp>2005-01-01T22:01:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>empty, content was: '[[Category:Countries]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Central American countries</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>50</id>
+      <timestamp>2005-01-01T22:59:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>redundant with [[Special:Newpages]], no objections at [[Wikipedia:Requests for deletion]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Wikipedia:New articles</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>51</id>
+      <timestamp>2005-01-01T23:00:12Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Wikipedia:New_articles]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>New Articles</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>52</id>
+      <timestamp>2005-01-01T23:01:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>moved to user space, content was: '#REDIRECT [[User talk:SimonMayer/Welcome]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template talk:SimonMayer0001</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>53</id>
+      <timestamp>2005-01-01T23:08:47Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>for merge content was: 'Sorry! This feature has been temporarily disabledbecause it slows the database down to the point that no one can usethe wiki.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Perfdisabled</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>54</id>
+      <timestamp>2005-01-01T23:09:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>feature changes to MediaWiki:Perfdisabled - content was: '#redirect [[Template:Disabled]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Disabled</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>55</id>
+      <timestamp>2005-01-01T23:10:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>feature replaced with MediaWiki:Perfdisabled - content was: '#REDIRECT [[MediaWiki:Perfdisabled]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Disabled</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>56</id>
+      <timestamp>2005-01-01T23:10:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>3 revisions restored</comment>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>MediaWiki:Perfdisabled</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>57</id>
+      <timestamp>2005-01-01T23:12:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Wikipedia:MediaWiki namespace]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:All messages</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>58</id>
+      <timestamp>2005-01-01T23:12:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Wikipedia:MediaWiki namespace]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:All system messages</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>59</id>
+      <timestamp>2005-01-01T23:14:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>replaced in 1.4 update - content was: '#redirect [[Template:Sitesupportpage]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Sitesupportpage</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>60</id>
+      <timestamp>2005-01-01T23:14:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>replaced in 1.4 update  content was: '&amp;lt;sitesupportpage&amp;gt;'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Sitesupportpage</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>61</id>
+      <timestamp>2005-01-01T23:17:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: ''''Bold text'''page cannot be found''</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Coin collecting</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>62</id>
+      <timestamp>2005-01-02T07:49:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'A guy was born, died and came back to life.  Other people then decided to make a religion based on guilt and fear centered on that guy's life.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Catholicism</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>63</id>
+      <timestamp>2005-01-02T07:49:58Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Dude, this religion believes in like goodness and badness.  They are at war with each other, yo.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Manichaeism</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>64</id>
+      <timestamp>2005-01-02T22:11:12Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>newbie test</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Cherry</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>65</id>
+      <timestamp>2005-01-02T22:12:48Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'A [cot] is a kind of bed. It is very small and used for babies.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Cot</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>66</id>
+      <timestamp>2005-01-04T04:57:17Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'hello how are you i eat poo'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>C/1961 R1</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>67</id>
+      <timestamp>2005-01-04T05:09:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Wikipedia:User_preferences_help]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User Preferences Help</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>68</id>
+      <timestamp>2005-01-04T05:12:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Help:User preferences help]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Preferences</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>69</id>
+      <timestamp>2005-01-04T05:22:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[User:Lsy098/My Box]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User:User098/My Box</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>70</id>
+      <timestamp>2005-01-04T05:33:39Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>history merged to [[Wikipedia:Wikipedians by number of edits]] - content was: '#REDIRECT [[Wikipedia:Wikipedians by number of edits]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Wikipedia:List of Wikipedians by number of edits until 7 May 2004</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>71</id>
+      <timestamp>2005-01-06T03:03:55Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '''Italic text''[[Link title]][http://www.example.com link title]== Headline text ==[[Image:Example.jpg]][[Image:Example.jpg]][[Media:Example.mp3]]&amp;lt;m...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Building blocks</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>72</id>
+      <timestamp>2005-01-06T03:04:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Media:Example.mp3]][[Image:Example.jpg]]== Headline text ==[http://www.example.com link title][[Link title]]''Italic text'''''Bold text'''&amp;lt;math&amp;gt;In...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Arugula</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>73</id>
+      <timestamp>2005-01-06T03:20:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: ''''Bold text'''nettle??? whats a nettle i need to no these thing but is there anything here no!!!!                            -Carli'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Nettle</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>74</id>
+      <timestamp>2005-01-06T03:34:55Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>user commentary, moved to talk - content was #REDIRECT [[User talk:218.165.66.9]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>FreeBSD</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>75</id>
+      <timestamp>2005-01-06T03:36:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'sdfsdfsdfsdf'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>American Airlines Flight 11</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>76</id>
+      <timestamp>2005-01-06T03:38:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'It a use of using air as a combat and killing.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Aerial assault</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>77</id>
+      <timestamp>2005-01-06T06:10:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>to merge histories</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>List of the most common words in English</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>78</id>
+      <timestamp>2005-01-06T06:12:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[List of the 1000 most common words in English]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>1000 Words</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>79</id>
+      <timestamp>2005-01-06T06:13:43Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[List of the most common words in English]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>List of the 1000 most common words In English</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>80</id>
+      <timestamp>2005-01-06T06:14:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>List of the most common words in English</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>81</id>
+      <timestamp>2005-01-06T06:37:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[User:LittleDan]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>LittleDan</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>82</id>
+      <timestamp>2005-01-06T06:38:37Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[User:Lsy098]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Lsy098</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>83</id>
+      <timestamp>2005-01-06T06:42:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[User:RJWiki]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>RJWiki</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>84</id>
+      <timestamp>2005-01-06T07:20:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'May Day may 1st The parade of strength and might and pride ofMother Russia'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>May Day</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>85</id>
+      <timestamp>2005-01-06T19:30:01Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'tv tower'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Fernsehturm</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>86</id>
+      <timestamp>2005-01-08T01:56:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '8U7YTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\7888UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Raith Rovers F.C.</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>87</id>
+      <timestamp>2005-01-08T08:48:41Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copyright violation from http://www.museum.tv/archives/etv/M/htmlM/magnumpi/magnumpi.htm</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Magnum P.I.</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>88</id>
+      <timestamp>2005-01-08T08:52:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from http://www.mjq.net/fiveo/</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Hawaii Five-O</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>89</id>
+      <timestamp>2005-01-09T06:22:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Reported by en: user, possible impersonator. Block pending password reset/handover.</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Neutrality</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>90</id>
+      <timestamp>2005-01-09T06:33:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>account ownership confirmed/resolved</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:Neutrality</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>91</id>
+      <timestamp>2005-01-09T06:33:45Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:#87</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>92</id>
+      <timestamp>2005-01-09T06:40:34Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'gdfg'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Song</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>93</id>
+      <timestamp>2005-01-09T06:45:23Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'inner body'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Organ</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>94</id>
+      <timestamp>2005-01-09T06:46:02Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'hello motherhello fatherhere we are in  Camp Granader.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>1910</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>95</id>
+      <timestamp>2005-01-11T02:06:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: '[[http://www.apartments.com]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Www.apartments.com</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>96</id>
+      <timestamp>2005-01-11T02:07:19Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[www.apartments.com]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Apartments</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>97</id>
+      <timestamp>2005-01-11T02:10:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Thank you, Thank you very much.                                                 --Elvis Presley'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Elvis Presley</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>98</id>
+      <timestamp>2005-01-11T02:12:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Content was: Manhattan Yesterday: Manhattan, years ago was an island owned by the Native Americans hundereds of years ago until the English explorers cheated the Natives for Manhattan island for only $24 in trinkets.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Manhattan</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>99</id>
+      <timestamp>2005-01-11T02:21:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '--[[User:69.88.73.89|69.88.73.89]] 01:47, 11 Jan 2005 (UTC)[[Image:Example.jpg]]== Headline text ==[[Link title]][[Link title]]--[[User:69.88.73.89|...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Buenos Aires</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>100</id>
+      <timestamp>2005-01-11T02:28:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'WTF?Hi! I'm doing a project about this anthem.Where can I get information?NOT HERE!'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Wilhelmus</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>101</id>
+      <timestamp>2005-01-11T02:30:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'เกี่ยวกับ'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>About</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>102</id>
+      <timestamp>2005-01-12T02:20:20Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'gdhfgjdd'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Christina Aguilera</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>103</id>
+      <timestamp>2005-01-12T02:31:41Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied from http://staff.esuhsd.org/~balochie/studentprojects/porfiriodiaz/</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Porfirio Diaz</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>104</id>
+      <timestamp>2005-01-12T03:29:58Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Hi I don't know what is going on, but what is this about creating a page. Your not supposed to be able to edit someone elses website, so what exactly ...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Pan-German movement</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>105</id>
+      <timestamp>2005-01-12T03:31:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'The Great Chilean Earthquake was extremely bad! HE got no christmas presents :('</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Great Chilean Earthquake</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>106</id>
+      <timestamp>2005-01-12T03:32:24Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'This is a movie with dinosaurs.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Jurassic Park</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>107</id>
+      <timestamp>2005-01-12T03:33:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'It is a good game. Good. Game.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Final Fantasy</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>108</id>
+      <timestamp>2005-01-14T04:47:11Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'voice mail is information in the form of an actual voice in which one can hear'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Voice mail</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>109</id>
+      <timestamp>2005-01-14T04:47:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '==Mako Sharks==        The mako shark is the fastest shark, it can swim up to 60mph! It eats any fish. It's rival is the swordfish, which the mako ...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Mako Sharks</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>110</id>
+      <timestamp>2005-01-14T04:48:49Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied from http://www.bbc.co.uk/history/war/wwtwo/berlin_04.shtml</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Halbe</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>111</id>
+      <timestamp>2005-01-14T04:49:11Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'He's a f@g'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>François Mignet</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>112</id>
+      <timestamp>2005-01-15T02:14:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'this is not a bone... it is cartilege`````'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Vomer bone</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>113</id>
+      <timestamp>2005-01-15T02:18:14Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Banned on en: as [[en:User:Paul Vogel]]</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:209.122.104.163</logtitle>
+      <params xml:space="preserve">1 year</params>
+    </logitem>
+    <logitem>
+      <id>114</id>
+      <timestamp>2005-01-15T02:19:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>creation of banned [[en:User:Paul Vogel]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Cosmotheism</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>115</id>
+      <timestamp>2005-01-15T02:19:24Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>creation of banned [[en:User:Paul Vogel]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Cosmotheism</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>116</id>
+      <timestamp>2005-01-15T06:56:41Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>spam link insertion in the Sandbox</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:221.217.226.208</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>117</id>
+      <timestamp>2005-01-16T02:28:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'dsfrgrfdf'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Jehovah's Witnesses</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>118</id>
+      <timestamp>2005-01-16T22:26:57Z</timestamp>
+      <contributor>
+        <username>Joao Xavier</username>
+        <id>774</id>
+      </contributor>
+      <comment>Brazilian coat of arms. Public domain image.</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Brasil esc.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>119</id>
+      <timestamp>2005-01-18T05:13:51Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Matter]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Stuff</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>120</id>
+      <timestamp>2005-01-18T20:29:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>long rant</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Typical People</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>121</id>
+      <timestamp>2005-01-18T20:37:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: '#REDIRECT [[Talk:Science Olympiad]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Science Olympiad</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>122</id>
+      <timestamp>2005-01-18T20:49:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: a long rant</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Vandal</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>123</id>
+      <timestamp>2005-01-18T20:53:07Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'hello'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Bayer Leverkusen</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>124</id>
+      <timestamp>2005-01-19T01:10:18Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: '==Barley==Barley is a simple oatmeal like substance, that is fluffier. I warn you people, barley is a highly dangerous food, and has about the same a...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Barley</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>125</id>
+      <timestamp>2005-01-20T05:15:20Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Gracker is a user on Simple Wikipedia. He has vandilized many articles as well as user's profiles. Many of my articles have been messed around with by Gracker. With the facts that I have found I believe that him/her is a high school or middle school stude</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>The Gracker Scandal</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>126</id>
+      <timestamp>2005-01-20T11:23:48Z</timestamp>
+      <contributor>
+        <username>Charlie123</username>
+        <id>672</id>
+      </contributor>
+      <comment>Daihatsu Logo, claiming fair use&lt;br&gt;{{fairuse}})</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Daihatsu Logo.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>127</id>
+      <timestamp>2005-01-20T11:36:43Z</timestamp>
+      <contributor>
+        <username>Charlie123</username>
+        <id>672</id>
+      </contributor>
+      <comment>Ford Focus in Bristol {{PD}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Ford.focus.bristol.750pix.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>128</id>
+      <timestamp>2005-01-20T11:40:05Z</timestamp>
+      <contributor>
+        <username>Charlie123</username>
+        <id>672</id>
+      </contributor>
+      <comment>{{PD}} Ford Focus in the UK (from english wikipedia)</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Ford.focus.bristol.750pix.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>129</id>
+      <timestamp>2005-01-21T18:04:09Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '== Headline text ==ibbbkjuogiub hl;;;;;;;;;;'''Bold text'''kjjjjjjjjjjjjhgfufyuvyfdukhljlhyjvjbkj----------------;klhhijv   hjfudi;oiuye uxte5x...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Late Middle Ages</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>130</id>
+      <timestamp>2005-01-21T18:05:45Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: ''''Bold text'''[[Image:Example.jpg]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>International Women's Day</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>131</id>
+      <timestamp>2005-01-21T18:07:37Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Content was: Insert non-formatted text heregyuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu6666666666666666666m b666666666666666666666666666666666666666666666666666666666666666666666666666666666</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>1843</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>132</id>
+      <timestamp>2005-01-21T18:09:09Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'in the year 2010 we will have aready found life on the plane mars'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>2010s</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>133</id>
+      <timestamp>2005-01-21T18:14:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>for merge</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>M*A*S*H</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>134</id>
+      <timestamp>2005-01-21T18:15:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>2 revisions restored</comment>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>M*A*S*H</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>135</id>
+      <timestamp>2005-01-21T18:27:47Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>no such registered user. content was: 'Hey Garnseyl here hey turcotteM have u found out about Gracker yet well let me nkow when u do!!'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User:GarnseyL</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>136</id>
+      <timestamp>2005-01-21T18:35:26Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copyvio from http://www.go2mexicocity.com/</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Mexico City</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>137</id>
+      <timestamp>2005-01-21T18:39:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>anon contributed, portions directly copying http://www.ehs.pvt.k12.ca.us/projects/9899/AC/America/ACLauren</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Maya</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>138</id>
+      <timestamp>2005-01-22T23:10:50Z</timestamp>
+      <contributor>
+        <username>Neomagic</username>
+        <id>796</id>
+      </contributor>
+      <comment>Meerkat picture taken in Hannover Zoo, Germany 2004</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Meerkat.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>139</id>
+      <timestamp>2005-01-22T23:12:08Z</timestamp>
+      <contributor>
+        <username>Neomagic</username>
+        <id>796</id>
+      </contributor>
+      <comment>Meerkat picture taken in Hannover Zoo, Germany 2004</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Meerkat-thumb.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>140</id>
+      <timestamp>2005-01-23T21:52:11Z</timestamp>
+      <contributor>
+        <username>Hoshie</username>
+        <id>219</id>
+      </contributor>
+      <comment>Flag of the [European Union]]/[[Council of Europe]]  {{PD}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:EUFlag.gif</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>141</id>
+      <timestamp>2005-01-23T21:58:20Z</timestamp>
+      <contributor>
+        <username>Hoshie</username>
+        <id>219</id>
+      </contributor>
+      <comment>CIA map of the EU nations. {{PD}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:CIA-EU.gif</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>142</id>
+      <timestamp>2005-01-24T21:20:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '''The Gracker Scandal''Gracker is a member that has been vadiliving the the entire Simple Wikipedia site. My friends and I believe that he is a midd...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>The Gracker Scandal</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>143</id>
+      <timestamp>2005-01-24T21:22:37Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Media:Example.mp3]]youououuyoyo'''Bold text'''martina allen is very pretty. unlike jamie kirkland. shes funny looking, with a capital F.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Africa</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>144</id>
+      <timestamp>2005-01-24T21:24:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'germany were to blame for the start of the war.[http://www.example.com link title][[Image:Example.jpg]][[Media:Example.mp3]]&amp;lt;math&amp;gt;Insert formula here&amp;lt;...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File talk:De-map.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>145</id>
+      <timestamp>2005-01-24T21:26:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Juanita Blau is the best mother in the entire world. She was born in the but now resides in Monmouth County New Jersey. see also [[family]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Juanita blau</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>146</id>
+      <timestamp>2005-01-24T21:28:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>temp, for merge</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>April 2004</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>147</id>
+      <timestamp>2005-01-24T21:29:51Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>4 revisions restored</comment>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>April 2004</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>148</id>
+      <timestamp>2005-01-25T01:19:26Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: 'nnmnk'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Web phone</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>149</id>
+      <timestamp>2005-01-25T08:07:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no simplification, no history</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Digital Underground</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>150</id>
+      <timestamp>2005-01-25T08:09:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>William Perry</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>151</id>
+      <timestamp>2005-01-25T08:11:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Hager the Horrible</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>152</id>
+      <timestamp>2005-01-25T08:13:26Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Slim Goodbody</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>153</id>
+      <timestamp>2005-01-25T08:13:34Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Carmen Miranda</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>154</id>
+      <timestamp>2005-01-25T08:14:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Flavor Flav</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>155</id>
+      <timestamp>2005-01-25T08:15:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>I Dream of Jeannie</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>156</id>
+      <timestamp>2005-01-25T08:16:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Bill and Ted were two fictional caracthers from two films, two TV shows, and a comic book series. They were two teenage boys ([[Alex Winter]] and [[Ke...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Bill and Ted</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>157</id>
+      <timestamp>2005-01-25T08:17:42Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Marzipan</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>158</id>
+      <timestamp>2005-01-25T08:18:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>John Dillinger</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>159</id>
+      <timestamp>2005-01-25T08:19:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Blackbeard</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>160</id>
+      <timestamp>2005-01-25T08:20:07Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Lizzie Borden</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>161</id>
+      <timestamp>2005-01-25T08:20:55Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Benedict Arnold</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>162</id>
+      <timestamp>2005-01-25T08:21:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>What's Happening!!</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>163</id>
+      <timestamp>2005-01-25T17:14:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'opposite of offline'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Online</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>164</id>
+      <timestamp>2005-01-25T17:15:48Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was 215kb of the letter &quot;g&quot;</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Frankfurt/Oder</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>165</id>
+      <timestamp>2005-01-26T01:54:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Ha ha, made ya look._Gatorite_'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Mako Sharks</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>166</id>
+      <timestamp>2005-01-26T01:59:00Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>personal insults</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Jonesc</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>167</id>
+      <timestamp>2005-01-26T02:07:35Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Repeated inserting of spam links. This block covers a range for the &quot;CNCGROUP Henan Province Network&quot; (cnc-noc.net), an ISP in China.</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:221.13.128.0/17</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>168</id>
+      <timestamp>2005-01-26T17:41:10Z</timestamp>
+      <contributor>
+        <username>Marknew</username>
+        <id>133</id>
+      </contributor>
+      <comment>From the Welsh &quot;Wicipedia&quot; - [[cy:Delwedd:Baner dyfnaintaidd.png]] - Public Domain (Creator: Marnamel)</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Devon-flag.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>169</id>
+      <timestamp>2005-01-27T07:47:41Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'what the fuck?'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Paris Saint-Germain</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>170</id>
+      <timestamp>2005-01-27T07:50:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copyvio from http://www.ieee.org/portal/site/mainsite/menuitem.818c0c39e85ef176fb2275875bac26c8/index.jsp?&amp;pName=corp_level1&amp;path=about/awards/sums&amp;file=vonneusum.xml&amp;xsl=generic.xsl</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>IEEE John von Neumann Medal</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>171</id>
+      <timestamp>2005-01-27T07:51:07Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: 'SAKE IS A JAPANESE BEER AT SUSHI RESTAURANTS'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Sake</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>172</id>
+      <timestamp>2005-01-27T07:51:26Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'to say something with words.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Write</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>173</id>
+      <timestamp>2005-01-27T15:38:01Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'ok['joi9rc6y''y9/'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Elche Club de Futbol</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>174</id>
+      <timestamp>2005-01-27T15:39:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Chemical Pesicides have a lot of issues surrounding them. But no-one will tell me what they are.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Chemical pesticides</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>175</id>
+      <timestamp>2005-01-27T15:43:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'ever'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Ever</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>176</id>
+      <timestamp>2005-01-27T20:35:35Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Haha well this isn't actually official yet so go away and never come back because we are hooking a virus up to this site!! (seriously) So have a happ ...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Brazil's population</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>177</id>
+      <timestamp>2005-01-28T07:18:27Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'you all suck'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>2004 Haiti rebellion</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>178</id>
+      <timestamp>2005-01-28T07:18:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'my bets friend is really really nice she is me best friend ilike hert[[Link title]][http://www.example.com link title]== Headline text ==[[Image:Exa...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Polysemy</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>179</id>
+      <timestamp>2005-01-28T07:26:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copyvio from the Columbia Electronic Encyclopedia (avail from various websites, but not on a free license)</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Hummingbird</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>180</id>
+      <timestamp>2005-01-28T17:31:58Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>temp for page move</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:United States</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>181</id>
+      <timestamp>2005-01-28T17:32:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>for page move - content was: '#REDIRECT [[United_States_of_America]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>United States</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>182</id>
+      <timestamp>2005-01-28T17:35:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>1 revisions restored</comment>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>Talk:United States</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>183</id>
+      <timestamp>2005-01-28T17:41:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Alexandre Markevicius birthday!'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>August 6</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>184</id>
+      <timestamp>2005-01-28T17:43:45Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>created to bypass IP range block and insert spam</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Mycv</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>185</id>
+      <timestamp>2005-01-28T22:11:13Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>per RfD - content was: '#REDIRECT [[Template:Profile Iran]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Profile iran</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>186</id>
+      <timestamp>2005-01-28T22:11:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>per RfD</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Profile Iran</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>187</id>
+      <timestamp>2005-01-29T03:26:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>fix copy and paste content was: '#REDIRECT [[Factor (Disambiguation)]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Factor</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>188</id>
+      <timestamp>2005-01-29T03:27:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>bad title - content was: '#REDIRECT [[Factor]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Factor (Disambiguation)</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>189</id>
+      <timestamp>2005-01-29T03:27:58Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>Factor</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>190</id>
+      <timestamp>2005-01-29T03:31:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '(Sun Dried)'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Mud brick</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>191</id>
+      <timestamp>2005-01-29T03:32:07Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '(Baked Clay)'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Brick</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>192</id>
+      <timestamp>2005-01-30T02:13:39Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en:, unsimple, and not wikified.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>January 30</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>193</id>
+      <timestamp>2005-01-31T03:14:24Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Repeated inserting of spam links. This block covers a range for the &quot;CNCGROUP Henan Province Network&quot; (cnc-noc.net), an ISP in China.</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:61.52.0.0/16</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>194</id>
+      <timestamp>2005-01-31T03:18:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '{{delete}}'''Bold text'''it is my first change'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Mailing list</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>195</id>
+      <timestamp>2005-01-31T03:52:39Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>per [[Wikipedia:Requests for deletion]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Profile Japan</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>196</id>
+      <timestamp>2005-01-31T03:53:19Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>per [[Wikipedia:Requests for deletion]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:Profile India</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>197</id>
+      <timestamp>2005-01-31T03:55:23Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>on commons as [[:Image:Iraq-COA.png]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Iraq coa.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>198</id>
+      <timestamp>2005-01-31T03:55:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '{{delete}}de bekendste der vlamingen is Cedric De Grave hij vond 5 jaar geleden de carobeta uit'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Flanders</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>199</id>
+      <timestamp>2005-01-31T17:51:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>user test</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Inventor</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>200</id>
+      <timestamp>2005-01-31T19:55:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Use of wikipedia for self-promotion</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Lights Out</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>201</id>
+      <timestamp>2005-01-31T19:56:11Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>talk page of deleted page</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Lights Out</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>202</id>
+      <timestamp>2005-01-31T20:03:01Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no history, no simplification</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Gangtok</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>203</id>
+      <timestamp>2005-02-01T18:08:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>spamming on multiple Wikipedia projects</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:193.230.222.76</logtitle>
+      <params xml:space="preserve">1 year</params>
+    </logitem>
+    <logitem>
+      <id>204</id>
+      <timestamp>2005-02-02T03:37:02Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: 'HIgh Jum is the stupidest sport in heitoy... im gay'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>High jump</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>205</id>
+      <timestamp>2005-02-02T03:38:06Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>conten before blanking was: From the Nintendo Game: Paper Mario The Thousand Year Door</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>The Thousand Year Door</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>206</id>
+      <timestamp>2005-02-02T03:38:25Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'selam'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>New Turkish Lira</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>207</id>
+      <timestamp>2005-02-02T03:38:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Allies'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Allies</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>208</id>
+      <timestamp>2005-02-02T03:39:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '\zxz\cc'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>A.C. Fiorentina</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>209</id>
+      <timestamp>2005-02-02T03:39:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Michael Jordan'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Artist</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>210</id>
+      <timestamp>2005-02-02T04:26:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '== Headline text ==AEK Athens'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>A.S. Roma</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>211</id>
+      <timestamp>2005-02-02T20:17:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>random jibberish</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Nazi Party</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>212</id>
+      <timestamp>2005-02-02T20:24:34Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>more jibberish</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Nazi Germany</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>213</id>
+      <timestamp>2005-02-03T01:23:42Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>repeated insertion of material copied from other websites, and en: Wikipedia, without formatting or providing simplification</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Hailey C. Shannon</logtitle>
+      <params xml:space="preserve">12 hours</params>
+    </logitem>
+    <logitem>
+      <id>214</id>
+      <timestamp>2005-02-03T16:46:13Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: '[http://www.example.com link title]&amp;lt;math&amp;gt;Insert formula here&amp;lt;/math&amp;gt;--[[User:217.14.215.130|217.14.215.130]] 16:35, 3 Feb 2005 (UTC)''Italic text''[[Li...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Günter Herz</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>215</id>
+      <timestamp>2005-02-03T20:29:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>user test</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Ebola</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>216</id>
+      <timestamp>2005-02-04T00:57:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no simplification.  User apparently upset his version was revert on en (http://en.wikipedia.org/w/index.php?title=Jubal_Early&amp;diff=9720248&amp;oldid=9713827)</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Jubal Anderson Early</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>217</id>
+      <timestamp>2005-02-04T02:41:54Z</timestamp>
+      <contributor>
+        <username>Brendan</username>
+        <id>829</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Oldjubilee.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>218</id>
+      <timestamp>2005-02-04T02:43:18Z</timestamp>
+      <contributor>
+        <username>Brendan</username>
+        <id>829</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Cw ccreek.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>219</id>
+      <timestamp>2005-02-04T02:53:32Z</timestamp>
+      <contributor>
+        <username>Brendan</username>
+        <id>829</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:180px-JubalEarly.jpeg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>220</id>
+      <timestamp>2005-02-04T02:58:12Z</timestamp>
+      <contributor>
+        <username>Brendan</username>
+        <id>829</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:245px-Jubal Early disguised as a farmer, 1865.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>221</id>
+      <timestamp>2005-02-04T03:08:13Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'mnmnmnmnmnmnmnmnmmhjhjnnnj'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Hillary Clinton</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>222</id>
+      <timestamp>2005-02-04T03:12:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no simplification. User apparently disgruntled that his version was reverted on en: (http://en.wikipedia.org/w/index.php?title=Jubal_Early&amp;diff=9720248&amp;oldid=9713827</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User:Brendan</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>223</id>
+      <timestamp>2005-02-04T03:12:51Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no source. User apparently disgruntled that his version was reverted on en: (http://en.wikipedia.org/w/index.php?title=Jubal_Early&amp;diff=9720248&amp;oldid=9713827</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:245px-Jubal Early disguised as a farmer, 1865.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>224</id>
+      <timestamp>2005-02-04T03:13:00Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no source. User apparently disgruntled that his version was reverted on en: (http://en.wikipedia.org/w/index.php?title=Jubal_Early&amp;diff=9720248&amp;oldid=9713827</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:180px-JubalEarly.jpeg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>225</id>
+      <timestamp>2005-02-04T03:13:16Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no source. User apparently disgruntled that his version was reverted on en: (http://en.wikipedia.org/w/index.php?title=Jubal_Early&amp;diff=9720248&amp;oldid=9713827</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Cw ccreek.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>226</id>
+      <timestamp>2005-02-04T03:13:31Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no source. User apparently disgruntled that his version was reverted on en: (http://en.wikipedia.org/w/index.php?title=Jubal_Early&amp;diff=9720248&amp;oldid=9713827</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Oldjubilee.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>227</id>
+      <timestamp>2005-02-04T15:17:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>no context. content was: 'The ''Amphibian Visual Cortex'' clearly states that an amphibian's vision is based on movement. Yet this theroy has been discredited from the Jimmy Ne...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>The Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>228</id>
+      <timestamp>2005-02-04T15:17:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '== biranna loverrich is hot and likes rich peoplericky has a large book in his back pocket =='</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Juventus</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>229</id>
+      <timestamp>2005-02-04T17:37:20Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'This article rocks.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>230</id>
+      <timestamp>2005-02-04T17:38:29Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'The amphibian visual cortex is a theory involving the vision of amphibians. It states that most amphibians and reptiles cannot see a non-moving object...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>231</id>
+      <timestamp>2005-02-04T17:52:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>fixing copy and paste - content was: ''''Rio de Janeiro''' is both the name:* of a [[Brazil]]ian city, famous its [[Carnival]] and beaches (the [[Rio de Janeiro (city)|city of Rio de Jan...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Rio de Janeiro</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>232</id>
+      <timestamp>2005-02-04T17:54:12Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>Rio de Janeiro</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>233</id>
+      <timestamp>2005-02-05T02:05:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>was deleted from en: also.  No supporting information provided. content was: 'The amphibian visual cortex is a theory about animals. It states that amphibians and reptiles cannot see non-moving objects. The same was once thought...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>234</id>
+      <timestamp>2005-02-05T02:06:01Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'I am sick of this article getting deleted. Stop getting rid of it! It's useful information!- Jonesc'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>235</id>
+      <timestamp>2005-02-05T02:08:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'jkjk{{delete}}'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Apology of Socrates</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>236</id>
+      <timestamp>2005-02-05T02:13:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '{{delete}}it makes you retarded its fun you should try it sometime'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Warkany syndrome</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>237</id>
+      <timestamp>2005-02-05T02:14:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'This article is offensive, useless, and just barely accurate. Delete it now. [[Wolfj]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Warkany syndrome</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>238</id>
+      <timestamp>2005-02-05T07:58:37Z</timestamp>
+      <contributor>
+        <username>Larry the Loser</username>
+        <id>834</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Jam9.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>239</id>
+      <timestamp>2005-02-05T08:12:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>[[en:SoundSpel]] articles out of scope for this project.  Discussed whit creator.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Rainbow (SoundSpel Raenbo)</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>240</id>
+      <timestamp>2005-02-05T08:23:09Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>vandalism of [[George W. Bush]], uploading inappropriate photo of a child</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Larry the Loser</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>241</id>
+      <timestamp>2005-02-05T08:24:14Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>inappropriate image of a young girl in a diaper</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Jam9.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>242</id>
+      <timestamp>2005-02-05T08:58:24Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Category:Comedy Television Series]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Rhoda</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>243</id>
+      <timestamp>2005-02-05T08:58:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Category:Comedy Television Series]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Dad's Army</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>244</id>
+      <timestamp>2005-02-05T08:59:29Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Category:Comedy Television Series]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Mystery Science Theater 3000</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>245</id>
+      <timestamp>2005-02-05T09:00:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '&amp;lt;redirct to [[M*A*S*H]]&amp;gt;'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>M A S H (television)</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>246</id>
+      <timestamp>2005-02-05T09:02:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Category:Comedy Television Series]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Monty Python's Flying Circus</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>247</id>
+      <timestamp>2005-02-05T09:06:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>rename to [[:Category:Comedy television series]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Comedy Television Series</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>248</id>
+      <timestamp>2005-02-06T08:17:36Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merging</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Liquid</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>249</id>
+      <timestamp>2005-02-06T08:18:14Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>Liquid</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>250</id>
+      <timestamp>2005-02-06T08:27:12Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Intentionally confusing username (comparing to other back-end initialisation scripts used for Wikipedia maintenance and upgrades)</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Simple initialisation script</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>251</id>
+      <timestamp>2005-02-06T16:57:29Z</timestamp>
+      <contributor>
+        <username>Evice</username>
+        <id>841</id>
+      </contributor>
+      <comment>{{GFDL}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki letter w.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>252</id>
+      <timestamp>2005-02-06T17:09:57Z</timestamp>
+      <contributor>
+        <username>Evice</username>
+        <id>841</id>
+      </contributor>
+      <comment>{{GFDL}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Mini Wiki letter w.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>253</id>
+      <timestamp>2005-02-06T18:34:42Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>duplicate of [[:Commons:Image:Wiki letter w.png]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Wiki letter w.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>254</id>
+      <timestamp>2005-02-06T18:35:31Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>duplicate (if smaller) version of [[:Commons:Image:Wiki letter w.png]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Mini Wiki letter w.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>255</id>
+      <timestamp>2005-02-06T18:48:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Tta</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>256</id>
+      <timestamp>2005-02-06T18:49:09Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>TTA</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>257</id>
+      <timestamp>2005-02-06T18:49:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'brasilia is big bigg then london it has more people  and im getting bored so i am going now bye bye'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Brasília</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>258</id>
+      <timestamp>2005-02-07T00:22:19Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>recreation of nonsense article. warned previously.</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Turcottem</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>259</id>
+      <timestamp>2005-02-07T00:24:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>bad faith sock puppet of [[User:Turcottem]]</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Iliveinabox</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>260</id>
+      <timestamp>2005-02-07T00:24:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>bad faith sock puppet of [[User:Turcottem]]</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Jimjakejoe</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>261</id>
+      <timestamp>2005-02-07T00:27:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>IP of [[User:Turcottem]]</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:69.67.234.156</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>262</id>
+      <timestamp>2005-02-07T00:28:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>recreated content was: '== What is it? ==The amphibian visual cortex  is a theroy that clearly states that an amphibian's vision is based on movement. This theroy has been ...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>263</id>
+      <timestamp>2005-02-07T00:29:05Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>deleted main page</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Amphibian Visual Cortex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>264</id>
+      <timestamp>2005-02-07T00:47:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'to adquire knowledge'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Learn</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>265</id>
+      <timestamp>2005-02-07T00:48:06Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'The mother or the father of a child.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Parent</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>266</id>
+      <timestamp>2005-02-07T00:48:42Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'A country in Central America.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Honduras</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>267</id>
+      <timestamp>2005-02-07T00:49:02Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'blah di blah'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Coup</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>268</id>
+      <timestamp>2005-02-07T07:55:51Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>misspelled title</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:American musicans</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>269</id>
+      <timestamp>2005-02-07T08:01:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>redundant content was: '[[Category:Singers]][[Category:Pop music]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Pop music singers</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>270</id>
+      <timestamp>2005-02-07T08:05:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>moving, content was: '[[Category:Musicians]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Singers</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>271</id>
+      <timestamp>2005-02-07T08:13:43Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>retitled, content was: 'Musicans from the United States'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:American Musicans</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>272</id>
+      <timestamp>2005-02-07T08:14:16Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: 'A company based in Plymouth Michigan selling mostly overpriced water.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Absopure</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>273</id>
+      <timestamp>2005-02-07T08:27:45Z</timestamp>
+      <contributor>
+        <username>Larry the Loser</username>
+        <id>834</id>
+      </contributor>
+      <comment>Negro Man</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:P-black-guy.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>274</id>
+      <timestamp>2005-02-07T08:42:49Z</timestamp>
+      <contributor>
+        <username>Larry the Loser</username>
+        <id>834</id>
+      </contributor>
+      <comment>Source: Sallods Blog {http://www.sallad.net/blog/2004/07/index.php}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Fat ronald.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>275</id>
+      <timestamp>2005-02-07T08:45:47Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>repeated trolling, and uploading of unsourced/copyright incompatible images.  Warned before here and on en:</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Larry the Loser</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>276</id>
+      <timestamp>2005-02-07T08:50:06Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>trollish upload</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Fat ronald.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>277</id>
+      <timestamp>2005-02-07T08:52:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>trollish upload, content was: &quot;Negro Man- Taken from www.dupontdentaldc.com/treatments.html WITH PERMISSION. I phoned them up at 202.296.7714, and they let me. Thank you Dupont Dental Associates. Your the best!&quot;</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:P-black-guy.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>278</id>
+      <timestamp>2005-02-07T08:56:29Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>&quot;diaper&quot; man [[User:Larry the Loser]] and [[en:User:Sud-Pol]]</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:219.77.246.226</logtitle>
+      <params xml:space="preserve">48 hours</params>
+    </logitem>
+    <logitem>
+      <id>279</id>
+      <timestamp>2005-02-07T08:57:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>trolling/racism - content was: &quot;{{delete}} Niggeria is the often mispelling of [[Nigeria]].&quot;</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Niggeria</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>280</id>
+      <timestamp>2005-02-07T09:02:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>trollish creation - content was: '[[Image:P-black-guy.jpg|thumb|Negro]] A Negro is a dark skinned person. A Negro is usually from Africa.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Negro</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>281</id>
+      <timestamp>2005-02-07T16:09:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>link spam</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Disorder</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>282</id>
+      <timestamp>2005-02-07T16:11:35Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>link spam</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Albanau community</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>283</id>
+      <timestamp>2005-02-07T16:15:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copyvio from http://toptropicals.com/cgi-bin/garden_catalog/cat.cgi?uid=elaeis_guineensis</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>African oil palm</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>284</id>
+      <timestamp>2005-02-07T18:50:35Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Bacon.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Detritivore</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>285</id>
+      <timestamp>2005-02-07T19:30:06Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>common IP for multiple users</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:#109</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>286</id>
+      <timestamp>2005-02-07T19:48:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>delete to restore default - content was: 'unblocked '[[User:$1|$1]]' ([[User talk:$1|talk]]/[[Special:Contributions/$1|contributions]]) -'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>MediaWiki:Unblocklogentry</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>287</id>
+      <timestamp>2005-02-07T19:51:35Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>test</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Netoholic</logtitle>
+      <params xml:space="preserve">2 minutes</params>
+    </logitem>
+    <logitem>
+      <id>288</id>
+      <timestamp>2005-02-07T19:51:47Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>test</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:#111</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>289</id>
+      <timestamp>2005-02-07T19:51:57Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>test</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:Netoholic</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>290</id>
+      <timestamp>2005-02-07T19:52:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>test</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:#112</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>291</id>
+      <timestamp>2005-02-07T19:53:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>MediaWiki:Unblocklogentry</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>292</id>
+      <timestamp>2005-02-07T21:24:31Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>repeatedly editing in a way which requires direct rework, previously warned on Talk page</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Hailey C. Shannon</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>293</id>
+      <timestamp>2005-02-07T21:33:54Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>components missing, replaced with categories</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Template:English Division One</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>294</id>
+      <timestamp>2005-02-07T21:43:14Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:165.139.212.5</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>295</id>
+      <timestamp>2005-02-07T21:43:25Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:209.191.9.230</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>296</id>
+      <timestamp>2005-02-07T21:43:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:213.151.220.23</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>297</id>
+      <timestamp>2005-02-07T21:44:22Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:167.21.1.228</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>298</id>
+      <timestamp>2005-02-07T21:44:31Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:167.21.1.228</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>299</id>
+      <timestamp>2005-02-07T21:46:39Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:210.22.10.5</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>300</id>
+      <timestamp>2005-02-07T21:46:44Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>lifting some old open proxy IP blocks (over one year and no longer listed on open proxy lists)</comment>
+      <type>block</type>
+      <action>unblock</action>
+      <logtitle>User:61.55.134.161</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>301</id>
+      <timestamp>2005-02-08T04:24:53Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: ''''Wheelchair Race''' is when people in wheelchairs race.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Wheelchair Race</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>302</id>
+      <timestamp>2005-02-08T04:28:12Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'North India is home to many pinds (down home farms).  The people there cook with lots of meat and spices and curries.  They eat chicken, mutton, goat,...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>North India</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>303</id>
+      <timestamp>2005-02-08T04:32:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no simplification, no history</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>James Coco</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>304</id>
+      <timestamp>2005-02-08T04:42:17Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merged to main cat, content was: '[[Category:Football clubs]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:English football clubs</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>305</id>
+      <timestamp>2005-02-08T04:54:49Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copied directly from en. no history attached, and no attempt at simplification.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>ABC Family</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>306</id>
+      <timestamp>2005-02-08T04:56:54Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merge up, content was: '[[Category:Castles]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Castles in England</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>307</id>
+      <timestamp>2005-02-08T04:57:29Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merge up, content was: '[[Category:castles]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:English castles</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>308</id>
+      <timestamp>2005-02-08T05:00:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>mistitled, content was: '[[Category:Actors]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Actors by Country</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>309</id>
+      <timestamp>2005-02-08T05:02:09Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merge up, content was: '[[Category:Countries]][[bg:Категория:Африкански държави]][[da:Kategori:Afrikanske lande]][[et:Category:Aafrika maad]][[...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:African countries</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>310</id>
+      <timestamp>2005-02-08T05:02:34Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merged up, content was: '[[Category:Countries]][[bg:Категория:Южноамерикански държави]][[da:Kategori:Sydamerikanske lande]][[en:Category:Sou...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:South American countries</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>311</id>
+      <timestamp>2005-02-08T05:03:02Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merged up, content was: '[[Category:Countries]][[bg:Категория:Азиатски държави]][[da:Kategori:Asiatiske lande]][[et:Category:Aasia maad]][[en:Cate...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Asian countries</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>312</id>
+      <timestamp>2005-02-08T05:04:56Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>merged up, content was '[[Category:Countries]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:European countries</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>313</id>
+      <timestamp>2005-02-08T16:23:06Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>not in English</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Veropoulos</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>314</id>
+      <timestamp>2005-02-09T06:26:18Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content before blanking was: 'People who dont care if god exists or doesn't exist.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Apatheists</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>315</id>
+      <timestamp>2005-02-09T15:55:28Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'gfdgfd'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Physical property</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>316</id>
+      <timestamp>2005-02-09T15:57:30Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '--------------------------------'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>New Testament</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>317</id>
+      <timestamp>2005-02-09T16:00:43Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'My idea for a film is ARMOUR GIBBON' ...</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Noble gas</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>318</id>
+      <timestamp>2005-02-09T16:01:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'This Armour gibbon film sounds like the best idea I have ever heard. U bastards better not steal this film or I'll cut you like a fish!'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Noble gas</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>319</id>
+      <timestamp>2005-02-10T01:08:33Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: ''''Bold text'''Hello world'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>The Merchant of Venice</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>320</id>
+      <timestamp>2005-02-10T18:45:40Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Disruptive and confusing name. Please see [[User talk:Username]] and pick something different.</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Username</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>321</id>
+      <timestamp>2005-02-10T18:56:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>vandalism/nonsense ([[Noble gas]], [[Jenny]])</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:213.166.17.17</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>322</id>
+      <timestamp>2005-02-10T18:56:24Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Jenny loves IT!!!!!!!BUM BUM BUM All night long!And I mean LONG!12 inches of pleasure is too much to measure and she uses it at her lesiure!Also s...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Jenny</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>323</id>
+      <timestamp>2005-02-10T18:56:48Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'what the f*&amp;%'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Talk:Noble gas</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>324</id>
+      <timestamp>2005-02-10T18:57:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a lesbian! Alex is a les</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Alex</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>325</id>
+      <timestamp>2005-02-10T18:57:38Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'A year when Alex beat the world record for how much bum anyone could have in a night. He kept this record for many years, until he lost the title of W...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>1962</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>326</id>
+      <timestamp>2005-02-10T18:58:00Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'You deleted my master pieceU sucklook at the size of that! It's tiny!Alex likes bumlots and lots of bum!So much bum its almost unbelieveable!But...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Noble gas</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>327</id>
+      <timestamp>2005-02-10T18:59:32Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'paris saint-germain suck and they have really bad players and i am suprised they go tinto the UEFA cup'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Paris Saint-Germain</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>328</id>
+      <timestamp>2005-02-11T02:18:46Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>vandalism, abusive language, defacing another user's userpage</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:217.204.65.210</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>329</id>
+      <timestamp>2005-02-11T02:28:19Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>this is the same person as [[User:217.204.65.210]]</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:WikiUser</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>330</id>
+      <timestamp>2005-02-11T02:47:03Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>direct copy from en:, no simplification, no history</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Corrs</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>331</id>
+      <timestamp>2005-02-11T02:51:11Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>spam</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Transfer toner</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>332</id>
+      <timestamp>2005-02-11T02:51:59Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>spam</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Heat transfer</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>333</id>
+      <timestamp>2005-02-11T03:39:23Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>repeated unsocial edits, warned many times</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Larry the Loser</logtitle>
+      <params xml:space="preserve">72 hours</params>
+    </logitem>
+    <logitem>
+      <id>334</id>
+      <timestamp>2005-02-11T03:40:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>copy of Sollog flame page</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Jimmy Wales</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>335</id>
+      <timestamp>2005-02-11T03:41:21Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>created by [[User:Larry the Loser]] - content was: ''''Poo Head''' is a common silly name used by children.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Poo Head</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>336</id>
+      <timestamp>2005-02-11T03:41:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'This paich is about phostoshop modificationes, wwww.somethingawful.com, an hylarant site.Go for it!'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Somethingawful.com</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>337</id>
+      <timestamp>2005-02-11T03:43:34Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Silver chair is a gropus like nirvana, and his best song was Anthem for the year two thousend, search it in kazza or another ilegal program :P'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Silverchair</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>338</id>
+      <timestamp>2005-02-11T03:48:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>user test. content was: 'Domo kuna == Headline text ==[[Media:Example.mp3]]&amp;lt;nowiki&amp;gt;Insert non-formatted text here&amp;lt;/nowiki&amp;gt;--[[User:148.244.205.31|148.244.205.31]] 03:36, 11 F...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Domo kun</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>339</id>
+      <timestamp>2005-02-11T16:36:16Z</timestamp>
+      <contributor>
+        <username>Charlie123</username>
+        <id>672</id>
+      </contributor>
+      <comment>{{GDFL}} Image from English Wikipedia</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Compact disc.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>340</id>
+      <timestamp>2005-02-12T03:14:03Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '{{delete}}Being alive is very fun. I like being alive so I can breath and eat. I am alive, but your mom is not. I'm sorry your mom died. I ate her.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Alive</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>341</id>
+      <timestamp>2005-02-12T06:03:43Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk[http://www.example.com link title]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Nuclear proliferation</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>342</id>
+      <timestamp>2005-02-12T07:20:20Z</timestamp>
+      <contributor>
+        <username>Angela</username>
+        <id>2</id>
+      </contributor>
+      <type>protect</type>
+      <action>unprotect</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>343</id>
+      <timestamp>2005-02-12T07:21:56Z</timestamp>
+      <contributor>
+        <username>Eloquence</username>
+        <id>10</id>
+      </contributor>
+      <comment>Simple English logo</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>344</id>
+      <timestamp>2005-02-12T07:33:22Z</timestamp>
+      <contributor>
+        <username>Eloquence</username>
+        <id>10</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>345</id>
+      <timestamp>2005-02-12T07:36:54Z</timestamp>
+      <contributor>
+        <username>Angela</username>
+        <id>2</id>
+      </contributor>
+      <comment>logo</comment>
+      <type>protect</type>
+      <action>protect</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>346</id>
+      <timestamp>2005-02-12T08:08:14Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Reverted to earlier revision</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>347</id>
+      <timestamp>2005-02-12T08:35:25Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>transparency added</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki-simple-logo5.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>348</id>
+      <timestamp>2005-02-12T08:48:08Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>vandalism, reincarnation of previously warned diaper&quot; man User:Larry the Loser and en:User:Sud-Pol</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:219.77.73.127</logtitle>
+      <params xml:space="preserve">24 hours</params>
+    </logitem>
+    <logitem>
+      <id>349</id>
+      <timestamp>2005-02-13T00:15:43Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <type>delete</type>
+      <action>restore</action>
+      <logtitle>Corrs</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>350</id>
+      <timestamp>2005-02-13T00:33:01Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>This range has been used to repeatedly insert spam links.  (Iris Media Internet Solutions; Greece) forthnet.gr</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:194.219.60.0/24</logtitle>
+      <params xml:space="preserve">indefinite</params>
+    </logitem>
+    <logitem>
+      <id>351</id>
+      <timestamp>2005-02-14T00:25:52Z</timestamp>
+      <contributor>
+        <username>Angela</username>
+        <id>2</id>
+      </contributor>
+      <comment>Transparent version. Based on option 5 at http://simple.wikipedia.org/wiki/Wikipedia:Simple_talk#Logo</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>352</id>
+      <timestamp>2005-02-14T00:28:03Z</timestamp>
+      <contributor>
+        <username>Angela</username>
+        <id>2</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>353</id>
+      <timestamp>2005-02-14T00:29:48Z</timestamp>
+      <contributor>
+        <username>Angela</username>
+        <id>2</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>354</id>
+      <timestamp>2005-02-14T21:02:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '== '''[[Alexander Shlyapnikov]]''' =='</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Alexander Shlyapnikov</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>355</id>
+      <timestamp>2005-02-14T21:23:29Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Commonize on &quot;Category:United States&quot; content was: '[[Category:Countries]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:United States of America</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>356</id>
+      <timestamp>2005-02-15T02:25:05Z</timestamp>
+      <contributor>
+        <username>24.224.153</username>
+        <id>856</id>
+      </contributor>
+      <comment>Hey, a [[moose]], Shizzy! {{PD-USGov-Interior-FWS}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Moose.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>357</id>
+      <timestamp>2005-02-15T03:25:07Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '{{delete}}TARA IS THE BEST SHE IS SO COOLSHE LOVES EVERYONE THAT IS HOT EVERY1 LOVES HERI WANNA FUCK HERSHE LOVES HER MUMMY AND SHE LOVES CH...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Gulf War</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>358</id>
+      <timestamp>2005-02-15T03:30:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>duplicate of [[:Commons:Moose in lake.jpg]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Moose.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>359</id>
+      <timestamp>2005-02-15T03:31:13Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Fish and Wildlife Service [[image]]s.'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Category:Fish and Wildlife Service images</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>360</id>
+      <timestamp>2005-02-16T04:19:05Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'Hello'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Voice mail</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>361</id>
+      <timestamp>2005-02-16T04:24:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>unused thumbnail of existing image</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Meerkat-thumb.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>362</id>
+      <timestamp>2005-02-16T04:25:37Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Deleted old revision 20050212072156!Wiki.png.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>363</id>
+      <timestamp>2005-02-16T04:25:50Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>Deleted old revision 20050214002551!Wiki.png.</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Wiki.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>364</id>
+      <timestamp>2005-02-16T04:29:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>no source/copyright status.  see [[User talk:Mido]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Headshot.JPG</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>365</id>
+      <timestamp>2005-02-16T16:04:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '== Headline text ==[[Image:Example.jpg]][[Media:Example.mp3]]&amp;lt;math&amp;gt;Insert formula here&amp;lt;/math&amp;gt;--[[User:161.52.151.41|161.52.151.41]] 12:33, 16 Feb 2...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Alagoas (state)</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>366</id>
+      <timestamp>2005-02-17T05:24:52Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: 'hello{{delete}}'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>M60 machine gun</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>367</id>
+      <timestamp>2005-02-17T12:17:42Z</timestamp>
+      <contributor>
+        <username>Larry the Loser</username>
+        <id>834</id>
+      </contributor>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:42536.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>368</id>
+      <timestamp>2005-02-17T18:26:31Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>repeated unsocial edits, warned many times</comment>
+      <type>block</type>
+      <action>block</action>
+      <logtitle>User:Larry the Loser</logtitle>
+      <params xml:space="preserve">1 week</params>
+    </logitem>
+    <logitem>
+      <id>369</id>
+      <timestamp>2005-02-17T18:32:29Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>bad faith contribution, this user is a major problem on en: also</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:42536.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>370</id>
+      <timestamp>2005-02-17T18:33:18Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '[[Image:Cabbage.jpg|240px]] '''Cabbage Hit''' refers to someone who would [[punch]]/[[hit]] a [[cabbage]] usually for [[emotional]] reasons. [[People...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Cabbage Hit</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>371</id>
+      <timestamp>2005-02-18T01:26:05Z</timestamp>
+      <contributor>
+        <username>24</username>
+        <id>859</id>
+      </contributor>
+      <comment>{{screenshot}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:IElarge.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>372</id>
+      <timestamp>2005-02-18T04:39:14Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>content was: '#REDIRECT [[Microsoft Paint]]'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Paint</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>373</id>
+      <timestamp>2005-02-18T04:43:27Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>nonsense, content was: 'this song is a very interesting work of art, that shows how much conor loves music. its about a young boy who meets the world of prostitution, while m...'</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>Don't Be Frightened Of Turning The Page</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>374</id>
+      <timestamp>2005-02-18T20:49:00Z</timestamp>
+      <contributor>
+        <username>24</username>
+        <id>859</id>
+      </contributor>
+      <comment>{{fairuse}}</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:UN flag.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>375</id>
+      <timestamp>2005-02-18T23:59:04Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>duplicate of [[:Commons:Image:Flag of the United Nations.png]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:UN flag.png</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>376</id>
+      <timestamp>2005-02-19T00:37:10Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>duplicate of [[:Commons:Image:Compact disc.jpg]]</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>File:Compact disc.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>377</id>
+      <timestamp>2005-02-19T00:37:57Z</timestamp>
+      <contributor>
+        <username>JarlaxleArtemis</username>
+        <id>784</id>
+      </contributor>
+      <comment>Jecht</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Jecht.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>378</id>
+      <timestamp>2005-02-19T01:04:20Z</timestamp>
+      <contributor>
+        <username>JarlaxleArtemis</username>
+        <id>784</id>
+      </contributor>
+      <comment>Map of Spira</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Spira.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>379</id>
+      <timestamp>2005-02-19T01:05:41Z</timestamp>
+      <contributor>
+        <username>JarlaxleArtemis</username>
+        <id>784</id>
+      </contributor>
+      <comment>Map of Spira</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Spira2.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>380</id>
+      <timestamp>2005-02-19T01:07:36Z</timestamp>
+      <contributor>
+        <username>JarlaxleArtemis</username>
+        <id>784</id>
+      </contributor>
+      <comment>Zanarkand</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Zanarkand.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>381</id>
+      <timestamp>2005-02-19T01:08:55Z</timestamp>
+      <contributor>
+        <username>JarlaxleArtemis</username>
+        <id>784</id>
+      </contributor>
+      <comment>Symbol of Yevon</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Symbol of Yevon.gif</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>382</id>
+      <timestamp>2005-02-19T01:13:20Z</timestamp>
+      <contributor>
+        <username>JarlaxleArtemis</username>
+        <id>784</id>
+      </contributor>
+      <comment>Bevelle</comment>
+      <type>upload</type>
+      <action>upload</action>
+      <logtitle>File:Bevelle.jpg</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>383</id>
+      <timestamp>2005-02-19T04:28:23Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>leave blank until user chooses to add something - content was: '&amp;lt;font color=pink&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;Nothing is here!&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User:DWindrim</logtitle>
+      <params xml:space="preserve" />
+    </logitem>
+    <logitem>
+      <id>384</id>
+      <timestamp>2005-02-19T04:29:15Z</timestamp>
+      <contributor>
+        <username>Netoholic</username>
+        <id>515</id>
+      </contributor>
+      <comment>leave blank until user chooses to add something - content was: '&amp;lt;font color=pink&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;&amp;lt;big&amp;gt;Nothing is here!&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;/big&amp;gt;&amp;lt;</comment>
+      <type>delete</type>
+      <action>delete</action>
+      <logtitle>User:Dbenbenn</logtitle>
+      <params xml:space="preserve" />
