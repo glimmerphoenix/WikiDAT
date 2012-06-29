@@ -74,115 +74,101 @@ if __name__ == '__main__':
         conn.autocommit(True)
         cursor = conn.cursor()
         
-        #drop_aug_2011 = "DROP TABLE IF EXISTS revision_082011"
-        #query_aug_2011 = "CREATE TABLE revision_082011 AS " +\
-                        #"( SELECT rev_id, rev_page, rev_user, rev_timestamp " +\
-                        #"FROM revision " +\
-                        #"WHERE rev_user > 0 AND " +\
-                        #"rev_timestamp >= '2011-08-01 00:00:00' AND " +\
-                        #"rev_timestamp <= '2011-08-31 23:59:59' )"
+        drop_aug_2011 = "DROP TABLE IF EXISTS revision_082011"
+        query_aug_2011 = "CREATE TABLE revision_082011 AS " +\
+                        "( SELECT rev_id, rev_page, rev_user, rev_timestamp " +\
+                        "FROM revision " +\
+                        "WHERE rev_user > 0 AND " +\
+                        "rev_timestamp >= '2011-08-01 00:00:00' AND " +\
+                        "rev_timestamp <= '2011-08-31 23:59:59' )"
         
-        #drop_aug_2011_nobots = "DROP TABLE IF EXISTS revision_082011_nobots"
-        #query_aug_2011_nobots = "CREATE TABLE revision_082011_nobots AS " +\
-                        #"( SELECT rev_id, rev_page, rev_user, rev_timestamp " +\
-                        #"FROM revision_082011 a LEFT JOIN " +\
-                        #"( SELECT ug_user FROM user_groups " +\
-                        #"WHERE ug_group = 'bot') b " +\
-                        #"ON rev_user = ug_user " +\
-                        #"WHERE ug_user is NULL )"
+        drop_aug_2011_nobots = "DROP TABLE IF EXISTS revision_082011_nobots"
+        query_aug_2011_nobots = "CREATE TABLE revision_082011_nobots AS " +\
+                        "( SELECT rev_id, rev_page, rev_user, rev_timestamp " +\
+                        "FROM revision_082011 a LEFT JOIN " +\
+                        "( SELECT ug_user FROM user_groups " +\
+                        "WHERE ug_group = 'bot') b " +\
+                        "ON rev_user = ug_user " +\
+                        "WHERE ug_user is NULL )"
         
-        ## Create table revision_082011 and revision_082011_nobots
-        #send_query(cursor, drop_aug_2011, 5, log_file)  
-        #send_query(cursor, query_aug_2011, 5, log_file)
-        #send_query(cursor, drop_aug_2011_nobots, 5, log_file)  
-        #send_query(cursor, query_aug_2011_nobots, 5, log_file)
+        # Create table revision_082011 and revision_082011_nobots
+        send_query(cursor, drop_aug_2011, 5, log_file)  
+        send_query(cursor, query_aug_2011, 5, log_file)
+        send_query(cursor, drop_aug_2011_nobots, 5, log_file)  
+        send_query(cursor, query_aug_2011_nobots, 5, log_file)
         
-        ## Registered users in 08-2011
-        #query_wikipedians = "SELECT COUNT(DISTINCT(rev_user)) " +\
-                            #"FROM revision_082011"
-        #editors = send_query(cursor, query_wikipedians, 5, log_file)
+        # Registered users in 08-2011
+        query_wikipedians = "SELECT COUNT(DISTINCT(rev_user)) " +\
+                            "FROM revision_082011"
+        editors = send_query(cursor, query_wikipedians, 5, log_file)
         
-        ##print 'editors: '
-        ##print editors
+        # Active wikipedians 08-2011
+        query_active_wikipedians = "SELECT count(*) FROM " +\
+                                "(SELECT rev_user, COUNT(*) AS nrevs FROM " +\
+                                "revision_082011_nobots " +\
+                                "GROUP BY rev_user "+\
+                                "HAVING nrevs > 5) x "
+        active_wikipedians = send_query(cursor, query_active_wikipedians, 5, log_file)
         
-        ## Active wikipedians 08-2011
-        #query_active_wikipedians = "SELECT count(*) FROM " +\
-                                #"(SELECT rev_user, COUNT(*) AS nrevs FROM " +\
-                                #"revision_082011_nobots " +\
-                                #"GROUP BY rev_user "+\
-                                #"HAVING nrevs > 5) x "
-        #active_wikipedians = send_query(cursor, query_active_wikipedians, 5, log_file)
-        ##print 'active wikipedians: '
-        ##print active_wikipedians
+        # Very active wikipedians 08-2011
+        query_very_active_wikipedians = "SELECT count(*) FROM " +\
+                                "(SELECT rev_user, COUNT(*) AS nrevs FROM " +\
+                                "revision_082011_nobots " +\
+                                "GROUP BY rev_user "+\
+                                "HAVING nrevs > 100) x "
+        very_active_wikipedians = send_query(cursor, query_very_active_wikipedians, 5, log_file)
         
-        ## Very active wikipedians 08-2011
-        #query_very_active_wikipedians = "SELECT count(*) FROM " +\
-                                #"(SELECT rev_user, COUNT(*) AS nrevs FROM " +\
-                                #"revision_082011_nobots " +\
-                                #"GROUP BY rev_user "+\
-                                #"HAVING nrevs > 100) x "
-        #very_active_wikipedians = send_query(cursor, query_very_active_wikipedians, 5, log_file)
+        other_contributors = editors[0][0] - active_wikipedians[0][0]
         
-        ##print 'very_active_wikipedians: '
-        ##print very_active_wikipedians
+        # Sysops 08-2011
+        query_sysops = "SELECT COUNT(DISTINCT(rev_user)) FROM " +\
+                        "revision_082011_nobots a JOIN " +\
+                        "( SELECT ug_user FROM user_groups " +\
+                        "WHERE ug_group = 'sysop') b " +\
+                        "ON rev_user = ug_user "
+        sysops = send_query(cursor, query_sysops, 5, log_file)
         
-        #other_contributors = editors[0][0] - active_wikipedians[0][0]
-        
-        ##print 'other_contributors'
-        ##print other_contributors
-        
-        ## Sysops 08-2011
-        #query_sysops = "SELECT COUNT(DISTINCT(rev_user)) FROM " +\
-                        #"revision_082011_nobots a JOIN " +\
-                        #"( SELECT ug_user FROM user_groups " +\
-                        #"WHERE ug_group = 'sysop') b " +\
-                        #"ON rev_user = ug_user "
-        #sysops = send_query(cursor, query_sysops, 5, log_file)
-        
-        ##print "sysops"
-        ##print str(sysops)
-        
-        #data_line = "".join([data_line, ",", str(very_active_wikipedians[0][0]),
-        #",", str(active_wikipedians[0][0]), ",", str(other_contributors), ",",
-        #str(sysops[0][0])])
+        data_line = "".join([data_line, ",", str(very_active_wikipedians[0][0]),
+        ",", str(active_wikipedians[0][0]), ",", str(other_contributors), ",",
+        str(sysops[0][0])])
                         
-        ## Total edits (all users) in 08-2011
-        #query_edits = "SELECT COUNT(*) FROM revision " +\
-                        #"WHERE rev_timestamp >= '2011-08-01 00:00:00' AND " +\
-                        #"rev_timestamp <= '2011-08-31 23:59:59'"
-        #edits = send_query(cursor, query_edits, 5, log_file)
-        ## Total edits registered users in 08-2011
-        #query_edits_reg = "SELECT COUNT(*) FROM revision_082011"
-        #edits_reg = send_query(cursor, query_edits_reg, 5, log_file)
-        ## Total edits registered users w/o bots 08-2011
-        #query_edits_nobots = "SELECT COUNT(*) FROM revision_082011_nobots"
-        #edits_nobots = send_query(cursor, query_edits_nobots, 5, log_file)
+        # Total edits (all users) in 08-2011
+        query_edits = "SELECT COUNT(*) FROM revision " +\
+                        "WHERE rev_timestamp >= '2011-08-01 00:00:00' AND " +\
+                        "rev_timestamp <= '2011-08-31 23:59:59'"
+        edits = send_query(cursor, query_edits, 5, log_file)
+        # Total edits registered users in 08-2011
+        query_edits_reg = "SELECT COUNT(*) FROM revision_082011"
+        edits_reg = send_query(cursor, query_edits_reg, 5, log_file)
+        # Total edits registered users w/o bots 08-2011
+        query_edits_nobots = "SELECT COUNT(*) FROM revision_082011_nobots"
+        edits_nobots = send_query(cursor, query_edits_nobots, 5, log_file)
         
-        ## First edit per page (all history)
-        #drop_page_min_ts = "DROP TABLE IF EXISTS page_min_ts"
-        #query_page_min_ts = "CREATE TABLE page_min_ts AS " +\
-                        #"( SELECT rev_id, rev_page, rev_user, " +\
-                        #"MIN(rev_timestamp) rev_timestamp , rev_is_redirect "+\
-                        #"FROM revision GROUP BY rev_page )"
-        #send_query(cursor, drop_page_min_ts, 5, log_file)
-        #send_query(cursor, query_page_min_ts, 5, log_file)
+        # First edit per page (all history)
+        drop_page_min_ts = "DROP TABLE IF EXISTS page_min_ts"
+        query_page_min_ts = "CREATE TABLE page_min_ts AS " +\
+                        "( SELECT rev_id, rev_page, rev_user, " +\
+                        "MIN(rev_timestamp) rev_timestamp , rev_is_redirect "+\
+                        "FROM revision GROUP BY rev_page )"
+        send_query(cursor, drop_page_min_ts, 5, log_file)
+        send_query(cursor, query_page_min_ts, 5, log_file)
         
-        ## Number of articles till 08-2011
-        #query_page_till_082011 = "SELECT COUNT(*) FROM page_min_ts " +\
-                        #"WHERE rev_timestamp <= '2011-08-31 23:59:59' AND " +\
-                        #"rev_is_redirect = 0 "
-        #articles = send_query(cursor, query_page_till_082011, 5, log_file)
-        ## New articles in 08-2011
-        #query_new_page_082011 = "SELECT COUNT(*) FROM page_min_ts " +\
-                        #"WHERE rev_timestamp >= '2011-08-01 00:00:00' AND " +\
-                        #"rev_timestamp <= '2011-08-31 23:59:59' AND " +\
-                        #"rev_is_redirect = 0"
-        #new_articles = send_query(cursor, query_new_page_082011, 5, log_file)
-        ## Number of redirects till 08-2011
-        #query_page_redir_till_082011 = "SELECT COUNT(*) FROM page_min_ts " +\
-                        #"WHERE rev_is_redirect = 1 AND "+\
-                        #"rev_timestamp <= '2011-08-31 23:59:59' "
-        #redirects = send_query(cursor, query_page_redir_till_082011, 5, log_file)
+        # Number of articles till 08-2011
+        query_page_till_082011 = "SELECT COUNT(*) FROM page_min_ts " +\
+                        "WHERE rev_timestamp <= '2011-08-31 23:59:59' AND " +\
+                        "rev_is_redirect = 0 "
+        articles = send_query(cursor, query_page_till_082011, 5, log_file)
+        # New articles in 08-2011
+        query_new_page_082011 = "SELECT COUNT(*) FROM page_min_ts " +\
+                        "WHERE rev_timestamp >= '2011-08-01 00:00:00' AND " +\
+                        "rev_timestamp <= '2011-08-31 23:59:59' AND " +\
+                        "rev_is_redirect = 0"
+        new_articles = send_query(cursor, query_new_page_082011, 5, log_file)
+        # Number of redirects till 08-2011
+        query_page_redir_till_082011 = "SELECT COUNT(*) FROM page_min_ts " +\
+                        "WHERE rev_is_redirect = 1 AND "+\
+                        "rev_timestamp <= '2011-08-31 23:59:59' "
+        redirects = send_query(cursor, query_page_redir_till_082011, 5, log_file)
         
         # Min ts in FAs
         drop_fa_ts_082011 = "DROP TABLE IF EXISTS fa_ts_082011"
@@ -210,17 +196,6 @@ if __name__ == '__main__':
                 "GROUP BY rev_page )"
         send_query(cursor, query_max_ts_nofa_082011, 5, log_file)
         
-        #for id_fa in ids_fa:
-            #max_ts_nofa = send_query(cursor,
-                #"SELECT MAX(rev_timestamp) FROM revision " +\
-                #"WHERE rev_page = " + str(id_fa[0]) + " AND " +\
-                #"rev_fa = 0 AND rev_timestamp <= '2011-08-31 23:59:59' " +\
-                #"GROUP BY rev_page ", 5, log_file)
-                
-            #send_query(cursor, "UPDATE fa_ts_082011 SET max_ts_nofa = '" +\
-                #str(max_ts_nofa[0][0]) + "' WHERE rev_page = " + str(id_fa[0]),
-                #5, log_file) 
-        
         query_fa_till_082011 = "SELECT COUNT(*) " +\
                 "FROM fa_ts_082011 a JOIN max_ts_nofa_082011 b " +\
                 "ON a.rev_page = b.rev_page " +\
@@ -228,21 +203,16 @@ if __name__ == '__main__':
 
         fa_articles = send_query(cursor, query_fa_till_082011, 5, log_file)
         
-        #print "fa_articles"
-        #print fa_articles
-        
         # New FAs in 08-2011
         query_fa_08_2011 = "SELECT COUNT(*) FROM fa_ts_082011 " +\
                         "WHERE min_ts_fa >= '2011-08-01 00:00:00' "
         new_fa_articles = send_query(cursor, query_fa_08_2011, 5, log_file)
         
-        #data_line = "".join([data_line, ",", str(articles[0][0]), ",",
-        #str(redirects[0][0]), ",", str(edits[0][0]), ",", 
-        #str(new_articles[0][0]), ",",
-        #str(fa_articles[0][0]), ",", str(new_fa_articles[0][0])])
+        data_line = "".join([data_line, ",", str(articles[0][0]), ",",
+        str(redirects[0][0]), ",", str(edits[0][0]), ",", 
+        str(new_articles[0][0]), ",",
+        str(fa_articles[0][0]), ",", str(new_fa_articles[0][0])])
         
-        data_line = "".join([data_line, ",", str(fa_articles[0][0]), ",",
-                    str(new_fa_articles[0][0])])
         data_082011.write(data_line + "\n")
         
         # Close DB connection
@@ -255,5 +225,4 @@ if __name__ == '__main__':
     
     # Close data file
     data_082011.close()
-    
     
