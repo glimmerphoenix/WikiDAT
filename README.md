@@ -3,7 +3,7 @@ WikiDAT
 
 <b>Wikipedia Data Analysis Toolkit</b>
 
-<b>Authors</b>: Felipe Ortega, Aaron Halfaker.
+<b>Authors</b>: Felipe Ortega, Aaron Halfaker.</br>
 <b>License</b>: GPLv3 (http://www.gnu.org/licenses/gpl.txt).
 
 The aim of WikiDAT is to create an extensible toolkit for Wikipedia Data 
@@ -21,3 +21,15 @@ to cover many of the usual examples of quantitative analyses that can be
 undertaken with Wikipedia data. In the future, this may also include the use 
 of tools for distributed computing to support analysis of really huge data 
 sets in high-resolution studies.</p>
+
+<b>Required dependencies</b>
+The following software dependencies are required to run all examples currently
+included in WikiDAT:
+
+<ul>MySQL server and client (v5.5 or later).</ul>
+<ul>Python programming language (v2.7 or later, but not the v3 branch) and 
+MySQLdb (v1.2.3)</ul>
+<ul>R programming language and environment (v 2.15.0 or later).</ul>
+<ul>Additional R libraries with extra data and functionalities: RMySQL, Hmisc, 
+car, DAAG, ineq, ggplot2, eha. (This list will be updated as new 
+functionalities are included in this toolkit).</ul>
