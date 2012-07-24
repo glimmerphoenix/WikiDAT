@@ -499,6 +499,11 @@ class Parser(object):
                 text = None
                 # Delete this revision to clear memory
                 elem.clear()
+                # Also eliminate now-empty references from the root node to
+                # <logitem>. Credits to Liza Daly
+                # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
+                while elem.getprevious() is not None:
+                    del elem.getparent()[0]
                 
                 if self.revisions % 1000 == 0:
                     print "%s revisions for %s pages  " % (self.revisions, 
@@ -548,6 +553,11 @@ class Parser(object):
                 self.rev_parent_id = None
                 # Delete this page to clear memory
                 elem.clear()
+                # Also eliminate now-empty references from the root node to
+                # <logitem>. Credits to Liza Daly
+                # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
+                while elem.getprevious() is not None:
+                    del elem.getparent()[0]
                 
                 #print("%5s, %4s" % (event, elem.tag))
         
