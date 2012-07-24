@@ -95,12 +95,19 @@ class Parser(object):
                     elif (len(flags) == 1):
                         self.log_dict['new_flag'] = flag[0]
                         self.log_dict['old_flag'] = '0'
-                
+                              
                 # Build new row for loginsert
-                new_log_insert="(" + self.log_dict['id'] + ',"' +\
-                                self.log_dict['type'] + '"' + "," +\
-                                '"' + self.log_dict['action'] + '","'+\
-                                self.log_dict['timestamp'] + '",'
+                # TODO: Investigate why we find logitems without type or action
+                new_log_insert="(" + self.log_dict['id'] + ','
+                if (self.log_dict['type'] is not None):                
+                    new_log_insert += '"' + self.log_dict['type'] + '",'
+                else:
+                    new_log_insert += '"",'
+                if (self.log_dict['action'] is not None):
+                    new_log_insert += '"' + self.log_dict['action'] + '",'
+                else:
+                    new_log_insert += '"",'
+                new_log_insert += '"' + self.log_dict['timestamp'] + '",'
 
                 if self.log_dict.has_key('rev_user'):
                     new_log_insert+= self.log_dict['rev_user']
