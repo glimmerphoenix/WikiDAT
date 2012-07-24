@@ -88,7 +88,7 @@ class Parser(object):
                     self.log_dict['action']=='approve-ia' or\
                     self.log_dict['action']=='approve-i'):
                 
-                    flags = self.log_dict['params'].split.split('\n')
+                    flags = self.log_dict['params'].split('\n')
                     if (len(flags) == 2):
                         self.log_dict['new_flag'] = flag[0]
                         self.log_dict['old_flag'] = flag[1]
