@@ -10,15 +10,16 @@ import warnings
 class Parser(object):
     
     EXTENSIONS = {
-    'xml': "cat",
-    'bz2': "bzcat",
+    'xml': "cat 2>/dev/null",
+    'bz2': "bzcat 2>/dev/null",
     '7z':  "7za e -so 2>/dev/null",
-    'lzma': "lzcat",
-    'gz': "zcat"
+    'lzma': "lzcat 2>/dev/null",
+    'gz': "zcat 2>/dev/null"
     }
     """
     A map from file extension to the command to run to extract the 
-    data to standard out.
+    data to standard out. STDERR is redirected to /dev/null to 
+    capture just STDOUT
     """
 
     EXT_RE = re.compile(r'\.([^\.]+)$')
@@ -98,75 +99,94 @@ class Parser(object):
                               
                 # Build new row for loginsert
                 # TODO: Investigate why we find logitems without type or action
-                new_log_insert="(" + self.log_dict['id'] + ','
+                
+                new_log_insert = "".join(["(", self.log_dict['id'], ","])
+                
                 if (self.log_dict['type'] is not None):                
-                    new_log_insert += '"' + self.log_dict['type'] + '",'
+                    new_log_insert = "".join([new_log_insert, 
+                                            '"', self.log_dict['type'], '",'])
                 else:
-                    new_log_insert += '"",'
+                    new_log_insert = "".join([new_log_insert, '"",'])
+                
                 if (self.log_dict['action'] is not None):
-                    new_log_insert += '"' + self.log_dict['action'] + '",'
+                    new_log_insert = "".join([new_log_insert, 
+                                            '"', self.log_dict['action'], '",'])
                 else:
-                    new_log_insert += '"",'
-                new_log_insert += '"' + self.log_dict['timestamp'] + '",'
+                    new_log_insert = "".join([new_log_insert, '"",'])
+                
+                new_log_insert = "".join([new_log_insert, '"', 
+                                        self.log_dict['timestamp'], '",'])
 
                 if self.log_dict.has_key('rev_user'):
-                    new_log_insert+= self.log_dict['rev_user']
+                    new_log_insert = "".join([new_log_insert, 
+                                            self.log_dict['rev_user'], ","])
                 else:
-                    new_log_insert += '-1'
-                
-                new_log_insert+=","+'"'
-                if self.log_dict.has_key('username'):
-                    new_log_insert += self.log_dict['username'].\
-                                    replace("\\","\\\\").replace("'","\\'").\
-                                    replace('"', '\\"')
-                else:
-                    new_log_insert += '' 
+                    new_log_insert = "".join([new_log_insert, '-1,'])
 
-                new_log_insert += '",'
-                if self.log_dict.has_key('namespace'):
-                    new_log_insert+=self.log_dict['namespace']
+                if self.log_dict.has_key('username'):
+                    new_log_insert = "".join([new_log_insert, '"', 
+                                            self.log_dict['username'].\
+                                            replace("\\","\\\\").\
+                                            replace("'","\\'").\
+                                            replace('"', '\\"'), '",'])
                 else:
-                    new_log_insert += '-1000' # FAKE namespace if absent
+                    new_log_insert = "".join([new_log_insert, '"",']) 
+
+                if self.log_dict.has_key('namespace'):
+                    new_log_insert = "".join([new_log_insert, 
+                                            self.log_dict['namespace'], ","])
+                else:
+                    # FAKE namespace if absent
+                    new_log_insert = "".join([new_log_insert, '-1000,']) 
                 
-                new_log_insert += ',"' + self.log_dict['logtitle'].\
-                                replace("\\","\\\\").replace("'","\\'").\
-                                replace('"', '\\"')
+                new_log_insert = "".join([new_log_insert, '"', 
+                                        self.log_dict['logtitle'].\
+                                        replace("\\","\\\\").\
+                                        replace("'","\\'").\
+                                        replace('"', '\\"'), '",'])
                 
                 if self.log_dict.has_key('comment') and\
                     self.log_dict['comment'] is not None:
-                    new_log_insert += '","' + self.log_dict['comment'].\
-                                    replace("\\","\\\\").replace("'","\\'").\
-                                    replace('"', '\\"')
+                    new_log_insert = "".join([new_log_insert, '"', 
+                                            self.log_dict['comment'].\
+                                            replace("\\","\\\\").\
+                                            replace("'","\\'").\
+                                            replace('"', '\\"'), '",'])
                 else:
-                    new_log_insert += '","'
+                    new_log_insert = "".join([new_log_insert, '"",'])
                 
                 if self.log_dict.has_key('params') and\
                     self.log_dict['params'] is not None:
-                    new_log_insert+='","' + self.log_dict['params'] + '",'     
+                    new_log_insert = "".join([new_log_insert,'"', 
+                                            self.log_dict['params'].\
+                                            replace("\\","\\\\").\
+                                            replace("'","\\'").\
+                                            replace('"', '\\"'), '",'])     
                 else:
-                    new_log_insert+='","",'
+                    new_log_insert = "".join([new_log_insert, '"",'])
                 
                 if self.log_dict.has_key('new_flag'):
-                    new_log_insert+=self.log_dict['new_flag'] + ','
+                    new_log_insert = "".join([new_log_insert, 
+                                            self.log_dict['new_flag'], ','])
                 else:
-                    new_log_insert += '0,'
+                    new_log_insert = "".join([new_log_insert, '0,'])
                 
                 if self.log_dict.has_key('old_flag'):
-                    new_log_insert += self.log_dict['old_flag']
+                    new_log_insert = "".join([new_log_insert, 
+                                            self.log_dict['old_flag'], ')'])
                 else:
-                    new_log_insert+='0'
-                
-                new_log_insert += ')'
+                    new_log_insert = "".join([new_log_insert, '0)'])
                 
                 if self.log_insert_rows == 0:
                     #Always allow at least one row in extended inserts
-                    self.log_insert = "INSERT INTO logging VALUES" +\
-                                        new_log_insert
+                    self.log_insert = "".join(["INSERT INTO logging ",
+                                            "VALUES", new_log_insert])
                     self.log_insert_rows += 1
                     
                 elif self.log_insert_rows <= 100:
                     #Append new row to self.loginsert
-                    self.log_insert += "," + new_log_insert
+                    self.log_insert = "".join([self.log_insert, ",", 
+                                                new_log_insert])
                     self.log_insert_rows += 1
                     
                 # Sending extended insert to DB
@@ -174,11 +194,22 @@ class Parser(object):
                     self.send_query(self.db, self.log_insert, 5, 
                                     self.log_file)
                                     
-                    self.log_insert = "INSERT INTO logging VALUES" +\
-                                        new_log_insert
+                    self.log_insert = "".join(["INSERT INTO logging ",
+                                            "VALUES", new_log_insert])
                     self.log_insert_rows += 1
                 
                 self.log_num += 1
+                
+                #Clear memory
+                self.contrib_dict = None
+                self.log_dict = None
+                # Delete all subitems in logitem to clear memory
+                elem.clear()
+                # Also eliminate now-empty references from the root node to
+                # <logitem>. Credit to Liza Daly
+                # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
+                while elem.getprevious() is not None:
+                    del elem.getparent()[0]
                 
                 if self.log_num % 1000 == 0:
                     print "%s log items " % (self.log_num) +\
