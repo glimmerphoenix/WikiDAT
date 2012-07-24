@@ -90,10 +90,10 @@ class Parser(object):
                 
                     flags = self.log_dict['params'].split('\n')
                     if (len(flags) == 2):
-                        self.log_dict['new_flag'] = flag[0]
-                        self.log_dict['old_flag'] = flag[1]
+                        self.log_dict['new_flag'] = flags[0]
+                        self.log_dict['old_flag'] = flags[1]
                     elif (len(flags) == 1):
-                        self.log_dict['new_flag'] = flag[0]
+                        self.log_dict['new_flag'] = flags[0]
                         self.log_dict['old_flag'] = '0'
                               
                 # Build new row for loginsert
