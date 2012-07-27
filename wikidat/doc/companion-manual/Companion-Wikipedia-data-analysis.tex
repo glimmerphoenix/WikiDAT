@@ -1,0 +1,108 @@
+% \documentclass[a4paper,11pt]{report}
+\documentclass[a4paper,11pt,twoside]{book}
+\usepackage[utf8]{inputenc}
+% \usepackage[spanish]{babel}
+
+\usepackage{a4wide}
+\usepackage{epigraph}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+
+\usepackage[T1]{fontenc}
+\usepackage{palatino}
+
+\usepackage{float}
+\floatstyle{ruled}
+\newfloat{program}{}{}
+\floatname{program}{Program}
+
+\usepackage{graphicx}
+\usepackage{supertabular}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+
+\usepackage{url}
+\usepackage{color}
+\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+  pdftoolbar=true,        % show Acrobat’s toolbar?
+  pdfmenubar=true,        % show Acrobat’s menu?
+  pdftitle={Wikipedia data analysis},    % title
+  pdfauthor={Felipe Ortega},     % author
+  pdfsubject={Wikipedia, data analysis, dump files, Python, R}, % subject of the document
+  pdfnewwindow=true,      % links in new window
+  colorlinks=true,       % false: boxed links; true: colored links
+  linkcolor=darkred,          % color of internal links (blue, green, red)
+  citecolor=darkgreen,        % color of links to bibliography
+  urlcolor=darkblue           % color of external links
+}
+
+%opening
+\title{Wikipedia data analysis.\\ Introduction and practical examples}
+\author{Felipe Ortega}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\maketitle
+
+\include{preamble/copyright}
+\cleardoublepage
+
+\include{preamble/preface}
+\cleardoublepage
+
+\pagenumbering{Roman}
+\pagestyle{plain}
+
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\listoftables
+\newpage
+\cleardoublepage
+\pagenumbering{arabic}
+
+\pagestyle{fancyplain}
+%\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+%\renewcommand{\subsectionmark}}[1]{\markright{#1}}
+%\rfoot{\leftmark\\\rightmark}
+% \addtolength{\headwidth}{\marginparsep}
+% \addtolength{\headwidth}{\marginparwidth}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\lhead[\fancyplain{}{\bfseries}]{\fancyplain{}{\bfseries\rightmark}}
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries}}
+\cfoot{}
+\rfoot{\fancyplain{\bfseries\thepage}{}}
+\fancyfoot[RO, LE] {\thepage}
+
+\pretolerance=10000
+%Para que no corte las palabras al final de la linea.
+
+% Text here (with input or include)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/part1-wikipedia-data.tex}
+\cleardoublepage
+
+\input{chapters/part2-process-tools.tex}
+\cleardoublepage
+
+\input{chapters/part3-case-examples.tex}
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{abbrv}
+\bibliography{refs}
+
+\end{document}

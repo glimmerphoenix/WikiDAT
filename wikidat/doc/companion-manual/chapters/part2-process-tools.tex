@@ -1,0 +1,562 @@
+\part{Conducting Wikipedia data analysis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Methodology for Wikipedia data analysis}
+\label{chap:methodology}
+
+The methodology for Wikipedia data analysis is not very different from the general
+process to conduct data analysis in other fields. We must first retrieve our data
+source files (or retrieve the information from other online sources/APIs). Once the
+data is stored locally, we should undertake some sanity checks to ensure that the
+data has been retrieved properly. Preliminary EDA (Exploratory Data Analysis), including
+graphics summarizing important data traits should follow. Extra caution must be taken
+to identify possible missing values or any other odd/extreme values that may alter
+the results of our analysis. Finally, we prepare the data to obtain any intermediate
+results needed for our study, undertake the analysis (model building and refinement)
+and interpret the conclusions. This process may be iterative in case that we discover
+additional insights that could help us improve the model, although we must also
+pay attention to avoid relying too much on a single data set to build our model,
+since we could lose generality.
+
+In this chapter, I offer some tips and advice that can help you to avoid common
+pitfalls while retrieving and preparing your Wikipedia data.
+
+\section{The big picture}
+As I have commented previously, no less than 75\% of the total time for data
+analysis is consumed in the data retrieval and data preparation part. In the case
+of Wikipedia data analysis, this may increase up to 80-85\%, depending on the actual
+type of analysis that we want to conduct. For studies at the macroscopic level, the proportion
+of time for data preparation will be closer to the lower bound. However, for fine-grained
+or high-resolution analysis, involving huge data sets, and possibly multiple large
+data sets in longitudinal studies, the scenario can be very complex.
+
+Incredibly, only few books cover the very important task of data cleaning and
+data preparation. A well-known reference for many years, \textit{Data preparation
+for data mining}[[TODO:REF!!]] is now out-of-print and it can be found only through second-hand
+resellers. A more recent book, \textit{Best Practice in Data Cleaning}[[TODO:REF!!]]
+has been recently published to close this gap, dealing with important topics such
+as missing values and transformations. Some other books also cover this important
+stage as part of complete methodologies for applying certain types of analysis.
+For example, I can recommend \textit{An R companion to applied Regression}[[TODO:REF]] and
+\textit{Regression Modeling strategies}[[TODO:REF]] for linear models, along with
+a new reference coverning these aspects for survival and event history analysis[[TODO:REF]].
+All the same, many applied statisitics books still work with synthetic or already
+prepared data sets to dive into the actual details of the stastical tools and
+techniques as fast as possible, overlooking this stage.
+
+The following sections will help you to find your way through the preparation of
+Wikipedia data for your own analyses.
+
+\section{Retrieve and store your data locally}
+\label{sec:retrieve-store}
+In the first part, we presented different sources from which we can retrieve our
+data for Wikipedia analysis. Tools like WikiDAT can save us time to build this
+local store of Wikipedia data.
+
+At the time of writing, WikiDAT can retrieve information from both \textit{pages-meta-history}
+and \textit{pages-logging} dump files. Together with the \textit{user-groups} dump,
+that can be directly imported in a MySQL database, these 3 data sources can be
+combined to undertake multiple and interesting analyses on any Wikipedia language.
+You can consult again Section~\ref{sec:WikiDAT} for additional details about the
+data fields currently retrieved or computed by WikiDAT.
+
+All you need to do is to find the link for these files in the Wikimedia Download
+center (see Section~\ref{sec:dump-files}). Then, open a terminal and go to the
+\textit{parsers} folder in the WikiDAT code. You can execute the following
+commands to retrieve the data from the \textit{pages-meta-history} dump file
+(this will be automated in new versions of WikiDAT):
+
+\begin{verbatim}
+ jfelipe@blackstorm:~/WikiDAT/sources$ mysql -u root -ppassword
+ mysql> create database wkp_lang;
+ mysql> exit
+ jfelipe@blackstorm:~/WikiDAT/sources$ mysql -u root -ppassword 
+ wkp_lang < tables-wikidat.sql
+ jfelipe@blackstorm:~/WikiDAT/sources$ python pages_meta_history.py 
+ wkp_lang lang lang-YYYYMMDD-pages-meta-history.xml.7z  log_file.log
+\end{verbatim}
+
+This will create a new MySQL database, the tables to store the information, and
+finally executes the parser on the downloaded dump file. You need to you need
+to change \textit{password} with the actual password of the root user in
+MySQL (you can also create new users, see the manual section for this task). Please,
+note that there is a blank space in between \textit{-u} and the user name but no
+blank space in between \textit{-p} and the user password.
+
+In the last command, change
+\textit{wkp\_lang} for the name of your database, \textit{lang} with the name of
+the lang repository (e.g. eswiki, frwiki, enwiki, dewiki, etc.). The last two
+arguments are the name of the dump file and the name to create a log file that
+will store any warning or error messages (in case that any of these are created
+along the process). You can read regular traces to follow the progress of the
+parsing process. Once it has finished, you can check that the numbers of pages
+and revisions retrieved concur with the information on the download page.
+
+To retrieve information stored in the \textit{pages-logging} file, execute:
+
+\begin{verbatim}
+ jfelipe@blackstorm:~/WikiDAT/sources$ python pages_logging.py 
+ wkp_lang lang-YYYYMMDD-pages-logging.xml.gz  log_file.log
+\end{verbatim}
+
+Finally, to import in your local database information about user groups and
+privileges, retrieve the file for the Wikipedia language of your interest and
+type:
+
+\begin{verbatim}
+ jfelipe@blackstorm:~/WikiDAT/sources$ gzip -d 
+ lang-YYYYMMDD-user_groups.sql.gz
+ jfelipe@blackstorm:~/WikiDAT/sources$ mysql -u root -ppassword 
+ wkp_lang < lang-YYYYMMDD-user_groups.sql
+\end{verbatim}
+
+For example, if we are interested in recovering data from the dump files
+created on 2012-06-01 for the French Wikipedia:
+
+\begin{verbatim}
+ jfelipe@blackstorm:~/WikiDAT/sources$ mysql -u root -ppassword
+ mysql> create database frwiki_062011;
+ mysql> exit
+
+ jfelipe@blackstorm:~/WikiDAT/sources$ mysql -u root -ppassword 
+ frwiki_062011 < tables-wikidat.sql
+ jfelipe@blackstorm:~/WikiDAT/sources$ python pages_meta_history.py 
+ frwiki_062011 frwiki frwiki-20120601-pages-meta-history.xml.7z log_file.log
+
+ jfelipe@blackstorm:~/WikiDAT/sources$ python pages_logging.py 
+ frwiki_062011 frwiki-20120601-pages-logging.xml.gz log_file.log_file
+
+ jfelipe@blackstorm:~/WikiDAT/sources$ gzip -d 
+ frwiki-20120601-user_groups.sql.gz
+ jfelipe@blackstorm:~/WikiDAT/sources$ mysql -u root -ppassword 
+ frwiki_062011 < frwiki-20120601-user_groups.sql
+\end{verbatim}
+
+Now, your data is ready for additional preparation and/or cleaning.
+
+\section{Routinary tasks for data cleaning and preparation}
+\label{sec:routinary-tasks}
+Below, you can find some useful tips to prepare Wikipedia data for your own
+analysis:
+
+\begin{itemize}
+ \item Keep data preparation in the database: When we face the task of data preparation
+we usually have the option to prepare our data in the database, and then import them
+in our favourite analysis environment, or retrieve the raw data and undertake any
+data preparation and rearrangement tasks outside the database. In my experience, keeping
+all data preparation tasks in the database, as much as possible, is usually much
+faster and less error prone.
+
+ \item \textit{Anonymous editors}: The only identifier recorded in the
+database for anonymous editors is the IP address of the computer from which they
+performed the revision. No matter how many claims you find telling you otherwise, we
+cannot use this information to identify individual anonymous editors accurately.
+This involves some technical details about the inner features of Internet communcation
+protocols, but suffice to say that many (really, many) computers can share the same
+IP address (from the point of view of the Wikipedia system receiving incoming
+requests). Outgoing connections can pass through proxies and other traffic filtering
+machines, thus showing up in the destination with the same IP address. As an example,
+consider the case in which Wikipedia inadvertently blocked an IP address that was
+performing vandal actions, banning \textit{de facto} Wikipedia editing from the whole
+country of Quatar, in which all outgoing connections go through the same Internet
+Service Provider~\footnote{\url{https://en.wikinews.org/wiki/Qatari\_proxy\_IP\_address\_temporarily\_blocked\_on\_Wikipedia}}.
+
+ \item \textit{Bots} and \textit{extremely active editors}: Sometimes, our study
+focuses on the activity of Wikipedia editors, and one of the common metrics found
+in research literature is the number of revisions per editor. In this case, an
+initial step should always be eliding all revisions performed by bots, special
+programs undertaking routinary operations, sometimes at a ver fast pace. For this,
+we can use the information in the \textit{user\_groups} table, looking for users
+in the group \textit{bot}. However, we must also take some caution not to confound
+these bots with extremely active users, some of which can be incredibly prolific
+regarding the total number of revisions that they have contributed to 
+Wikipedia~\footnote{\url{http://en.wikipedia.org/wiki/Wikipedia:List_of_Wikipedians_by_number_of_edits}}.
+
+ \item Missing editor information: In certain dump files, we can find revisions
+for which the user identifier is missing. This can be caused by multiple reasons,
+not necessarily by errors in the dump process. For example, if a user account is
+completely deleted, its associated revisions may still be present in the database.
+In WikiDAT, I have marked these revisions with a -1 value in the \textit{rev\_user}
+field.
+
+ \item Widespread definitions: The Wikipedia community usually follow some well-known
+definitions to classify editors, many of them derived from the assumptions used
+in the official stats page~\footnote{\url{http://stats.wikimedia.org}}. For example,
+an \textit{active wikipedian} is a registered user who performed at least 5 revisions
+in a given month. Likewise, a \textit{very active wikipedian} is a registered user who
+made more than 25 revisions in a given month. Sometimes, when we wan to restrict our
+study to wikipedians who have shown a minimum level of commitment with the project
+(in terms of activity) a usual approach is to take all registered users with at least
+100 revisions along their whole lifetime in the project. This is the minimum threshold
+required to participate in several community voting processes.
+
+\end{itemize}
+
+
+\section{Know your dataset}
+On the course of your own data analyses you will probably find situation in which
+problems or unexpected errors arise in unsuspected ways. This is a common, but
+again not frequently publicized situation for data analysts. In the end, the most
+precious weapon to overcome these hidden obstacles is learning as many details
+as possible about your data set and its generation process.
+
+As an example, I am going to share with you some insights from a recent event
+history analysis on Wikipedia data. For this type of analysis, the researcher is
+usually interested in measuring time intervals between consecutive states of interest
+in different subjects. In the process of preparing the data tables to perform this
+analysis, I found useful details about the way in which MediaWiki software records
+revisions in the database.
+
+Suppose that we want to measure time intervals between consecutive revisions performed
+on the same Wikipedia page. To calculate this info automatically, we can confront two
+tables: the first with all revisions for that page, ordered by their timestamp, except
+for the last one; the second with all revisions for that page, ordered in the same way,
+but this time removing the first one. In this way, we are facing each revision with the
+next one, for this page~\footnote{We could also use the \textit{rev\_parent\_id} to
+solve this problem}. This procedure will work whenever we can guarantee that every revision
+for the same wiki page has a different timestamp. Is this the case? The answer is yes,
+it is. MediaWiki software does not allow for concurrent editing of wiki pages (unlike
+GoogleDocs or similar technologies for online collaborative editing). As a result, we
+can not expect to find two revisions for the same page with the same timestamp.
+
+Now, we turn to the same study, but this time focusing on registered users, instead
+of wiki pages. For each user, we want to calculate the time interval between consecutive
+revisions. We can proceed in the same way, but this time our approach will fail.
+Why? Well, if we carefully inspect the entries, we will find that, for some users,
+we can find two, three or even more revisions sharing the same timestamp. How is that
+possible, anyway? The answer can be found in the values of the \textit{rev\_is\_redirect}
+field. In this case, whenever a user creates a new redirect for a wiki page, two (or
+more, depending on how many redirects are created) entries in the database are generated,
+all sharing the same timestamp: one for a revision concerning the original page for
+which the new redirect is created, and one for every new redirect page that has been
+created. Therefore, we must impose additional filtering (for example, grouping by
+user and timestamp) to ensure that our data preparation process works.
+
+In summary, you should always perform sanity checks of intermediate results (including
+descriptive graphs) to make sure that your scores make sense, and no hidden problems
+can jeopardize the results and conclusions from your analysis.
+
+% \section{Quick review: research areas in Wikipedia}
+% Text
+% 
+% \section{Future challenges}
+% Text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Open source tools for data analysis}
+
+Nowadays, data analysts can choose among a wide variety of open source tools and
+programming languages to implement their studies. In fact, open source tools for
+data analysis and High-Performance computing are quickly becoming the preferred
+solution for many practitioners, scholars and professionals in this field.
+
+In this chapter, I recap some essential open source tools that you can use to
+accomplish this endeavour. For sure, this list is far from complete, and I have
+only focused on the tools integrated in WikiDAT, that we will revisit later when
+we examine the practical case examples for Wikipedia data analysis. Furthermore,
+I have left aside any tools linked with distributed computing solutions such as
+Hadoop~\footnote{\url{http://hadoop.apache.org/}} (based on the \textit{map-reduce}
+programming paradigm) or some of its associated projects such as
+Pig, Cassandra, Hive or Mahout, to cite but a few instances. If you have read
+the previous chapters of this document, I strongly support the thesis that these
+tools, despite their increasing popularity, come with a high cost in the form of
+a steep learning curve, time and effort to effectively parallelize 
+complex tasks. Actually, some associated Hadoop projects like Pig or Mahout try
+to alleviate this problem, providing additional abstraction layers to hide the
+inherent complexity of programming map-reduce processes.
+
+Hence, we will not focus on this kind of tools at this time, although they may
+be eventually introduced and described in later versions of this document, to
+undertake high-resolution analyses on really huge data sets.
+
+\section{Python}
+Python is a general-purpose and multi-platform programming language that will act
+as a sort of ``glue code'' to assemble different pieces together and 
+implement the software to fit our analysis.
+
+One of the great advantages of Python is that it offers and extremely informative 
+and complete online documentation for the baseline programming language, as well 
+as presenting many common libraries available to automate common tasks.
+Browse the Python documentation~\footnote{\url{http://www.python.org/doc/}}
+to discover it by yourself!
+
+\subsection{Installing Python in GNU/Linux}
+If you are a Linux user, it is very probable that Python already comes installed 
+in your favourite distribution, as it has become quite a hard requirement for 
+many basic applications. To check this, open a terminal and write:
+
+\begin{verbatim}
+ jfelipe@blackstorm$ python
+ Python 2.7.2+ (default, Oct  4 2011, 20:06:09) 
+ [GCC 4.6.1] on linux2
+ Type "help", "copyright", "credits" or "license" for more information.
+ >>>
+\end{verbatim}
+
+If you can see this (the command line of the Python interpreter) then Python is 
+installed in your system. To quit the interpreter, press \texttt{Ctrl+D}.
+
+\subsection{Installing Python in Windows or Mac OS}
+Since Python is a multi-platform programming language, you can also find an 
+installer targeting different versions of other operating systems. Just point 
+your browser to the Download Python page~\footnote{\url{http://www.python.org/getit/}} 
+and find out the installer file that matches your flavour and version.
+
+\subsection{The \textit{mysql-python} API}
+MySQLDB is a Python library that brings a convenient API to access MySQL from 
+Python. The user's manual~\footnote{\url{http://mysql-python.sourceforge.net/MySQLdb.html}}
+ as well as the project page on SF.net~\footnote{\url{http://sourceforge.net/projects/mysql-python/}} offer 
+additional information. You must consult the README file in the source package 
+and follow the instructions to install it in your system.
+Binary files are also available for some GNU/Linux distributions. For instance, 
+in Debian and Ubuntu you only need to install the package \textit{python-mysqldb} to get 
+it working on your system.
+
+\section{NumPy, SciPy and matplotlib}
+\textit{NumPy} is the basic library in the Python programming language for
+mathematical operations and scientific computing~\footnote{\url{http://numpy.scipy.org/}}.
+In addition to this, \textit{SciPy}~\footnote{\url{http://www.scipy.org/}} delivers
+a comprehensive toolset for scientific programming in Python, covering many
+disciplines. Finally, \textit{matplotlib}~\footnote{\url{http://matplotlib.sourceforge.net/}} 
+is a library to create high-quality graphics in a variety of formats, complementing
+NumPy and SciPy with graphical features. Jointly, these libraries conform a
+full-featured environment for scientific programming that can be extended even
+further with any of the available \textit{scikits}.
+
+\section{Python Scikit-learn}
+The \textit{scikits} are Python libraries providing even more functionalities to
+the baseline framework of NumPy and SciPy. Among these scikits, \textit{scikit-learn}
+stands out as a very powerful library for data mining and machine 
+learning~\footnote{\url{http://scikit-learn.org/stable/}}. The project is supported
+by Inria and Google, and currently implements a long list of different algorithms
+and tools for supervised and unsupervised learning, as well as data loading, data
+transformation and data visualization (including 3D support with RGL graphs).
+Future versions of WikiDAT will use this library to illustrate the application of
+machine learning techniques on Wikipedia data, along with implementations in the
+R programming language (that we are introducing very soon).
+
+\section{Database engine: MySQL}
+MySQL is a lightweight but powerful relational database engine software. The 
+MySQL manual~\footnote{\url{}http://dev.mysql.com/doc/refman/5.5/en/index.html} 
+explains in detail how to get and 
+install~\footnote{\url{http://dev.mysql.com/doc/refman/5.5/en/installing.html}} 
+MySQL in multiple operating systems and platforms.
+In Debian and Ubuntu GNU/Linux, you can just install the packages \textit{mysql-client} 
+and \textit{mysql-server}. In the installation process, you will be prompted to introduce 
+a password for the root user of MySQL. Please, take your time to select a 
+password that you can remember later on.
+
+Of course, MySQL is not the only open source database engine available for these
+purposes. After the acquisition of Sun Microsystems by Oracle Corporation, some
+companies has started to offer alternative storage engine and services based
+on MySQL, like Percona~\footnote{\url{http://www.percona.com/software/}}. Yet
+another options is using PostgreSQL~\footnote{\url{http://www.postgresql.org/}},
+another powerful open source database software with several different libraries
+to communicate with Python applications~\footnote{\url{http://wiki.postgresql.org/wiki/Python}}. 
+
+\section{R programming language and environment}
+R a free software which offers the most complete and most powerful statistical 
+programming language and environment available today. The R project website~\footnote{\url{http://www.r-project.org/}} is 
+the entry point to the R world. A core development group of 20 people~\footnote{\url{http://www.r-project.org/contributors.html}}, who 
+founded the R Foundation~\footnote{\url{http://www.r-project.org/foundation/main.html}} to oversight the good progress of this project, are 
+responsible for maintaining and improving the core environment.
+
+Additionally, a very active ecosystem of developers and contributors are 
+constantly augmenting the R suite of tools and features providing add-on 
+packages known as R libraries. These libraries are published via the 
+Comprehensive R Archive Network 
+(CRAN)~\footnote{\url{http://cran.r-project.org/mirrors.html}}, a network of mirror servers that provide 
+access to this repository from many different locations. At the time of writing
+these lines, CRAN lists more than 3,800 libraries and this number continues to 
+grow exponentially.
+
+\subsection{Installing R}
+R is also a multi-platform programming language and statistical environment. 
+You can read the R FAQ to find instruction about how to get and install R in 
+your own computer.
+
+\begin{itemize}
+ \item For GNU/Linux users, search your software management system to find out 
+the R binaries. Make sure that you install the base environment (in Debian-like 
+systems package \textit{r-base}) and recommended packages (in Debian-like 
+systems package \textit{r-recommended}). There are binary 
+files~\footnote{\url{http://www.vps.fmvz.usp.br/CRAN/bin/linux/}} available for all 
+major distributions including RedHat, Suse, Debian and Ubuntu. The primary way 
+to interact with R in GNU/Linux is to simply type (write \textit{q()} and press
+\texttt{Enter} to exit):
+\end{itemize}
+
+\begin{verbatim}
+  jfelipe@blackstorm$ R
+  R version 2.15.0 (2012-03-30)
+  Copyright (C) 2012 The R Foundation for Statistical Computing
+  ISBN 3-900051-07-0
+  Platform: x86_64-pc-linux-gnu (64-bit)
+  R is free software and comes with ABSOLUTELY NO WARRANTY. 
+  You are welcome to redistribute it under certain conditions.
+  Type 'license()' or 'licence()' for distribution details.
+  Natural language support but running in an English locale
+  R is a collaborative project with many contributors. Type 'contributors()' 
+  for more information and 'citation()' on how to cite R or R packages in 
+  publications.
+  Type 'demo()' for some demos, 'help()' for on-line help, or 'help.start()' 
+  for an HTML browser interface to help.
+  
+  Type 'q()' to quit R.
+  > 
+\end{verbatim}
+
+\begin{itemize}
+ \item For Windows users, please follow the links for 
+Windows~\footnote{\url{http://www.vps.fmvz.usp.br/CRAN/bin/windows/}} or 
+Windows64~\footnote{\url{http://www.vps.fmvz.usp.br/CRAN/bin/windows64/}} to 
+install the base environment. This should already come with the recommended 
+libraries plus a nice editor to avoid using the command-line interface (usually 
+hidden from the eyes of standard users in Windows). You can open this GUI 
+double-clicking on the new icon that should appear now on your desktop.
+
+ \item In the case of Mac OS or Mac OSX users, please follow the installation 
+instructions for Mac 
+users~\footnote{\url{http://www.vps.fmvz.usp.br/CRAN/doc/FAQ/R-FAQ.html\#How-can-R-be-installed-\_0028Macintosh\_0029}} 
+in the R FAQ, that will point you to the adequate 
+binaries to get R running on your fashion hardware. In this case, the binaries 
+also install a simple graphical interface to interact with the R command 
+interpreter.
+\end{itemize}
+
+
+\subsection{Installing additional R libraries}
+The easiest way to install additional R packages is to do it inside R itself. Thus, 
+execute either R from the GNU/Linux command-line or double-clicking the icon on 
+your desktop in other operating systems.
+
+On the R command interpreter, you can now type the following:
+
+\begin{verbatim}
+ > install.packages(“name_of_pacakge”, dep = T)
+\end{verbatim}
+
+With this command, we request R to install the package whose name comes in 
+double quotes as the first item in the brackets, and also to retrieve and 
+install all necessary dependencies (other R packages) required for this package 
+to work. If you are installing your first package in this session, you will be 
+prompted to choose one of the many CRAN mirrors around the world to obtain the 
+additional software. Just select the closest mirror to your current location 
+(or any other), then sit and relax while R does all the work for you.
+Following this procedure, can install any additional packages 
+(a.k.a. R libraries) in your system.
+
+In order to run the examples included in WikiDAT, you will need the following
+R libraries:
+
+\begin{itemize}
+  \item \textit{RMySQL}~\footnote{\url{http://cran.r-project.org/web/packages/RMySQL/index.html}}.
+%   \item \textit{lattice} (by Deepayan Sarkar).
+  \item \textit{car} (by John Fox et al.).
+  \item \textit{DAAG} (John Maindonald and W. John Braun) .
+  \item \textit{Hmisc} (by Frank E Harrell Jr, with contributions from many other users).
+  \item \textit{rjson} (by Alex Couture-Beil).
+ \end{itemize}
+
+Regarding \textit{RMySQL}, please check that MySQL server is already installed
+in your system. Specially for GNU/Linux systems, it is also recommendable to
+ensure that any additional dependencies are met installing this library directly
+from your favourite software management tool. For example, in Debian or Ubuntu
+you can install the package \textit{r-cran-rmysql}.
+
+\subsection{Graphical user interfaces for R}
+A number of alternative GUIs have been created to facilitate the work with R, 
+specially for novice users. The following are some suggestions that can help 
+you to get a better R experience.
+
+\begin{itemize}
+ \item \textit{RStudio}~\footnote{\url{http://rstudio.org/}} (good for new R 
+ users, also allows working with a remote server).
+ \item \textit{Rcommander}~\footnote{\url{http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/}} 
+ (great for novel users, it automates many common analyses).
+ \item \textit{Rattle}~\footnote{\url{http://rattle.togaware.com/}} (ideal for 
+ exploring R data mining capabilities).
+\end{itemize}
+
+\subsection{R documentation and further references}
+One of the notable advantages of R is the abundancy of online, freely accessible
+documentation about the baseline environment and many of the CRAN libraries.
+In the last versions of R, there has been a remarkable concern among developers
+(encouraged by the R Core Team) to improve the companion documentaion for many
+of these packages.
+
+The following options are essential for novel and experienced R users alike to
+learn how to use these libraries and solve their doubts:
+
+\begin{itemize}
+ \item R Manuals: contributed documents and manuals from R users.
+ \begin{itemize}
+  \item \url{http://cran.r-project.org/manuals.html}.
+  \item \url{http://cran.r-project.org/other-docs.html}.
+ \end{itemize}
+
+ \item R Seek: Search in help files and R mailing lists.
+ \begin{itemize}
+  \item \url{http://www.rseek.org/}.
+ \end{itemize}
+
+  \item R Task Views.
+  \begin{itemize}
+   \item \url{http://cran.r-project.org/web/views/}
+  \end{itemize}
+
+ \item The R Journal.
+ \begin{itemize}
+  \item \url{http://journal.r-project.org/}
+ \end{itemize}
+
+  \item Blogs and websites.
+  \begin{itemize}
+   \item R-bloggers: \url{http://www.r-bloggers.com/blogs-list/}.
+   \item R Forge: \url{https://r-forge.r-project.org/}.
+   \item Quick-R: \url{http://www.statmethods.net/}.
+   \item R graphical manual: \url{http://rgm2.lab.nig.ac.jp/RGM2/images.php?show=all&pageID=363}
+  \end{itemize}
+
+\end{itemize}
+
+Finally, there is a very long list of published books around R, and a comprehensive
+review of these references falls beyond the scope of this document. All the same,
+there exist some well-known references adequate for R newcomers, as well as for
+R users with some experience willing to explore additional features and tools.
+
+[[TODO: A bunch of references should be inserted below!!]]
+
+At the introductory level, one of my favourite references that I keep on recommending
+is the excellent book \textit{Introductory Statistics with R}, by Peter Dalgaard.
+Pete is one of the members of the R Core Team, and the book is written in a concise
+and very pragmatic way. However, one minor disadvantage is that, despite he introduces
+some details of basic statistical techniques, this short manual is not intended to
+be a statistical reference for novel students or practitioners. Fortunately, this
+gap has been filled by a very recent book, \textit{Discovering Statistics Using
+R}. The aim of this thick volume ($\sim$ 1000 pages) is to present essential statistical
+tools and methods for researchers in an accessible (and quite irreverent) style. The
+book is specially suitable for researchers and practitioners in social and experimental
+sciences, though it also covers many aspects pertaining observational (or
+correlational) studies.
+
+Once you have acquired some basic skills about statistics and R programming, some
+references may help you to expand your knowledge and explore the many possibilities
+that R can offer us. \textit{R in a nutshell} is a valuable companion manual that
+serves both as an catalogue of available tools in R and reference to find hands-on
+examples to use these tools. It also includes many pointers to data mining features
+and R libraries dealing with these techniques. A classic (but up-to-date) reference
+to learn effective methods for data analysis with R is \textit{Data Analysis and
+Graphics Using R}, now in its 3rd edition. \textit{Linear Models with R}, by J.
+Faraway remains as the authoritative introduction to linear models in R. There is
+also a prior, shorter and free version of this book available on CRAN manuals.
+Finally, \textit{A Handbook of Statistical
+Analyses Using R} packs a concise reference for the implementation of many common
+statistical analyses and techniques for those users with solid theoretical background. 
+
+% \section{Web graphs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
