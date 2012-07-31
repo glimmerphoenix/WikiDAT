@@ -1409,6 +1409,43 @@ through Pypy, the official Python packages repository.
   \caption{Snapshot of the python-wikitools at Google Code.}
 \end{figure}
 
+\subsection{JWPL and the Wikipedia Revision Toolkit}
+In the Java world, one of the available options to import data from Wikipedia is 
+the Java Wikipedia Library (JWPL). This library is developed and maintained by
+the Ubiquitous Knowledge Processing Lab at the Technische Universität Darmstadt.
+The project is hosted on GoogleCode~\footnote{\url{https://code.google.com/p/jwpl/}} and
+it features several useful tools:
+
+\begin{itemize}
+ \item JWPL: The library is a wrapper to access the MediaWiki API from Java. It was
+ initially created to exploit the application of Wikipedia as a lexical semantic
+ resource. Therefore, the library is organized to offer access to the content and
+ metadata of any Wikipedia page. The information for each page is retrieved to a local
+ repository, namely the JWPL DB for that page.
+ \item JWPLDataMachine: A tool to import information from Wikipedia dump files. 
+ \item Wikipedia Revision Toolkit: A module to access historical information about
+ all previous revisions undergone by Wikipedia pages. It is divided in two different
+ tools:
+ \begin{itemize}
+  \item RevisionMachine: Provides access to the whole revision history of any
+  Wikipedia page.
+  \item TimeMachine: It can recreate the snapshot of Wikipedia on a specific date,
+  or a series of snaphots covering a certain time interval.
+ \end{itemize}
+\end{itemize}
+
+It is important to remark that, despite JWPL uses the MediaWiki API for initial
+information retrieval, after the first petition to obtain information for a certain
+page in Wikipedia, it stores all the information locally,
+in the so-called JWPL DB. Thereafter, you will be querying that local database (with
+content and metadatada information), instead of performing live queries to the 
+MediaWiki API again. This saves bandwith and workload for Wikipedia servers. 
+
+This approach can be useful, for example, to retrieve historical information for
+individual pages, in case that the study if focused only on a subset of pages in
+a Wikipedia language. Following this approach, it could be possible to avoid parsing
+the entire file of a dump, discarding information about unrelated pages.
+
 \subsection{Mwclient}
 Finally, you can also check mwclient~\footnote{\url{http://sourceforge.net/projects/mwclient/}}, 
 a framework for accessing
