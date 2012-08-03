@@ -26,10 +26,21 @@ sets in high-resolution studies.</p>
 The following software dependencies are required to run all examples currently
 included in WikiDAT:
 
-<ul>MySQL server and client (v5.5 or later).</ul>
-<ul>Python programming language (v2.7 or later, but not the v3 branch) and 
-MySQLdb (v1.2.3)</ul>
-<ul>R programming language and environment (v 2.15.0 or later).</ul>
-<ul>Additional R libraries with extra data and functionalities: RMySQL, Hmisc, 
-car, DAAG, ineq, ggplot2, eha. (This list will be updated as new 
-functionalities are included in this toolkit).</ul>
+<ul>
+<li>MySQL server and client (v5.5 or later).</li>
+<li>Python programming language (v2.7 or later, but not the v3 branch) and 
+MySQLdb (v1.2.3)</li>
+<li>R programming language and environment (v 2.15.0 or later).</li>
+<li>Additional R libraries with extra data and functionalities (This list will be updated as new
+):</li> 
+<ul>
+<li>RMySQL: Connect to MySQL dbs from R.</li>
+<li>Hmisc: Frank Harrell's miscelaneous functions (essential).</li>
+<li>car: Companion library for "R Companion to Applied Regression", 2nd ed.</li>
+<li>DAAG: Companion library for "Data Analysis and Graphics using R."</li>
+<li>ineq: Calcualte inequality metrics and graphics.</li>
+<li>ggplot2: A wonderful library to create appealing graphics in R.</li>
+<li>eha: Library for event history and survival analysis.</li>
+<li>zoo: Excellent library to handle timeseries data. </li>
+functionalities are included in this toolkit).
+<ul>
