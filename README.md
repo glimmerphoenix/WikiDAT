@@ -32,7 +32,7 @@ included in WikiDAT:
 MySQLdb (v1.2.3)</li>
 <li>R programming language and environment (v 2.15.0 or later).</li>
 <li>Additional R libraries with extra data and functionalities (This list will be updated as new
-):</li> 
+functionalities are included in this toolkit):</li> 
 <ul>
 <li>RMySQL: Connect to MySQL dbs from R.</li>
 <li>Hmisc: Frank Harrell's miscelaneous functions (essential).</li>
@@ -42,5 +42,4 @@ MySQLdb (v1.2.3)</li>
 <li>ggplot2: A wonderful library to create appealing graphics in R.</li>
 <li>eha: Library for event history and survival analysis.</li>
 <li>zoo: Excellent library to handle timeseries data. </li>
-functionalities are included in this toolkit).
 <ul>
