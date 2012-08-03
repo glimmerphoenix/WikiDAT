@@ -12,7 +12,7 @@ new_editors = list(enwiki = numeric(0), dewiki = numeric(0), frwiki = numeric(0)
                    nlwiki = numeric(0) )
 
 for (i in seq(1,6) ) { 
-    con = dbConnect(MySQL(), user = "root", password = "phoenix",
+    con = dbConnect(MySQL(), user = "jfelipe", password = "xxxx",
                     dbname = dbs[i])
 
     new_ed = dbGetQuery(con, "SELECT YEARWEEK(rev_timestamp, 5) time, 
