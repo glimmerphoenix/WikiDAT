@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ######
-# Aaron Halfaker and Felipe Ortega
+# Felipe Ortega and Aaron Halfaker
 ######
 
 from lxml import etree
@@ -89,13 +89,16 @@ class Parser(object):
                     self.log_dict['action']=='approve-ia' or\
                     self.log_dict['action']=='approve-i'):
                 
-                    flags = self.log_dict['params'].split('\n')
-                    if (len(flags) == 2):
-                        self.log_dict['new_flag'] = flags[0]
-                        self.log_dict['old_flag'] = flags[1]
-                    elif (len(flags) == 1):
-                        self.log_dict['new_flag'] = flags[0]
-                        self.log_dict['old_flag'] = '0'
+                    # Check presence of params
+                    # TODO: Investigate review items without params
+                    if self.log_dict.has_key('params'):
+                        flags = self.log_dict['params'].split('\n')
+                        if (len(flags) == 2):
+                            self.log_dict['new_flag'] = flags[0]
+                            self.log_dict['old_flag'] = flags[1]
+                        elif (len(flags) == 1):
+                            self.log_dict['new_flag'] = flags[0]
+                            self.log_dict['old_flag'] = '0'
                               
                 # Build new row for loginsert
                 # TODO: Investigate why we find logitems without type or action
@@ -117,15 +120,15 @@ class Parser(object):
                 new_log_insert = "".join([new_log_insert, '"', 
                                         self.log_dict['timestamp'], '",'])
 
-                if self.log_dict.has_key('rev_user'):
+                if self.contrib_dict.has_key('id'):
                     new_log_insert = "".join([new_log_insert, 
-                                            self.log_dict['rev_user'], ","])
+                                            self.contrib_dict['id'], ","])
                 else:
                     new_log_insert = "".join([new_log_insert, '-1,'])
 
-                if self.log_dict.has_key('username'):
+                if self.contrib_dict.has_key('username'):
                     new_log_insert = "".join([new_log_insert, '"', 
-                                            self.log_dict['username'].\
+                                            self.contrib_dict['username'].\
                                             replace("\\","\\\\").\
                                             replace("'","\\'").\
                                             replace('"', '\\"'), '",'])
