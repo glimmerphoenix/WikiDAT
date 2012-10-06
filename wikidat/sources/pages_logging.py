@@ -93,9 +93,22 @@ class Parser(object):
                     # TODO: Investigate review items without params
                     if self.log_dict.has_key('params'):
                         flags = self.log_dict['params'].split('\n')
+                        # Standard case before March 2010
+                        # 2 params: new stable revision and old stable revision
                         if (len(flags) == 2):
                             self.log_dict['new_flag'] = flags[0]
                             self.log_dict['old_flag'] = flags[1]
+                        # Case after March 2010
+                        # Timestamp of last stable version was introduced 
+                        # as a third param. We only get the first two: 
+                        # rev_id of new stable revision and rev_id of  
+                        # previous stable revision
+                        if (len(flags) == 3):
+                            self.log_dict['new_flag'] = flags[0]
+                            self.log_dict['old_flag'] = flags[1]
+                        # Standard case before March 2010
+                        # Only new stable version if no previous stable version
+                        # is available
                         elif (len(flags) == 1):
                             self.log_dict['new_flag'] = flags[0]
                             self.log_dict['old_flag'] = '0'
