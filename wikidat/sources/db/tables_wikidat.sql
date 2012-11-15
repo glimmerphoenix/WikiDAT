@@ -29,6 +29,7 @@ CREATE TABLE page (
 -- to the text storage backend.
 --
 CREATE TABLE revision (
+  -- Primary key to identify each revision
   rev_id int unsigned NOT NULL ,
   
   -- Key to page_id. This should _never_ be invalid.
@@ -61,6 +62,9 @@ CREATE TABLE revision (
   
   -- Records whether this revision is a Featured List
   rev_flist tinyint(1) unsigned NOT NULL default '0',
+  
+  -- Records whether this revision is a Good Article
+  rev_ga tinyint(1) unsigned NOT NULL default '0',
   
   -- Text comment summarizing the change.
   -- This text is shown in the history and other changes lists,

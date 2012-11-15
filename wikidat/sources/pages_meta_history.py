@@ -25,6 +25,7 @@ class Parser(object):
     A regular expression for extracting the final extension of a file.
     """
     
+    ## List of regular expressions for Featured Article detection
     DE_FA_RE = re.compile(r'(\{\{[Ee]xzellent\|.*\|[0-9]*\}\})')
     DE_FLIST_RE = re.compile(r'\{\{[Ii]nformativ\}\}')
     
@@ -108,9 +109,20 @@ class Parser(object):
     
     GL_FA_RE = re.compile(r'(\{\{[Aa]rtigo de calidade\}\})')
     
+    IS_FA_RE = re.compile(ur'\{\{Úrvalsgreinar\}\}')
+    
+    FO_FA_RE = re.compile(ur'\{\{Mánaðargrein\}\}')
+    
     # TODO: Check this one
     SIMPLE_FA_RE = re.compile(r'(\{\{[Ff]eatured [Aa]rticle\}\})')
     
+    ## List of regexps for Good Article detection
+    DA_GA_RE = re.compile(r'\{\{God\}\}')
+    
+    IS_GA_RE = re.compile(ur'\{\{Gæðagrein\}\}')
+    
+    
+    # List of supported languages for Featured Article detection
     FA_RE = {'dewiki': DE_FA_RE, 'enwiki': EN_FA_RE, 'eswiki': ES_FA_RE,
             'frwiki': FR_FA_RE, 'itwiki': IT_FA_RE, 'jawiki': JA_FA_RE,
             'nlwiki': NL_FA_RE, 'plwiki': PL_FA_RE, 'ptwiki': PT_FA_RE,
@@ -124,9 +136,11 @@ class Parser(object):
             'elwiki': EL_FA_RE, 'skwiki': SK_FA_RE, 'srwiki': SR_FA_RE,
             'ltwiki': LT_FA_RE, 'slwiki': SL_FA_RE, 'etwiki': ET_FA_RE,
             'mswiki': MS_FA_RE, 'euwiki': EU_FA_RE, 'glwiki': GL_FA_RE,
-            'simplewiki': SIMPLE_FA_RE
+            'simplewiki': SIMPLE_FA_RE,
+            'iswiki': IS_FA_RE, 'fowiki': FO_FA_RE
             }
-            
+    
+    # List of supported languages for Featured List detection        
     FLIST_RE = {'dewiki': DE_FLIST_RE, 'enwiki': EN_FLIST_RE, 'eswiki': None,
                 'frwiki': None, 'itwiki': None, 'jawiki': None,
                 'nlwiki': None, 'plwiki': None, 'ptwiki': None,
@@ -137,12 +151,24 @@ class Parser(object):
                 'fawiki': None, 'rowiki': None, 'cawiki': None, 'bgwiki': None,
                 'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
                 'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
-                'euwiki': None, 'glwiki': None, 'simplewiki': None
+                'euwiki': None, 'glwiki': None, 'simplewiki': None,
+                'iswiki': None, 'fowiki': None
                 }
-
-    """
-    Regexp to detect template of FAs in German Wikipedia
-    """
+             
+    # List of supported languages for Good Article detection   
+    GA_RE = {'dewiki': None, 'enwiki': None, 'eswiki': None,
+                'frwiki': None, 'itwiki': None, 'jawiki': None,
+                'nlwiki': None, 'plwiki': None, 'ptwiki': None,
+                'ruwiki': None, 'zhwiki': None, 'svwiki': None, 'trwiki': None,
+                'fiwiki': None, 'cswiki': None, 'idwiki': None, 'thwiki': None,
+                'arwiki': None, 'kowiki': None, 'hewiki': None, 'nowiki': None,
+                'huwiki': None, 'viwiki': None, 'ukwiki': None, 'dawiki': DA_GA_RE,
+                'fawiki': None, 'rowiki': None, 'cawiki': None, 'bgwiki': None,
+                'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
+                'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
+                'euwiki': None, 'glwiki': None, 'simplewiki': None,
+                'iswiki': IS_GA_RE, 'fowiki': None
+            }
     
     def __init__(self, cursor, lang, log_file):
         # DB connection
@@ -156,6 +182,9 @@ class Parser(object):
         if (self.lang in Parser.FA_RE) and (self.lang in Parser.FLIST_RE):
             self.fa_pat = Parser.FA_RE[self.lang]
             self.flist_pat = Parser.FLIST_RE[self.lang]
+            
+        if (self.lang in Parser.GA_RE):
+            self.ga_pat = Parser.GA_RE[self.lang]
             
         else:
             raise RuntimeError('Unsupported language ' + self.lang)
@@ -267,7 +296,7 @@ class Parser(object):
                     else:
                         self.rev_dict['is_fa'] = '0'
                     
-                    # Check if FLIST is supported in this language
+                    # Check if FLIST is supported in this language, detect if so
                     if self.flist_pat is not None:
                         mflist = self.flist_pat.search(self.rev_dict['text'])
                         if mflist is not None and len(mflist.groups()) == 1:
@@ -276,12 +305,23 @@ class Parser(object):
                             self.rev_dict['is_flist'] = '0'
                     else:
                         self.rev_dict['is_flist'] = '0'
+                        
+                    # Check if GA is supported in this language, detect if so
+                    if self.ga_pat is not None:
+                        mga = self.ga_pat.search(self.rev_dict['text'])
+                        if mga is not None and len(mga.groups()) == 1:
+                            self.rev_dict['is_ga'] = '1'
+                        else:
+                            self.rev_dict['is_ga'] = '0'
+                    else:
+                        self.rev_dict['is_ga'] = '0'
                     
                 else:
                     self.rev_dict['len_text'] = '0'
                     self.rev_dict['redirect'] = '0'
                     self.rev_dict['is_fa'] = '0'
                     self.rev_dict['is_flist'] = '0'
+                    self.rev_dict['is_ga'] = '0'
                     self.text_hash.update('')
 
                 # Build extended insert for revision and revision_hash
@@ -397,7 +437,8 @@ class Parser(object):
                 # Add is_fa and is_flist fields
                 new_rev_insert = "".join([new_rev_insert, 
                                             self.rev_dict['is_fa'], ",",
-                                            self.rev_dict['is_flist'], ","])
+                                            self.rev_dict['is_flist'], ",",
+                                            self.rev_dict['is_ga'], ","])
                 
                 if 'comment' in self.rev_dict and\
                         self.rev_dict['comment'] is not None:
