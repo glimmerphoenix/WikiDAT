@@ -310,10 +310,12 @@ class Parser(object):
         
 if __name__ == '__main__':
     db_name = sys.argv[1]
-    f = sys.argv[2]
-    log_file = sys.argv[3]
-    conn = MySQLdb.Connect (host = 'localhost', port = 3306, user = 'root', 
-                            passwd='phoenix',db = db_name,
+    db_user = sys.argv[2]
+    db_pass = sys.argv[3]
+    f = sys.argv[4]
+    log_file = sys.argv[5]
+    conn = MySQLdb.Connect (host = 'localhost', port = 3306, user = db_user, 
+                            passwd=db_pass ,db = db_name,
                             charset="utf8", use_unicode=True)
     conn.autocommit(True)
     cursor = conn.cursor()
