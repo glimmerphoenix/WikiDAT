@@ -109,17 +109,17 @@ class Parser(object):
     
     GL_FA_RE = re.compile(r'(\{\{[Aa]rtigo de calidade\}\})')
     
-    IS_FA_RE = re.compile(ur'\{\{Úrvalsgreinar\}\}')
+    IS_FA_RE = re.compile(ur'(\{\{Úrvalsgrein\}\})')
     
-    FO_FA_RE = re.compile(ur'\{\{Mánaðargrein\}\}')
+    FO_FA_RE = re.compile(ur'(\{\{Mánaðargrein\}\})')
     
     # TODO: Check this one
     SIMPLE_FA_RE = re.compile(r'(\{\{[Ff]eatured [Aa]rticle\}\})')
     
     ## List of regexps for Good Article detection
-    DA_GA_RE = re.compile(r'\{\{God\}\}')
+    DA_GA_RE = re.compile(r'\{\{[Gg]od\}\}')
     
-    IS_GA_RE = re.compile(ur'\{\{Gæðagrein\}\}')
+    IS_GA_RE = re.compile(ur'(\{\{Gæðagrein\}\})')
     
     
     # List of supported languages for Featured Article detection
