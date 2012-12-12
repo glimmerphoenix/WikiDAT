@@ -117,6 +117,8 @@ class Parser(object):
     SIMPLE_FA_RE = re.compile(r'(\{\{[Ff]eatured [Aa]rticle\}\})')
     
     ## List of regexps for Good Article detection
+    ES_GA_RE = re.compile(ur'(\{\{[Aa]rt.*culo [Bb]ueno\}\})')
+    
     DA_GA_RE = re.compile(r'\{\{[Gg]od\}\}')
     
     IS_GA_RE = re.compile(ur'(\{\{Gæðagrein\}\})')
@@ -156,7 +158,7 @@ class Parser(object):
                 }
              
     # List of supported languages for Good Article detection   
-    GA_RE = {'dewiki': None, 'enwiki': None, 'eswiki': None,
+    GA_RE = {'dewiki': None, 'enwiki': None, 'eswiki': ES_GA_RE,
                 'frwiki': None, 'itwiki': None, 'jawiki': None,
                 'nlwiki': None, 'plwiki': None, 'ptwiki': None,
                 'ruwiki': None, 'zhwiki': None, 'svwiki': None, 'trwiki': None,
@@ -727,4 +729,3 @@ if __name__ == '__main__':
           "in %s pages within %.6f mins" % (pages, (end - start)/60.)
       
     conn.close()
-    
