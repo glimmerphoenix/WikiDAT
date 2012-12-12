@@ -328,7 +328,7 @@ if __name__ == '__main__':
     start = time.clock()
     logs = parser.parse(f)
     end = time.clock()
-    print "Successfully parsed %s revisions " % logs +\
+    print "Successfully parsed %s log items " % logs +\
           "in %.6f mins" % ((end - start)/60.)
       
     conn.close()
