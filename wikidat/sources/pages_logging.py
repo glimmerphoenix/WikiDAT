@@ -5,31 +5,19 @@
 
 from lxml import etree
 import MySQLdb, hashlib, sys, codecs, re, os, subprocess, time
+from wikidat.utils import maps
 import warnings
 
 class Parser(object):
-    
-    EXTENSIONS = {
-    'xml': "cat 2>/dev/null",
-    'bz2': "bzcat 2>/dev/null",
-    '7z':  "7za e -so 2>/dev/null",
-    'lzma': "lzcat 2>/dev/null",
-    'gz': "zcat 2>/dev/null"
-    }
     """
-    A map from file extension to the command to run to extract the 
-    data to standard out. STDERR is redirected to /dev/null to 
-    capture just STDOUT
-    """
-
-    EXT_RE = re.compile(r'\.([^\.]+)$')
-    """
-    A regular expression for extracting the final extension of a file.
+    Parses content of Wikimedia dump files (pages-logging.xml)
     """
     
-    def __init__(self, cursor, log_file):
+    def __init__(self, db, cursor, log_file):
         # DB connection
-        self.db = cursor
+        self.db = db
+        # DB cursor
+        self.cursor = cursor
         # Name of the log file
         self.log_file = log_file
         
@@ -199,7 +187,7 @@ class Parser(object):
                                             "VALUES", new_log_insert])
                     self.log_insert_rows += 1
                     
-                elif self.log_insert_rows <= 100:
+                elif self.log_insert_rows <= 1000:
                     #Append new row to self.loginsert
                     self.log_insert = "".join([self.log_insert, ",", 
                                                 new_log_insert])
@@ -207,8 +195,8 @@ class Parser(object):
                     
                 # Sending extended insert to DB
                 else:
-                    self.send_query(self.db, self.log_insert, 5, 
-                                    self.log_file)
+                    self.send_query(self.db, self.cursor, self.log_insert, 
+                                    5, self.log_file)
                                     
                     self.log_insert = "".join(["INSERT INTO logging ",
                                             "VALUES", new_log_insert])
@@ -232,11 +220,11 @@ class Parser(object):
                         time.strftime("%Y-%m-%d %H:%M:%S %Z", time.localtime())
                         
         # Insert last data packet in DB
-        self.send_query(self.db, self.log_insert, 5, self.log_file)
+        self.send_query(self.db, self.cursor, self.log_insert, 5, self.log_file)
         
         return self.log_num
                         
-    def send_query(self, cursor, query, ntimes, log_file):
+    def send_query(self, db, cursor, query, ntimes, log_file):
         """
         Send query to DB. Attempt 'ntimes' consecutive times before giving up
         cursor: cursor to open DB connection
@@ -253,7 +241,11 @@ class Parser(object):
             warnings.simplefilter('ignore', MySQLdb.Warning)
             try:
                 cursor.execute(query)
+                # Commit changes
+                db.commit()
             except (Exception), e:
+                # Rollback changes and log error
+                db.rollback()
                 self.f = codecs.open(log_file,'a',
                                             'utf-8')
                 self.f.write(str(e)+"\n")
@@ -279,10 +271,10 @@ class Parser(object):
         if not os.path.isfile(path):
             raise FileTypeError("Can't find file %s" % path)
         
-        match = Parser.EXT_RE.search(path)
+        match = maps.EXT_RE.search(path)
         if match == None:
             raise FileTypeError("No extension found for %s." % path)
-        elif match.groups()[0] not in Parser.EXTENSIONS:
+        elif match.groups()[0] not in maps.EXTENSIONS:
             raise FileTypeError("File type %r is not supported." % path)
         else:
             return path
@@ -296,10 +288,10 @@ class Parser(object):
             path : `str`
                 the path to the dump file to read
         """
-        match = Parser.EXT_RE.search(path)
+        match = maps.EXT_RE.search(path)
         ext = match.groups()[0]
         p = subprocess.Popen(
-            "%s %s" % (Parser.EXTENSIONS[ext], path), 
+            "%s %s" % (maps.EXTENSIONS[ext], path), 
             shell=True, 
             stdout=subprocess.PIPE,
             stderr=open(os.devnull, "w")
@@ -314,15 +306,15 @@ if __name__ == '__main__':
     db_pass = sys.argv[3]
     f = sys.argv[4]
     log_file = sys.argv[5]
-    conn = MySQLdb.Connect (host = 'localhost', port = 3306, user = db_user, 
+    db = MySQLdb.Connect (host = 'localhost', port = 3306, user = db_user, 
                             passwd=db_pass ,db = db_name,
                             charset="utf8", use_unicode=True)
-    conn.autocommit(True)
-    cursor = conn.cursor()
+    #conn.autocommit(True)
+    cursor = db.cursor()
     
     # Arguments: DB connection, wiki lang and name of log file
     # Currently supported: 'enwiki', 'dewiki'
-    parser = Parser(cursor, log_file)
+    parser = Parser(db, cursor, log_file)
     
     print "Parsing file " +  f
     start = time.clock()
@@ -331,5 +323,5 @@ if __name__ == '__main__':
     print "Successfully parsed %s log items " % logs +\
           "in %.6f mins" % ((end - start)/60.)
       
-    conn.close()
+    db.close()
     
