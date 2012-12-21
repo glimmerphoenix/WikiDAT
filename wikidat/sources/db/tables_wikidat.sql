@@ -72,7 +72,7 @@ CREATE TABLE revision (
   rev_comment text NOT NULL default '',
 
   PRIMARY KEY rev_id (rev_id)
-) /*$wgDBTableOptions*/ MAX_ROWS=100000000000 AVG_ROW_LENGTH=2048 ENGINE MyISAM;
+) MAX_ROWS=100000000000 AVG_ROW_LENGTH=2048 ENGINE MyISAM;
 
 CREATE TABLE people (
   -- Key to user.user_id of the user who made this edit.
