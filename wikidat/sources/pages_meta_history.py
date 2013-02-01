@@ -216,10 +216,7 @@ class Parser(object):
         # Counters to send insert queries to DB
         self.page_insert_rows = 0
         self.rev_insert_rows = 0
-        
-        # Stores SHA-256 hash of revision text
-        self.text_hash = hashlib.sha256()
-        
+                
         # Performance statistics
         self.revisions = 0
         self.pages = 0
@@ -266,6 +263,9 @@ class Parser(object):
                 
                 # Build dict {tag:text} for all children of revision
                 self.rev_dict = {x.tag.split('}')[1]:x.text for x in elem}
+                
+                # Stores SHA-256 hash of revision text
+                self.text_hash = hashlib.sha256()
                 
                 # ### TEXT-RELATED OPERATIONS ###
                 # Calculate SHA-256 hash, length of revision text and check
