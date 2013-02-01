@@ -58,9 +58,6 @@ class Parser(object):
         self.page_insert_rows = 0
         self.rev_insert_rows = 0
         
-        # Stores SHA-256 hash of revision text
-        self.text_hash = hashlib.sha256()
-        
         # Performance statistics
         self.revisions = 0
         self.pages = 0
@@ -112,6 +109,10 @@ class Parser(object):
                 # Calculate SHA-256 hash, length of revision text and check
                 # for REDIRECT
                 # TODO: Inspect why there are pages without text
+                
+                # Stores SHA-256 hash of revision text
+                self.text_hash = hashlib.sha256()
+                
                 if self.rev_dict['text'] is not None:
                     text = self.rev_dict['text'].encode('utf-8')
                     self.text_hash.update(text)
@@ -381,10 +382,11 @@ class Parser(object):
                 self.rev_dict = None
                 self.contrib_dict = None
                 text = None
+                self.text_hash = None
                 # Delete this revision to clear memory
                 elem.clear()
                 # Also eliminate now-empty references from the root node to
-                # <logitem>. Credits to Liza Daly
+                # <revision>. Credits to Liza Daly
                 # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
                 while elem.getprevious() is not None:
                     del elem.getparent()[0]
@@ -438,7 +440,7 @@ class Parser(object):
                 # Delete this page to clear memory
                 elem.clear()
                 # Also eliminate now-empty references from the root node to
-                # <logitem>. Credits to Liza Daly
+                # <page>. Credits to Liza Daly
                 # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
                 while elem.getprevious() is not None:
                     del elem.getparent()[0]
