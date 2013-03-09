@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>WikiDAT by glimmerphoenix</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>WikiDAT</h1>
+        <p>Wikipedia Data Analysis Toolkit</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/glimmerphoenix/WikiDAT" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/glimmerphoenix/WikiDAT/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/glimmerphoenix/WikiDAT/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h3>Project Info</h3>
+
+<ul>
+<li>
+<strong>Authors</strong>: Felipe Ortega, Aaron Halfaker.</li>
+<li>
+<strong>License</strong>: <a href="http://www.gnu.org/licenses/gpl.txt">GPLv3</a>.</li>
+</ul><p>The aim of WikiDAT is to create an extensible toolkit for Wikipedia Data 
+Analysis, based on <a href="http://www.python.org/">Python</a> and <a href="http://www.r-project.org/">R</a>. Currently, <a href="http://www.mysql.com/">MySQL</a> is the only supported DB backend, but there are plans to include other DB engines in the future.</p>
+
+<p>Each module implements a different type of analysis and it stores the output in 
+subdirectories <i>results</i>, <i>figs</i> or <i>traces</i>, inside the module's maind folder. 
+Every module includes Python and R code to implement both the data 
+preparation, cleaning and analysis steps, including inline comments. 
+An important goal is to illustrate different case examples of 
+interesting analyses with Wikipedia data, following a didactic approach.</p>
+
+<p>The long-term goal is to include more case examples progressively, in order 
+to cover many of the usual examples of quantitative analyses that can be 
+implemented on Wikipedia data. In the future, this may also include the use 
+of tools for distributed computing to support analysis of really huge data 
+sets in high-resolution studies.</p>
+
+<p><b>Required dependencies</b>
+The following software dependencies are required to run all examples currently
+included in WikiDAT:</p>
+
+<ul>
+<li>
+<a href="http://www.mysql.com/">MySQL</a> server and client (&gt;= v5.5).</li>
+<li>
+<a href="http://www.python.org/">Python</a> programming language (&gt;= v2.7 bu &lt; v3) and 
+<a href="http://sourceforge.net/projects/mysql-python/">Python MySQLdb</a> (&gt;= v1.2.3)</li>
+<li>R project for statistical computing (&gt;= v2.15.0).</li>
+</ul><p>Additional <a href="http://cran.r-project.org/">R packages</a> with extra data and functionalities (This list will be updated as new functionalities are included):</p>
+
+<ul>
+<li>
+<a href="http://cran.r-project.org/web/packages/RMySQL/index.html">RMySQL</a>: Connect to MySQL dbs from R.</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/Hmisc/index.html">Hmisc</a>: Frank Harrell's miscelaneous functions (essential).</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/car/index.html">car</a>: Companion package for "R Companion to Applied Regression", 2nd ed.</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/DAAG/index.html">DAAG</a>: Companion package for "Data Analysis and Graphics using R."</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/ineq/index.html">ineq</a>: Calcualte inequality metrics and graphics.</li>
+<li>
+<a href="http://ggplot2.org/">ggplot2</a>: A wonderful package to create appealing graphics in R.</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/eha/index.html">eha</a>: Package for event history and survival analysis.</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/zoo/index.html">zoo</a>: Excellent library to handle timeseries data.</li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/glimmerphoenix">glimmerphoenix</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
