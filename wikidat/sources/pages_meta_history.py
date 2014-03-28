@@ -4,7 +4,7 @@
 ######
 
 from lxml import etree
-import MySQLdb, hashlib, sys, codecs, re, os, subprocess, time
+import MySQLdb, hashlib, sys, codecs, os, subprocess, time
 from wikidat.utils import maps
 import warnings
 
