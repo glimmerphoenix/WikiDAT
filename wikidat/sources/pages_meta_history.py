@@ -4,190 +4,31 @@
 ######
 
 from lxml import etree
-import MySQLdb, hashlib, sys, codecs, re, os, subprocess, time
+import MySQLdb, hashlib, sys, codecs, os, subprocess, time
+from wikidat.utils import maps
 import warnings
 
 class Parser(object):
-    
-    EXTENSIONS = {
-    'xml': "cat",
-    'bz2': "bzcat",
-    '7z':  "7za e -so 2>/dev/null",
-    'lzma':"lzcat"
-    }
     """
-    A map from file extension to the command to run to extract the 
-    data to standard out.
+    Parses content of Wikimedia dump files (pages-meta-history.xml)
     """
-
-    EXT_RE = re.compile(r'\.([^\.]+)$')
-    """
-    A regular expression for extracting the final extension of a file.
-    """
-    
-    ## List of regular expressions for Featured Article detection
-    DE_FA_RE = re.compile(r'(\{\{[Ee]xzellent\|.*\|[0-9]*\}\})')
-    DE_FLIST_RE = re.compile(r'\{\{[Ii]nformativ\}\}')
-    
-    EN_FA_RE = re.compile(r'(\{\{[Ff]eatured [Aa]rticle\}\})')
-    EN_FLIST_RE = re.compile(r'(\{\{[Ff]eatured [Ll]ist\}\})')
-    
-    ES_FA_RE = re.compile(r'(\{\{[Aa]rt.*culo [Dd]estacado\}\})')
-    
-    FR_FA_RE = re.compile(r'(\{\{Article de qualit.*\|.*\}\})')
-
-    IT_FA_RE = re.compile(r'(\{\{[Vv]etrina\|.*\}\})')
-
-    JA_FA_RE = re.compile(r'(\{\{[Ff]eatured.*[Aa]rticle\}\})')
-
-    NL_FA_RE = re.compile(r'(\{\{[Ee]talage\}\})') 
-
-    PL_FA_RE = re.compile(r'(\{\{[Mm]edal\}\})')
-
-    PT_FA_RE = re.compile(r'(\{\{[Aa]rtigo [Dd]estacado\}\})')
-
-    # Possible change, eliminate | and leave .* only before '}}'
-    RU_FA_RE = re.compile(ur'(\{\{Избранная статья\|.*\}\})')
-    
-    ZH_FA_RE = re.compile(r'(\{\{[Ff]eatured.*[Aa]rticle\}\})')
-    
-    SV_FA_RE = re.compile(r'(\{\{[Uu]tm.*rkt\}\})')
-    
-    TR_FA_RE = re.compile(ur'(\{\{[Ss]eçkin [Mm]adde\}\})')
-    
-    FI_FA_RE = re.compile(r'(\{\{[Ss]uositeltu\}\})')
-    
-    CS_FA_RE = re.compile(ur'(\{\{[Nn]ejlepší článek\}\})')
-    
-    ID_FA_RE = re.compile(r'(\{\{[Ff]eatured.*[Aa]rticle\}\})')
-    
-    TH_FA_RE = re.compile(ur'(\{\{บทความคัดสรร\}\})')
-    
-    AR_FA_RE = re.compile(ur'(\{\{مقالة مختارة\}\})')
-    
-    KO_FA_RE = re.compile(ur'(\{\{알찬 글 딱지\}\})')
-    
-    HE_FA_RE = re.compile(ur'(\{\{ערך מומלץ\}\})')
-    
-    NO_FA_RE = re.compile(r'(\{\{[Uu]tmerket\}\})')
-    
-    HU_FA_RE = re.compile(r'(\{\{[Kk]iemelt.*\}\})')
-    
-    VI_FA_RE = re.compile(ur'(\{\{[Ss]ao chọn lọc.*\}\})')
-    
-    UK_FA_RE = re.compile(ur'(\{\{медаль.*\}\})')
-    
-    DA_FA_RE = re.compile(r'(\{\{[Ff]remragende.*\}\})')
-    
-    # Two possible templates!!
-    FA_FA_RE = re.compile(ur'(\{\{مقاله برگزیده\}\})|(\{\{نوشتار برگزیده\}\})')
-    
-    RO_FA_RE = re.compile(r'(\{\{[Aa]rticol de [Cc]alitate\}\})')
-    
-    # Two possible templates!!
-    CA_FA_RE = re.compile(r'(\{\{[Aa]rticle de [Qq]ualitat\}\})|(\{\{1000\+AdQ.*\}\})')
-    
-    BG_FA_RE = re.compile(ur'(\{\{Избрана статия.*\}\})')
-    
-    HR_FA_RE = re.compile(ur'(\{\{[Ii]zdvojeni članak.*\}\})')
-    
-    EL_FA_RE = re.compile(ur'(\{\{[Αα]ξιόλογο άρθρο\}\})')
-    
-    SK_FA_RE = re.compile(ur'(\{\{[Pp]erfektný článok\}\})')
-    
-    SR_FA_RE = re.compile(ur'(\{\{изабрани\}\})')
-    
-    LT_FA_RE = re.compile(r'(\{\{SavStr\}\})')
-    
-    SL_FA_RE = re.compile(r'(\{\{zvezdica\}\})')
-    
-    ET_FA_RE = re.compile(r'(\{\{eeskujulikud artiklid\}\})')
-    
-    MS_FA_RE = re.compile(r'(\{\{rencana pilihan\}\})')
-    
-    EU_FA_RE = re.compile(r'(\{\{[Nn]abarmendutako artikulua\}\})')
-    
-    GL_FA_RE = re.compile(r'(\{\{[Aa]rtigo de calidade\}\})')
-    
-    IS_FA_RE = re.compile(ur'(\{\{Úrvalsgrein\}\})')
-    
-    FO_FA_RE = re.compile(ur'(\{\{Mánaðargrein\}\})')
-    
-    # TODO: Check this one
-    SIMPLE_FA_RE = re.compile(r'(\{\{[Ff]eatured [Aa]rticle\}\})')
-    
-    ## List of regexps for Good Article detection
-    ES_GA_RE = re.compile(ur'(\{\{[Aa]rt.*culo [Bb]ueno\}\})')
-    
-    DA_GA_RE = re.compile(r'\{\{[Gg]od\}\}')
-    
-    IS_GA_RE = re.compile(ur'(\{\{Gæðagrein\}\})')
-    
-    
-    # List of supported languages for Featured Article detection
-    FA_RE = {'dewiki': DE_FA_RE, 'enwiki': EN_FA_RE, 'eswiki': ES_FA_RE,
-            'frwiki': FR_FA_RE, 'itwiki': IT_FA_RE, 'jawiki': JA_FA_RE,
-            'nlwiki': NL_FA_RE, 'plwiki': PL_FA_RE, 'ptwiki': PT_FA_RE,
-            'ruwiki': RU_FA_RE, 'zhwiki': ZH_FA_RE, 'svwiki': SV_FA_RE,
-            'trwiki': TR_FA_RE, 'fiwiki': FI_FA_RE, 'cswiki': CS_FA_RE,
-            'idwiki': ID_FA_RE, 'thwiki': TH_FA_RE, 'arwiki': AR_FA_RE,
-            'kowiki': KO_FA_RE, 'hewiki': HE_FA_RE, 'nowiki': NO_FA_RE,
-            'huwiki': HU_FA_RE, 'viwiki': VI_FA_RE, 'ukwiki': UK_FA_RE,
-            'dawiki': DA_FA_RE, 'fawiki': FA_FA_RE, 'rowiki': RO_FA_RE,
-            'cawiki': CA_FA_RE, 'bgwiki': BG_FA_RE, 'hrwiki': HR_FA_RE,
-            'elwiki': EL_FA_RE, 'skwiki': SK_FA_RE, 'srwiki': SR_FA_RE,
-            'ltwiki': LT_FA_RE, 'slwiki': SL_FA_RE, 'etwiki': ET_FA_RE,
-            'mswiki': MS_FA_RE, 'euwiki': EU_FA_RE, 'glwiki': GL_FA_RE,
-            'simplewiki': SIMPLE_FA_RE,
-            'iswiki': IS_FA_RE, 'fowiki': FO_FA_RE
-            }
-    
-    # List of supported languages for Featured List detection        
-    FLIST_RE = {'dewiki': DE_FLIST_RE, 'enwiki': EN_FLIST_RE, 'eswiki': None,
-                'frwiki': None, 'itwiki': None, 'jawiki': None,
-                'nlwiki': None, 'plwiki': None, 'ptwiki': None,
-                'ruwiki': None, 'zhwiki': None, 'svwiki': None, 'trwiki': None,
-                'fiwiki': None, 'cswiki': None, 'idwiki': None, 'thwiki': None,
-                'arwiki': None, 'kowiki': None, 'hewiki': None, 'nowiki': None,
-                'huwiki': None, 'viwiki': None, 'ukwiki': None, 'dawiki': None,
-                'fawiki': None, 'rowiki': None, 'cawiki': None, 'bgwiki': None,
-                'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
-                'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
-                'euwiki': None, 'glwiki': None, 'simplewiki': None,
-                'iswiki': None, 'fowiki': None
-                }
-             
-    # List of supported languages for Good Article detection   
-    GA_RE = {'dewiki': None, 'enwiki': None, 'eswiki': ES_GA_RE,
-                'frwiki': None, 'itwiki': None, 'jawiki': None,
-                'nlwiki': None, 'plwiki': None, 'ptwiki': None,
-                'ruwiki': None, 'zhwiki': None, 'svwiki': None, 'trwiki': None,
-                'fiwiki': None, 'cswiki': None, 'idwiki': None, 'thwiki': None,
-                'arwiki': None, 'kowiki': None, 'hewiki': None, 'nowiki': None,
-                'huwiki': None, 'viwiki': None, 'ukwiki': None, 'dawiki': DA_GA_RE,
-                'fawiki': None, 'rowiki': None, 'cawiki': None, 'bgwiki': None,
-                'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
-                'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
-                'euwiki': None, 'glwiki': None, 'simplewiki': None,
-                'iswiki': IS_GA_RE, 'fowiki': None
-            }
-    
-    def __init__(self, cursor, lang, log_file):
+      
+    def __init__(self, db, cursor, lang, log_file):
         # DB connection
-        self.db = cursor
-        # Wikipedia Language ('dewiki', 'enwiki', 'eswiki', 'frwiki', 'itwiki',
-        # 'jawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki')
+        self.db = db
+        # DB cursor
+        self.cursor = cursor
+        # Wikipedia language
         self.lang = lang.lower()
         # Name of the log file
         self.log_file = log_file
         
-        if (self.lang in Parser.FA_RE) and (self.lang in Parser.FLIST_RE):
-            self.fa_pat = Parser.FA_RE[self.lang]
-            self.flist_pat = Parser.FLIST_RE[self.lang]
-            
-        if (self.lang in Parser.GA_RE):
-            self.ga_pat = Parser.GA_RE[self.lang]
-            
+        # Get tags to identify Featured Articles, Featured Lists and Good Articles
+        if ((self.lang in maps.FA_RE) and (self.lang in maps.FLIST_RE) and
+            (self.lang in maps.GA_RE)):
+            self.fa_pat = maps.FA_RE[self.lang]
+            self.flist_pat = maps.FLIST_RE[self.lang]
+            self.ga_pat = maps.GA_RE[self.lang]
         else:
             raise RuntimeError('Unsupported language ' + self.lang)
         
@@ -216,7 +57,11 @@ class Parser(object):
         # Counters to send insert queries to DB
         self.page_insert_rows = 0
         self.rev_insert_rows = 0
+<<<<<<< HEAD
                 
+=======
+        
+>>>>>>> v1
         # Performance statistics
         self.revisions = 0
         self.pages = 0
@@ -246,7 +91,7 @@ class Parser(object):
                 
                 #print self.ns_insert
                 # Write self.ns_insert to DB
-                self.send_query(self.db, self.ns_insert, 5, self.log_file)
+                self.send_query(self.db, self.cursor, self.ns_insert, 5, self.log_file)
             
             if tag == 'contributor':
                 # Build dict {tag:text} for contributor info
@@ -271,6 +116,10 @@ class Parser(object):
                 # Calculate SHA-256 hash, length of revision text and check
                 # for REDIRECT
                 # TODO: Inspect why there are pages without text
+                
+                # Stores SHA-256 hash of revision text
+                self.text_hash = hashlib.sha256()
+                
                 if self.rev_dict['text'] is not None:
                     text = self.rev_dict['text'].encode('utf-8')
                     self.text_hash.update(text)
@@ -480,7 +329,7 @@ class Parser(object):
                 
                 # Extended inserts not full yet
                 #Append new row to self.rev_insert
-                elif self.rev_insert_rows <= 100:
+                elif self.rev_insert_rows <= 300:
                     # Case of people
                     if new_user:
                         if len(self.user_insert) > 0:
@@ -504,7 +353,7 @@ class Parser(object):
                 else:
                     # Case of people
                     if len(self.user_insert) > 0:
-                        self.send_query(self.db, self.user_insert, 5, 
+                        self.send_query(self.db, self.cursor, self.user_insert, 5, 
                                         self.log_file)
                         
                         if new_user:
@@ -520,13 +369,13 @@ class Parser(object):
                                                         new_user_insert])
                     
                     # Case of revision
-                    self.send_query(self.db, self.rev_insert, 5, 
+                    self.send_query(self.db, self.cursor, self.rev_insert, 5, 
                                     self.log_file)
                     
                     self.rev_insert = "".join(["INSERT INTO revision ",
                                             "VALUES", new_rev_insert])
                     # Case of revision_hash
-                    self.send_query(self.db, self.rev_hash, 5, 
+                    self.send_query(self.db, self.cursor, self.rev_hash, 5, 
                                     self.log_file)
                     
                     self.rev_hash = "".join(["INSERT INTO revision_hash ",
@@ -540,10 +389,11 @@ class Parser(object):
                 self.rev_dict = None
                 self.contrib_dict = None
                 text = None
+                self.text_hash = None
                 # Delete this revision to clear memory
                 elem.clear()
                 # Also eliminate now-empty references from the root node to
-                # <logitem>. Credits to Liza Daly
+                # <revision>. Credits to Liza Daly
                 # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
                 while elem.getprevious() is not None:
                     del elem.getparent()[0]
@@ -576,13 +426,13 @@ class Parser(object):
                                               "VALUES", new_page_insert])
                     self.page_insert_rows += 1
                     
-                elif self.page_insert_rows <= 100:
+                elif self.page_insert_rows <= 200:
                     self.page_insert = "".join([self.page_insert, ",",
                                                 new_page_insert])
                     # Update rows counter
                     self.page_insert_rows += 1
                 else:
-                    self.send_query(self.db, self.page_insert, 5, 
+                    self.send_query(self.db, self.cursor, self.page_insert, 5, 
                                     self.log_file)
                     
                     self.page_insert = "".join(["INSERT INTO page ",
@@ -597,7 +447,7 @@ class Parser(object):
                 # Delete this page to clear memory
                 elem.clear()
                 # Also eliminate now-empty references from the root node to
-                # <logitem>. Credits to Liza Daly
+                # <page>. Credits to Liza Daly
                 # http://www.ibm.com/developerworks/xml/library/x-hiperfparse/#listing1
                 while elem.getprevious() is not None:
                     del elem.getparent()[0]
@@ -606,20 +456,20 @@ class Parser(object):
         
         # Send last extended insert for people, if needed
         if len(self.user_insert) > 0:
-            self.send_query(self.db, self.user_insert, 5, self.log_file)
+            self.send_query(self.db, self.cursor, self.user_insert, 5, self.log_file)
                 
         # Send last extended insert for page
-        self.send_query(self.db, self.page_insert, 5, self.log_file)
+        self.send_query(self.db, self.cursor, self.page_insert, 5, self.log_file)
         
         # Send last extended insert for revision
-        self.send_query(self.db, self.rev_insert, 5, self.log_file)
+        self.send_query(self.db, self.cursor, self.rev_insert, 5, self.log_file)
         
         # Send last extended insert for revision_hash
-        self.send_query(self.db, self.rev_hash, 5, self.log_file)
+        self.send_query(self.db, self.cursor, self.rev_hash, 5, self.log_file)
 
         return self.pages, self.revisions
         
-    def send_query(self, cursor, query, ntimes, log_file):
+    def send_query(self, db, cursor, query, ntimes, log_file):
         """
         Send query to DB. Attempt 'ntimes' consecutive times before giving up
         cursor: cursor to open DB connection
@@ -636,7 +486,9 @@ class Parser(object):
             warnings.simplefilter('ignore', MySQLdb.Warning)
             try:
                 cursor.execute(query)
+                db.commit()
             except (Exception), e:
+                db.rollback()
                 self.f = codecs.open(log_file,'a',
                                             'utf-8')
                 self.f.write(str(e)+"\n")
@@ -660,13 +512,13 @@ class Parser(object):
         """
         path = os.path.expanduser(path)
         if not os.path.isfile(path):
-            raise FileTypeError("Can't find file %s" % path)
+            raise IOError("Can't find file %s" % path)
         
-        match = Parser.EXT_RE.search(path)
+        match = maps.EXT_RE.search(path)
         if match == None:
-            raise FileTypeError("No extension found for %s." % path)
-        elif match.groups()[0] not in Parser.EXTENSIONS:
-            raise FileTypeError("File type %r is not supported." % path)
+            raise IOError("No extension found for %s." % path)
+        elif match.groups()[0] not in maps.EXTENSIONS:
+            raise IOError("File type %r is not supported." % path)
         else:
             return path
 
@@ -692,10 +544,10 @@ class Parser(object):
             path : `str`
                 the path to the dump file to read
         """
-        match = Parser.EXT_RE.search(path)
+        match = maps.EXT_RE.search(path)
         ext = match.groups()[0]
         p = subprocess.Popen(
-            "%s %s" % (Parser.EXTENSIONS[ext], path), 
+            "%s %s" % (maps.EXTENSIONS[ext], path), 
             shell=True, 
             stdout=subprocess.PIPE,
             stderr=open(os.devnull, "w")
@@ -711,15 +563,15 @@ if __name__ == '__main__':
     lang = sys.argv[4]
     f = sys.argv[5]
     log_file = sys.argv[6]
-    conn = MySQLdb.Connect (host = 'localhost', port = 3306, user = db_user, 
+    db = MySQLdb.Connect (host = 'localhost', port = 3306, user = db_user, 
                             passwd = db_pass,db = db_name,
                             charset="utf8", use_unicode=True)
-    conn.autocommit(True)
-    cursor = conn.cursor()
+    #conn.autocommit(True)
+    cursor = db.cursor()
     
     # Arguments: DB connection, wiki lang and name of log file
     # Currently supported: 'enwiki', 'dewiki'
-    parser = Parser(cursor, lang, log_file)
+    parser = Parser(db, cursor, lang, log_file)
     
     print "Parsing file " +  f
     start = time.clock()
@@ -728,4 +580,4 @@ if __name__ == '__main__':
     print "Successfully parsed %s revisions " % revisions +\
           "in %s pages within %.6f mins" % (pages, (end - start)/60.)
       
-    conn.close()
+    db.close()
