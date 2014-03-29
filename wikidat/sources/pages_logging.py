@@ -269,13 +269,13 @@ class Parser(object):
         """
         path = os.path.expanduser(path)
         if not os.path.isfile(path):
-            raise FileTypeError("Can't find file %s" % path)
+            raise IOError("Can't find file %s" % path)
         
         match = maps.EXT_RE.search(path)
         if match == None:
-            raise FileTypeError("No extension found for %s." % path)
+            raise IOError("No extension found for %s." % path)
         elif match.groups()[0] not in maps.EXTENSIONS:
-            raise FileTypeError("File type %r is not supported." % path)
+            raise IOError("File type %r is not supported." % path)
         else:
             return path
             
