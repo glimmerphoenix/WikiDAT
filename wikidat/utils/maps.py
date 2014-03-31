@@ -10,8 +10,8 @@
 import re
 
 """
-A map from file extension to the command for extracting the 
-data to STDOUT. STDERR is redirected to /dev/null to 
+A map from file extension to the command for extracting the
+data to STDOUT. STDERR is redirected to /dev/null to
 capture just STDOUT
 """
 EXTENSIONS = {
@@ -51,7 +51,7 @@ IT_GA_RE = re.compile(ur'(\{\{Voce di qualità\|.*\}\})')
 JA_FA_RE = re.compile(r'(\{\{[Ff]eatured.*[Aa]rticle\}\})')
 JA_GA_RE = re.compile(r'(\{\{[Gg]ood [Aa]rticle\}\})')
 
-NL_FA_RE = re.compile(r'(\{\{[Ee]talage\}\})') 
+NL_FA_RE = re.compile(r'(\{\{[Ee]talage\}\})')
 
 PL_FA_RE = re.compile(r'(\{\{[Mm]edal\}\})')
 PL_GA_RE = re.compile(ur'(\{\{[Dd]obry [Aa]rtykuł\}\})')
@@ -134,23 +134,23 @@ SIMPLE_FA_RE = re.compile(r'(\{\{[Ff]eatured [Aa]rticle\}\})')
 
 # Dictionary of supported languages for Featured Article detection
 FA_RE = {'dewiki': DE_FA_RE, 'enwiki': EN_FA_RE, 'eswiki': ES_FA_RE,
-        'frwiki': FR_FA_RE, 'itwiki': IT_FA_RE, 'jawiki': JA_FA_RE,
-        'nlwiki': NL_FA_RE, 'plwiki': PL_FA_RE, 'ptwiki': PT_FA_RE,
-        'ruwiki': RU_FA_RE, 'zhwiki': ZH_FA_RE, 'svwiki': SV_FA_RE,
-        'trwiki': TR_FA_RE, 'fiwiki': FI_FA_RE, 'cswiki': CS_FA_RE,
-        'idwiki': ID_FA_RE, 'thwiki': TH_FA_RE, 'arwiki': AR_FA_RE,
-        'kowiki': KO_FA_RE, 'hewiki': HE_FA_RE, 'nowiki': NO_FA_RE,
-        'huwiki': HU_FA_RE, 'viwiki': VI_FA_RE, 'ukwiki': UK_FA_RE,
-        'dawiki': DA_FA_RE, 'fawiki': FA_FA_RE, 'rowiki': RO_FA_RE,
-        'cawiki': CA_FA_RE, 'bgwiki': BG_FA_RE, 'hrwiki': HR_FA_RE,
-        'elwiki': EL_FA_RE, 'skwiki': SK_FA_RE, 'srwiki': SR_FA_RE,
-        'ltwiki': LT_FA_RE, 'slwiki': SL_FA_RE, 'etwiki': ET_FA_RE,
-        'mswiki': MS_FA_RE, 'euwiki': EU_FA_RE, 'glwiki': GL_FA_RE,
-        'simplewiki': SIMPLE_FA_RE,
-        'iswiki': IS_FA_RE, 'fowiki': FO_FA_RE
-        }
+         'frwiki': FR_FA_RE, 'itwiki': IT_FA_RE, 'jawiki': JA_FA_RE,
+         'nlwiki': NL_FA_RE, 'plwiki': PL_FA_RE, 'ptwiki': PT_FA_RE,
+         'ruwiki': RU_FA_RE, 'zhwiki': ZH_FA_RE, 'svwiki': SV_FA_RE,
+         'trwiki': TR_FA_RE, 'fiwiki': FI_FA_RE, 'cswiki': CS_FA_RE,
+         'idwiki': ID_FA_RE, 'thwiki': TH_FA_RE, 'arwiki': AR_FA_RE,
+         'kowiki': KO_FA_RE, 'hewiki': HE_FA_RE, 'nowiki': NO_FA_RE,
+         'huwiki': HU_FA_RE, 'viwiki': VI_FA_RE, 'ukwiki': UK_FA_RE,
+         'dawiki': DA_FA_RE, 'fawiki': FA_FA_RE, 'rowiki': RO_FA_RE,
+         'cawiki': CA_FA_RE, 'bgwiki': BG_FA_RE, 'hrwiki': HR_FA_RE,
+         'elwiki': EL_FA_RE, 'skwiki': SK_FA_RE, 'srwiki': SR_FA_RE,
+         'ltwiki': LT_FA_RE, 'slwiki': SL_FA_RE, 'etwiki': ET_FA_RE,
+         'mswiki': MS_FA_RE, 'euwiki': EU_FA_RE, 'glwiki': GL_FA_RE,
+         'simplewiki': SIMPLE_FA_RE,
+         'iswiki': IS_FA_RE, 'fowiki': FO_FA_RE, 'scowiki': None
+         }
 
-# Dictionary of supported languages for Featured List detection        
+# Dictionary of supported languages for Featured List detection
 FLIST_RE = {'dewiki': DE_FLIST_RE, 'enwiki': EN_FLIST_RE, 'eswiki': None,
             'frwiki': None, 'itwiki': None, 'jawiki': None,
             'nlwiki': None, 'plwiki': None, 'ptwiki': None,
@@ -162,20 +162,20 @@ FLIST_RE = {'dewiki': DE_FLIST_RE, 'enwiki': EN_FLIST_RE, 'eswiki': None,
             'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
             'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
             'euwiki': None, 'glwiki': None, 'simplewiki': None,
-            'iswiki': None, 'fowiki': None
+            'iswiki': None, 'fowiki': None, 'scowiki': None
             }
-            
-# Dictionary of supported languages for Good Article detection   
+
+# Dictionary of supported languages for Good Article detection
 GA_RE = {'dewiki': DE_GA_RE, 'enwiki': EN_GA_RE, 'eswiki': ES_GA_RE,
-        'frwiki': FR_GA_RE, 'itwiki': IT_GA_RE, 'jawiki': JA_GA_RE,
-        'nlwiki': None, 'plwiki': PL_GA_RE, 'ptwiki': PT_GA_RE,
-        'ruwiki': RU_GA_RE, 'zhwiki': None, 'svwiki': None, 'trwiki': None,
-        'fiwiki': None, 'cswiki': None, 'idwiki': None, 'thwiki': None,
-        'arwiki': None, 'kowiki': None, 'hewiki': None, 'nowiki': None,
-        'huwiki': None, 'viwiki': None, 'ukwiki': None, 'dawiki': DA_GA_RE,
-        'fawiki': None, 'rowiki': None, 'cawiki': None, 'bgwiki': None,
-        'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
-        'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
-        'euwiki': None, 'glwiki': None, 'simplewiki': None,
-        'iswiki': IS_GA_RE, 'fowiki': None
-        }
+         'frwiki': FR_GA_RE, 'itwiki': IT_GA_RE, 'jawiki': JA_GA_RE,
+         'nlwiki': None, 'plwiki': PL_GA_RE, 'ptwiki': PT_GA_RE,
+         'ruwiki': RU_GA_RE, 'zhwiki': None, 'svwiki': None, 'trwiki': None,
+         'fiwiki': None, 'cswiki': None, 'idwiki': None, 'thwiki': None,
+         'arwiki': None, 'kowiki': None, 'hewiki': None, 'nowiki': None,
+         'huwiki': None, 'viwiki': None, 'ukwiki': None, 'dawiki': DA_GA_RE,
+         'fawiki': None, 'rowiki': None, 'cawiki': None, 'bgwiki': None,
+         'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
+         'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
+         'euwiki': None, 'glwiki': None, 'simplewiki': None,
+         'iswiki': IS_GA_RE, 'fowiki': None, 'scowiki': None
+         }
