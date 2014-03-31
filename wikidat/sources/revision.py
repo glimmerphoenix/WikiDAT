@@ -328,11 +328,11 @@ class Revision(DataItem):
                                                     #new_user_insert])
 
                 # Case of revision
-                # con.send_query(rev_insert)
+                con.send_query(rev_insert)
                 rev_insert = "".join(["INSERT INTO revision ",
                                       "VALUES", new_rev_insert])
                 # Case of revision_hash
-                # con.send_query(rev_hash)
+                con.send_query(rev_hash)
                 rev_hash = "".join(["INSERT INTO revision_hash ",
                                     "VALUES", new_rev_hash])
                 # Update general rows counter
