@@ -235,9 +235,9 @@ class Revision(DataItem):
             if 'comment' in rev.data_dict and\
                     rev.data_dict['comment'] is not None:
                 rev_insert = "".join([rev_insert, '"',
-                                      rev.data_dict['comment'].\
-                                      replace("\\", "\\\\").\
-                                      replace("'", "\\'").\
+                                      rev.data_dict['comment'].
+                                      replace("\\", "\\\\").
+                                      replace("'", "\\'").
                                       replace('"', '\\"'), '")'])
             else:
                 rev_insert = "".join([rev_insert, "'')"])
@@ -263,7 +263,6 @@ class Revision(DataItem):
         # Retrieve item form intermediate worker
         for new_rev_insert, new_rev_hash in rev_iter:
             total_revs += 1
-            #print "Numero total de revisiones que llegan: " + unicode(total_revs)
             # ### INSERT QUERIES BUILDING ###
             # First iteration
             # Always allow at least one row in extended inserts
