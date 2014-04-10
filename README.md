@@ -34,12 +34,12 @@ MySQLdb (v1.2.3 or later) and lxml (v3.3.1-0 or later).</li>
 <li>Additional R libraries with extra data and functionalities (This list will be updated as new
 functionalities are included in this toolkit):</li> 
 <ul>
-<li>RMySQL: Connect to MySQL dbs from R.</li>
+<li>RMySQL: Connect to MySQL databases from R.</li>
 <li>Hmisc: Frank Harrell's miscelaneous functions (essential).</li>
 <li>car: Companion library for "R Companion to Applied Regression", 2nd ed.</li>
 <li>DAAG: Companion library for "Data Analysis and Graphics using R."</li>
 <li>ineq: Calcualte inequality metrics and graphics.</li>
 <li>ggplot2: A wonderful library to create appealing graphics in R.</li>
 <li>eha: Library for event history and survival analysis.</li>
-<li>zoo: Excellent library to handle timeseries data. </li>
+<li>zoo: Excellent library to handle time series data. </li>
 <ul>
