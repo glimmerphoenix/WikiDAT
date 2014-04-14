@@ -14,7 +14,7 @@ from dump import DumpFile
 from wikidat.utils.dbutils import MySQLDB
 
 
-class WikipediaWorkflow(object):
+class RevisionHistoryWorkflow(object):
     """
     Models workflow to import information from Wikipedia
     database dump files
@@ -171,9 +171,6 @@ if __name__ == '__main__':
     db_user = sys.argv[6]
     db_passw = sys.argv[7]
 
-    if lang == 'enwiki':
-        pass
-    else:
-        workflow = WikipediaWorkflow()
-        workflow.run(path, page_fan, rev_fan, lang,
-                     db_name, db_user, db_passw)
+    workflow = RevisionHistoryWorkflow()
+    workflow.run(path, page_fan, rev_fan, lang,
+                 db_name, db_user, db_passw)
