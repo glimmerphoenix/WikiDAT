@@ -30,10 +30,12 @@ class RevisionDownloader(object):
         html_dates = requests.get(self.target_url)
         soup_dates = BeautifulSoup(html_dates.text)
 
-        self.dump_dates = [link.get('href')
-                           for link in soup_dates.find_all('a')][1:]
-        self.dump_ts = [link.text
-                        for link in soup_dates.find_all('td', 'm')][1:]
+        # Get hyperlinks and timestamps of dumps for each available date
+        # Ignore first line with link to parent folder
+        self.dump_urldate = [link.get('href')
+                             for link in soup_dates.find_all('a')][1:]
+        self.dump_dates = [link.text
+                           for link in soup_dates.find_all('td', 'm')][1:]
         self.match_pattern = ""  # Store re in subclass for type of dump file
         self.dump_dir = language + "_dumps"
         self.dump_paths = []  # List of paths to dumps in local filesystem
