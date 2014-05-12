@@ -14,48 +14,56 @@ from dump import DumpFile
 from wikidat.utils.dbutils import MySQLDB
 
 
-class RevisionHistoryWorkflow(object):
+class ETL(object):
     """
-    Models workflow to import information from Wikipedia
+    Abstract class defining common behaviour for all ETL (Extraction,
+    Tranformation and Load) workflows with Wikipedia data
+    """
+
+    def __init__(self, path=None, page_fan=1, rev_fan=3, lang=None,
+                 db_name=None, db_user=None, db_passw=None):
+        """
+        Initialize new worfklow
+        """
+        self.path = path
+        self.page_fan = page_fan; self.rev_fan = rev_fan; self.lang = lang
+        self.db_name = db_name; self.db_user = db_user
+        self.db_passw = db_passw
+
+
+class PageRevisionETL(ETL):
+    """
+    Models workflow to import page and revision history data from Wikipedia
     database dump files
     """
 
-    def __init__(self):
+    def __init__(self, path=None, page_fan=1, rev_fan=3, lang=None,
+                 db_name=None, db_user=None, db_passw=None):
         """
-        Initialize new Wikipedia workflow
+        Initialize new PageRevision workflow
         """
-        pass
+        super(PageRevisionETL,
+              self).__init(path=path, page_fan=page_fan,
+                           rev_fan=rev_fan, lang=lang, db_name=db_name,
+                           db_user=db_user, db_passw=db_passw)
+        # Create waiting queues for elements to be processed
+        self.page_queue = mp.JoinableQueue()  # Page elements
+        self.revision_queue = mp.JoinableQueue()  # Revision elements
+        self.user_queue = mp.JoinableQueue()  # User ids and names
+        self.page_insert_queue = mp.JoinableQueue()  # Ext. insert blocks page
+        self.rev_insert_queue = mp.JoinableQueue()  # Ext. insert blocks revs
 
-    def run(self, path, page_fan, rev_fan, lang, db_name, db_user,
-            db_passw):
+    def run(self):
         """
-        Define and run workflow to import data from dump files
+        Execute workflow to import revision history data from dump files
 
         The data loading workflow is composed of a number of processor
         elements, which can be:
 
             - Producers: raw input data --> input element queue
             - ConsumerProducer: input element queue --> insert db queue
-            - Consumer: insert db queue --> database (MySQL)
+            - Consumer: insert db queue --> database (MySQL/MariaDB)
         """
-        # Create waiting queues for elements to be processed
-        page_queue = mp.JoinableQueue()
-        revision_queue = mp.JoinableQueue()
-        logitem_queue = mp.JoinableQueue()
-        user_queue = mp.JoinableQueue()
-
-        page_insert_queue = mp.JoinableQueue()
-        rev_insert_queue = mp.JoinableQueue()
-
-        # Create and initialize shared users cache
-        #mgr = mp.Manager()
-        #users_cache = mgr.dict()
-        #users_cache['-1'] = 'NA'
-        #users_cache['0'] = 'Anonymous'
-
-        #page_fan = 1
-        #rev_fan = 1
-
         start = time.time()
         print "Starting program at %s" % (
             time.strftime("%Y-%m-%d %H:%M:%S %Z",
@@ -81,8 +89,8 @@ class RevisionHistoryWorkflow(object):
         dump_file = DumpFile(path)
         xml_reader = Producer(name='xml_reader',
                               target=dump_file.extract_elements,
-                              out_page_queue=page_queue,
-                              out_rev_queue=revision_queue,
+                              out_page_queue=self.page_queue,
+                              out_rev_queue=self.revision_queue,
                               page_consumers=page_fan,
                               rev_consumers=rev_fan)
 
@@ -99,8 +107,8 @@ class RevisionHistoryWorkflow(object):
             process_page = Processor(name='process_page_' + unicode(page_fan),
                                      target=Page().process,
                                      #kwargs=dict(LIVE=False),
-                                     input_queue=page_queue,
-                                     output_queue=page_insert_queue,
+                                     input_queue=self.page_queue,
+                                     output_queue=self.page_insert_queue,
                                      producers=1, consumers=1)
             process_page.start()
             workers.append(process_page)
@@ -113,13 +121,14 @@ class RevisionHistoryWorkflow(object):
                               passwd=db_passw, db=db_name)
             db_wrev.connect()
 
-            process_revision = Processor(name='process_revision_' + unicode(rev_fan),
+            process_revision = Processor(name="".join(['process_revision_',
+                                                       unicode(rev_fan)]),
                                          target=Revision().process,
                                          kwargs=dict(
                                              con=db_wrev,
                                              lang=lang),
-                                         input_queue=revision_queue,
-                                         output_queue=rev_insert_queue,
+                                         input_queue=self.revision_queue,
+                                         output_queue=self.rev_insert_queue,
                                          producers=1, consumers=1)
             process_revision.start()
             workers.append(process_revision)
@@ -128,13 +137,13 @@ class RevisionHistoryWorkflow(object):
         page_insert_db = Consumer(name='insert_page',
                                   target=Page().store_db,
                                   kwargs=dict(con=db_pages),
-                                  input_queue=page_insert_queue,
+                                  input_queue=self.page_insert_queue,
                                   producers=page_fan)
 
         rev_insert_db = Consumer(name='insert_revision',
                                  target=Revision().store_db,
                                  kwargs=dict(con=db_revs),
-                                 input_queue=rev_insert_queue,
+                                 input_queue=self.rev_insert_queue,
                                  producers=rev_fan)
 
         print "And inserting in DB..."
@@ -148,10 +157,10 @@ class RevisionHistoryWorkflow(object):
         page_insert_db.join()
         rev_insert_db.join()
 
-        page_queue.join()
-        revision_queue.join()
-        page_insert_queue.join()
-        rev_insert_queue.join()
+        self.page_queue.join()
+        self.revision_queue.join()
+        self.page_insert_queue.join()
+        self.rev_insert_queue.join()
 
         end = time.time()
         print "All tasks done in %.4f sec." % ((end-start)/1.)
@@ -162,6 +171,31 @@ class RevisionHistoryWorkflow(object):
         for dbcon in db_workers_revs:
             dbcon.close()
 
+
+class PageRevisionMetaETL(ETL):
+    """
+    Implements workflow to extract and store metadata for pages and
+    revisions (stub-meta-history.xml files)
+    """
+    pass
+
+
+class LoggingETL(ETL):
+    """
+    Implements workflow to extract and store information from logged
+    actions in MediaWiki. For instance, user blocks, page protections,
+    new users, flagged revisions reviews, etc.
+    """
+    pass
+
+
+class SQLDumpETL(ETL):
+    """
+    Implements workflow to load native SQL dump files (compressed)
+    """
+    pass
+
+
 if __name__ == '__main__':
     path = sys.argv[1]
     page_fan = int(sys.argv[2])
@@ -171,6 +205,6 @@ if __name__ == '__main__':
     db_user = sys.argv[6]
     db_passw = sys.argv[7]
 
-    workflow = RevisionHistoryWorkflow()
-    workflow.run(path, page_fan, rev_fan, lang,
-                 db_name, db_user, db_passw)
+    workflow = PageRevisionETL(path, page_fan, rev_fan, lang, db_name,
+                               db_user, db_passw)
+    workflow.run()
