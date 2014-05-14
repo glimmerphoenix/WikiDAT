@@ -16,6 +16,22 @@ import os
 import hashlib
 
 
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+
+class DumpIntegrityError(Error):
+    """Exception raised for errors in the input.
+
+    Attributes:
+        msg  -- explanation of the error
+    """
+
+    def __init__(self, msg):
+        self.msg = msg
+
+
 class Downloader(object):
     """
     Download manager for any type of Wikipedia dump file
@@ -32,11 +48,12 @@ class RevDownloader(object):
     history, etc.) which are managed by its subclasses
     """
 
-    def __init__(self, mirror="http://dumps.wikimedia.org/", language):
+    def __init__(self, mirror="http://dumps.wikimedia.org/",
+                 language='scowiki'):
         self.language = language
         self.mirror = mirror
-        self.target_url = "".join([self.mirror, self.language])
-        html_dates = requests.get(self.target_url)
+        self.base_url = "".join([self.mirror, self.language])
+        html_dates = requests.get(self.base_url)
         soup_dates = BeautifulSoup(html_dates.text)
 
         # Get hyperlinks and timestamps of dumps for each available date
@@ -46,11 +63,11 @@ class RevDownloader(object):
         self.dump_dates = [link.text
                            for link in soup_dates.find_all('td', 'm')][1:]
         self.match_pattern = ""  # Store re in subclass for type of dump file
-        self.dump_dir = language + "_dumps"
+        self.dump_basedir = language + "_dumps"
         self.dump_paths = []  # List of paths to dumps in local filesystem
         self.md5_codes = {}  # Dict for md5 codes to verify dump files
 
-    def download(self, dump_date=self.dump_dates[-2]):
+    def download(self, dump_date=None):
         """
         Download all dump files for a given language in their own folder
         Return list of paths to dump files to be processed
@@ -58,9 +75,11 @@ class RevDownloader(object):
         Default target dump_date is latest available dump (index -2, as the
         last item is the generic 'latest' date, not a real date)
         """
+        if dump_date is None:
+            dump_date = self.dump_dates[-2]
         # Obtain content for dump summary page on requested date
-        base_url = "".join([self.target_url, "/", dump_date])
-        html_dumps = requests.get(self.target_url)
+        target_url = "".join([self.base_url, "/", dump_date])
+        html_dumps = requests.get(target_url)
         soup_dumps = BeautifulSoup(html_dumps.text)
 
         # First of all, check that status of dump files is Done (ready)
@@ -75,6 +94,7 @@ class RevDownloader(object):
                           find_all(href=re.compile(self.match_pattern)))]
 
         # Create directory for dump files if needed
+        self.dump_dir = os.path.join(self.dump_basedir, dump_date)
         if not os.path.exists(self.dump_dir):
             os.makedirs(self.dump_dir)
 
@@ -97,9 +117,14 @@ class RevDownloader(object):
             proc_get1.join()
 
         # Verify integrity of downloaded dumps
-        self._verify(dump_date)
+        try:
+            self._verify(dump_date)
+            # TODO: Raise an exception when integrity problems are detected
+        except IntegrityException as e:
+            print "File integrity error({0}): {1}".format(e.errno, e.strerror)
+
         # Return list of paths to dumpfiles for data extraction
-        return self.dump_paths
+        return self.dump_paths, dump_date
 
     def _get_file(self, dump_url, dump_dir):
         """
@@ -139,7 +164,7 @@ class RevDownloader(object):
             # TODO: Compare md5 hash of retrieved file with original
             if file_md5 != original_md5:
                 # Raise error if they do not match
-                pass
+                raise DumpIntegrityError('Dump file integrity error detected!')
 
 
 class RevHistDownloader(RevDownloader):
