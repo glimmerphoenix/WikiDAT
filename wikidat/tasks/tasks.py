@@ -35,12 +35,12 @@ class Task(object):
         self.etl = None
 
 
-class RevisionHistoryTask(object):
+class RevisionHistoryTask(Task):
     """
     A complete, multiprocessing parser of full revision history dump files
     """
 
-    def __init__(self, lang, date=None):
+    def __init__(self, lang='scowiki', date=None):
         """
         Builder method of class RevisionHistoryRetrieval.
         Arguments:
@@ -49,21 +49,32 @@ class RevisionHistoryTask(object):
         """
         super(RevisionHistoryTask, self).__init__(lang=lang, date=date)
 
-    def execute(self, path, page_fan, rev_fan, lang,
-                db_name, db_user, db_passw):
+    def execute(self, page_fan, rev_fan, db_user, db_passw,
+                mirror='http://dumps.wikimedia.org/'):
         """
         Run data retrieval and loading actions
         """
+        # TODO: Use proper logging module to track execution progress
         # Choose corresponding file downloader and etl wrapper
-        self.down = RevHistDownloader(mirror='http://dumps.wikimedia.org',
-                                      lang='scowiki')
-        self.etl = PageRevisionETL(path=path, page_fan=page_fan,
-                                   rev_fan=rev_fan, lang=lang,
-                                   db_name=db_name, db_user=db_user,
-                                   db_passw=db_passw)
-
+        print "Downloading new dump files from %s, for language %s" % (
+              mirror, self.lang)
+        self.down = RevHistDownloader(mirror, self.lang)
         # Donwload latest set of dump files
-        self.down.download()
+        self.paths, self.date = self.down.download(self.date)
+        print "Downloaded files for lang %s, date: %s" % (self.lang, self.date)
 
+        db_name = self.lang + '_' + self.date.strip('/')
+        print "paths: " + unicode(self.paths)
+        self.etl = PageRevisionETL(paths=self.paths, lang=self.lang,
+                                   page_fan=page_fan, rev_fan=rev_fan,
+                                   db_name=db_name,
+                                   db_user=db_user, db_passw=db_passw)
+        print "ETL process for page and revision history defined OK."
+        print "Proceeding with ETL workflow. This may take time..."
         # Extract, process and load information in local DB
         self.etl.run()
+
+        # TODO: logger; ETL step completed, proceeding with data
+        # analysis and visualization
+        print "ETL process finished for language %s and date %s" % (
+              self.lang, self.date)
