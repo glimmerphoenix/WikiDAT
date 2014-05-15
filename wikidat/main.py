@@ -7,3 +7,12 @@ Main file WikiDAT
 @author: jfelipe
 """
 
+from wikidat.tasks import tasks
+
+if __name__ == '__main__':
+
+    # Testing with default options:
+    #   - lang: 'scowiki'
+    #   - date: latest dump
+    task = tasks.RevisionHistoryTask()
+    task.execute(page_fan=1, rev_fan=3, db_user='root', db_passw='phoenix')
