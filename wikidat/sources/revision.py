@@ -354,6 +354,9 @@ class Revision(DataItem):
             total_revs,
             time.strftime("%Y-%m-%d %H:%M:%S %Z",
                           time.localtime()))
+        print "END: %s revisions processed %s." % (
+            total_revs, time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                      time.localtime()))
 
 
 class RevisionText(DataItem):
