@@ -53,6 +53,7 @@ class RevDownloader(object):
         self.language = language
         self.mirror = mirror
         self.base_url = "".join([self.mirror, self.language])
+        print "Base URL is: %s", self.base_url
         html_dates = requests.get(self.base_url)
         soup_dates = BeautifulSoup(html_dates.text)
 
@@ -76,10 +77,11 @@ class RevDownloader(object):
         last item is the generic 'latest' date, not a real date)
         """
         if dump_date is None:
-            dump_date = self.dump_dates[-2]
+            dump_date = self.dump_urldate[-2]
         # Obtain content for dump summary page on requested date
-        target_url = "".join([self.base_url, "/", dump_date])
-        html_dumps = requests.get(target_url)
+        self.target_url = "".join([self.base_url, "/", dump_date])
+        print "Target URL is: %s", self.target_url
+        html_dumps = requests.get(self.target_url)
         soup_dumps = BeautifulSoup(html_dumps.text)
 
         # First of all, check that status of dump files is Done (ready)
@@ -98,67 +100,81 @@ class RevDownloader(object):
         if not os.path.exists(self.dump_dir):
             os.makedirs(self.dump_dir)
 
+# UNCOMMENT AGAIN TO ACTIVATE FILE DOWNLOADING
         for url1, url2 in itertools.izip_longest(self.dump_urls[::2],
                                                  self.dump_urls[1::2],
                                                  fillvalue=None):
+            file_name1 = url1.split('/')[-1]
+            path_file1 = os.path.join(self.dump_dir, file_name1)
+            self.dump_paths.append(path_file1)
+
             # Due to bandwith limitations in WMF mirror servers, you will not
             # be allowed to download more than 2 dump files at the same time
             proc_get1 = mp.Process(target=self._get_file,
-                                   args=(dump_url, self.dump_dir,))
+                                   args=(url1, path_file1,))
             proc_get1.start()
             # Control here for even number of dumps (last element is None)
             if url2 is not None:
+                file_name2 = url1.split('/')[-1]
+                path_file2 = os.path.join(self.dump_dir, file_name2)
+                self.dump_paths.append(path_file2)
                 proc_get2 = mp.Process(target=self._get_file,
-                                       args=(dump_url, self.dump_dir,))
+                                       args=(url2, self.dump_dir,))
                 proc_get2.start()
                 proc_get2.join()
 
             # Wait until all downloads are finished
             proc_get1.join()
 
+        print "Paths in download: " + unicode(self.dump_paths)
         # Verify integrity of downloaded dumps
         try:
-            self._verify(dump_date)
+            self._verify(self.target_url)
             # TODO: Raise an exception when integrity problems are detected
-        except IntegrityException as e:
+        except DumpIntegrityError as e:
             print "File integrity error({0}): {1}".format(e.errno, e.strerror)
 
+        print "File integrity checked, no errors found."
         # Return list of paths to dumpfiles for data extraction
         return self.dump_paths, dump_date
 
-    def _get_file(self, dump_url, dump_dir):
+    def _get_file(self, dump_url, path_file):
         """
         Retrieve individual dump file from dump_url and save it in dump_dir
         """
-        file_name = dump_url.split('/')[-1]
-        dump_file = urllib2.urlopen(base_url + dump_url)
-        path_file = os.path.join(dump_dir, file_name)
-        store_file = open(os.path.join(dump_dir, file_name), 'wb')
+        file_name = os.path.split(path_file)[1]
+        file_url = "".join([self.mirror, dump_url])
+        print "File URL is: %s", file_url
+        dump_file = urllib2.urlopen(file_url)
+        store_file = open(path_file, 'wb')
         file_meta = dump_file.info()
         file_size = int(file_meta.getheaders("Content-Length")[0])
         print "Downloading: %s Bytes: %s" % (file_name, file_size)
-        store_file.write(dump_file.read())
+        while True:
+            buf = dump_file.read(65536)
+            if not buf:
+                break
+            store_file.write(buf)
         store_file.close()
-        self.dump_paths.append(path_file)
 
-    def _verify(self, dump_date):
+    def _verify(self, target_url):
         """
         Verify integrity of downloaded dump files against MD5 checksums
         """
-        html_dumps = requests.get("".join([self.target_url, "/",
-                                           dump_date]))
+        html_dumps = requests.get(target_url)
         soup_dumps = BeautifulSoup(html_dumps.text)
-        md5_url = soup_dumps.find('p', class_='checksum').a['href']
-        md5_codes = requests.get("".join([self.mirror, md5_url])).text
+        md5_link = soup_dumps.find('p', class_='checksum').a['href']
+        md5_url = "".join([self.mirror, md5_link])
+        md5_codes = requests.get(md5_url).text
         md5_codes = md5_codes.split('\n')
 
         for fileitem in md5_codes:
-            f = item.split()
+            f = fileitem.split()
             if len(f) > 0:
                 self.md5_codes[f[1]] = f[0]  # dict[fname] = md5code
 
         for path in self.dump_paths:
-            filename = path.split()[1]  # Get filename from path
+            filename = os.path.split(path)[1]  # Get filename from path
             file_md5 = hashlib.md5(open(path).read()).hexdigest()
             original_md5 = self.md5_codes[filename]
             # TODO: Compare md5 hash of retrieved file with original
