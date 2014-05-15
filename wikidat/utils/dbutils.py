@@ -6,6 +6,7 @@ Created on Sat Mar 29 22:27:02 2014
 """
 import MySQLdb
 import warnings
+import wikidat.sources.db.base_schema as bs
 
 
 class MySQLDB(object):
@@ -15,7 +16,7 @@ class MySQLDB(object):
     TODO: To be substitued by SQLAlchemy, if appropriate
     """
 
-    def __init__(self, db='testwiki', host='localhost', port=3306,
+    def __init__(self, db=None, host='localhost', port=3306,
                  user=None, passwd=None):
         """
         Intilialize new MySQL DB connection object
@@ -32,10 +33,16 @@ class MySQLDB(object):
         """
         Establish a new connection to MySQL DB and initialize new cursor
         """
-        self.con = MySQLdb.Connect(host=self.host, port=self.port,
-                                   user=self.user, passwd=self.passwd,
-                                   db=self.db, charset="utf8",
-                                   use_unicode=True)
+        if self.db is None:
+            self.con = MySQLdb.Connect(host=self.host, port=self.port,
+                                       user=self.user, passwd=self.passwd,
+                                       charset="utf8", use_unicode=True)
+        else:
+            print "Conectando con base de datos: " + self.db
+            self.con = MySQLdb.Connect(host=self.host, port=self.port,
+                                       user=self.user, passwd=self.passwd,
+                                       db=self.db, charset="utf8",
+                                       use_unicode=True)
         self.cursor = self.con.cursor()
 
     def close(self):
@@ -52,6 +59,50 @@ class MySQLDB(object):
             to database %r in host %r at port %r""" % (
             self.db, self.host, self.port)
 
+    def create_database(self, db):
+        """
+        Create schema in local database
+        """
+        # TODO: Parameterize engine with common configuration file
+        # using ArgParse
+        params = {'dbname': db}
+        self.send_query(bs.drop_database.format(**params))
+        self.send_query(bs.create_database.format(**params))
+
+    def create_schema(self):
+        """
+        Create schema in local database
+        """
+        # TODO: Parameterize engine with common configuration file
+        params = {'engine': 'ARIA'}
+        self.send_query(bs.drop_page)
+        self.send_query(bs.create_page.format(**params))
+        self.send_query(bs.drop_revision)
+        self.send_query(bs.create_revision.format(**params))
+        self.send_query(bs.drop_revision_hash)
+        self.send_query(bs.create_revision_hash.format(**params))
+        self.send_query(bs.drop_namespaces)
+        self.send_query(bs.create_namespaces.format(**params))
+        self.send_query(bs.drop_people)
+        self.send_query(bs.create_people.format(**params))
+        self.send_query(bs.drop_logging)
+        self.send_query(bs.create_logging.format(**params))
+
+    def create_pks(self):
+        """
+        Create primary keys for baselines database tables
+        """
+        print "Creating primary key for table page..."
+        self.send_query(bs.pk_page)
+        print "Creating primary key for table revision..."
+        self.send_query(bs.pk_revision)
+        print "Creating primary key for table namespaces..."
+        self.send_query(bs.pk_namespaces)
+        print "Creating primary key for table people..."
+        self.send_query(bs.pk_people)
+        print "Creating primary key for table logging..."
+        self.send_query(bs.pk_logging)
+
     def send_query(self, query):
         """
         Send query to DB. Attempt 'ntimes' consecutive times before giving up
@@ -66,12 +117,12 @@ class MySQLDB(object):
             warnings.simplefilter('ignore', MySQLdb.Warning)
             try:
                 self.cursor.execute(query)
-                self.db.commit()
+                #self.con.commit()
             except (Exception), e:
                 # TODO: This is potentially dangerous, we should
                 # capture and log DB exceptions adequately using
                 # Python logger
-                pass
+                print "Exception in send_query method: ", e
 
     def execute_query(self, query):
         """

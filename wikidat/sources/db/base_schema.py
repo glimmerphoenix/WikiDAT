@@ -10,8 +10,8 @@ Subsequent implementations of this module will use SQLAlchemy to manage
 DB-related tasks
 """
 
-drop_database = """DROP DATABASE IF EXISTS {lang!s}_{date!s}"""
-create_database = """CREATE DATABASE {lang!s}_{date!s}
+drop_database = """DROP DATABASE IF EXISTS {dbname!s}"""
+create_database = """CREATE DATABASE {dbname!s}
                      CHARACTER SET utf8 COLLATE utf8_general_ci"""
 
 # TABLE page: Metadata about pages
