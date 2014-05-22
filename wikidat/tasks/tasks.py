@@ -51,9 +51,15 @@ class RevisionHistoryTask(Task):
         super(RevisionHistoryTask, self).__init__(lang=lang, date=date)
 
     def execute(self, page_fan, rev_fan, db_user, db_passw,
-                mirror='http://dumps.wikimedia.org/'):
+                mirror='http://dumps.wikimedia.your.org/'):
         """
-        Run data retrieval and loading actions
+        Run data retrieval and loading actions.
+        Arguments:
+            - page_fan = Number of workers to fan out page elements parsing
+            - rev_fan = Number of workers to fan out rev elements parsing
+            - db_user = User name to connect to local database
+            - db_passw = Password for database user
+            - mirror = Base URL of site hosting XML dumps
         """
         # TODO: Use proper logging module to track execution progress
         # Choose corresponding file downloader and etl wrapper

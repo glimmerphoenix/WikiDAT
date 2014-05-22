@@ -37,9 +37,14 @@ class Downloader(object):
     Download manager for any type of Wikipedia dump file
     Subclasses will instantiate methods to deal with the specific tasks
     to download each type of dump file.
+
+    Dump files are retrieved from the selected mirror site. Currently
+    http://dumps.wikimedia.your.org, is configured as the default option,
+    as it allows two parallel downloading processes and it hosts up-to-date
+    files from WMF original dump site.
     """
 
-    def __init__(self, mirror="http://dumps.wikimedia.org/",
+    def __init__(self, mirror="http://dumps.wikimedia.your.org/",
                  language='scowiki'):
         self.language = language
         self.mirror = mirror
