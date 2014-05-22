@@ -9,9 +9,9 @@ Download manager for dump files
 from bs4 import BeautifulSoup
 import multiprocessing as mp
 import itertools
-import urllib2
 import requests
 import re
+import sys
 import os
 import hashlib
 
@@ -137,20 +137,33 @@ class Downloader(object):
     def _get_file(self, dump_url, path_file):
         """
         Retrieve individual dump file from dump_url and save it in dump_dir
+        Progress bar taken from:
+        http://stackoverflow.com/questions/15644964/
+        python-progress-bar-and-downloads
         """
         file_name = os.path.split(path_file)[1]
         file_url = "".join([self.mirror, dump_url])
         print "File URL is: %s" % (file_url)
-        dump_file = urllib2.urlopen(file_url)
+        resp_file = requests.get(file_url, stream=True)
+        meta_file_size = resp_file.headers.get('content-length')
+        print "Downloading: %s - [Size: %.2f MB]" % (file_name,
+                                                     meta_file_size/10e6)
+
         store_file = open(path_file, 'wb')
-        file_meta = dump_file.info()
-        file_size = int(file_meta.getheaders("Content-Length")[0])
-        print "Downloading: %s Bytes: %s" % (file_name, file_size)
-        while True:
-            buf = dump_file.read(65536)
-            if not buf:
-                break
-            store_file.write(buf)
+        part_len = 0
+        total_length = int(meta_file_size)
+        for data in resp_file.iter_content(chunk_size=65536):
+            part_len += len(data)
+            store_file.write(data)
+            done = int(50 * part_len / total_length)
+            sys.stdout.write("\r[%s%s] - [%3d %% completed]" % (
+                             '=' * done,
+                             ' ' * (50-done),
+                             round(100 * part_len / total_length, 2))
+                             )
+            sys.stdout.flush()
+        sys.stdout.write("\n")
+        sys.stdout.flush()
         store_file.close()
 
     def _verify(self, target_url):
