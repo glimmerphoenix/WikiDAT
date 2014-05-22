@@ -36,16 +36,7 @@ class Downloader(object):
     """
     Download manager for any type of Wikipedia dump file
     Subclasses will instantiate methods to deal with the specific tasks
-    to download each type of dump file
-    """
-    pass
-
-
-class RevDownloader(object):
-    """
-    Downloads revision dump files from http://dumps.wikimedia.org
-    There are different instances of revision dumps (metadata only, complete
-    history, etc.) which are managed by its subclasses
+    to download each type of dump file.
     """
 
     def __init__(self, mirror="http://dumps.wikimedia.org/",
@@ -119,7 +110,7 @@ class RevDownloader(object):
                 path_file2 = os.path.join(self.dump_dir, file_name2)
                 self.dump_paths.append(path_file2)
                 proc_get2 = mp.Process(target=self._get_file,
-                                       args=(url2, self.dump_dir,))
+                                       args=(url2, path_file2,))
                 proc_get2.start()
                 proc_get2.join()
 
@@ -183,9 +174,9 @@ class RevDownloader(object):
                 raise DumpIntegrityError('Dump file integrity error detected!')
 
 
-class RevHistDownloader(RevDownloader):
+class RevHistDownloader(Downloader):
     """
-    Downloads revision history files from http://dumps.wikimedia.org
+    Downloads revision history files from selected mirror site.
     These are files with complete revision history information (all text)
     """
 
@@ -196,9 +187,9 @@ class RevHistDownloader(RevDownloader):
         self.match_pattern = 'pages-meta-history[\S]*\.xml\.7z'
 
 
-class RevMetaDownloader(RevDownloader):
+class RevMetaDownloader(Downloader):
     """
-    Downloads revision meta files from http://dumps.wikimedia.org
+    Downloads revision meta files from selected mirror site.
     These are files with complete metadata for every revision (including
     rev_len, as stored in Wikipedia DB) but no revision text
     """
