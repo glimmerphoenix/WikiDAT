@@ -49,7 +49,7 @@ class Downloader(object):
         self.language = language
         self.mirror = mirror
         self.base_url = "".join([self.mirror, self.language])
-        print "Base URL is: %s", self.base_url
+        print "Base URL is: %s" % (self.base_url)
         html_dates = requests.get(self.base_url)
         soup_dates = BeautifulSoup(html_dates.text)
 
@@ -76,7 +76,7 @@ class Downloader(object):
             dump_date = self.dump_urldate[-2]
         # Obtain content for dump summary page on requested date
         self.target_url = "".join([self.base_url, "/", dump_date])
-        print "Target URL is: %s", self.target_url
+        print "Target URL is: %s" % (self.target_url)
         html_dumps = requests.get(self.target_url)
         soup_dumps = BeautifulSoup(html_dumps.text)
 
@@ -111,7 +111,7 @@ class Downloader(object):
             proc_get1.start()
             # Control here for even number of dumps (last element is None)
             if url2 is not None:
-                file_name2 = url1.split('/')[-1]
+                file_name2 = url2.split('/')[-1]
                 path_file2 = os.path.join(self.dump_dir, file_name2)
                 self.dump_paths.append(path_file2)
                 proc_get2 = mp.Process(target=self._get_file,
@@ -140,7 +140,7 @@ class Downloader(object):
         """
         file_name = os.path.split(path_file)[1]
         file_url = "".join([self.mirror, dump_url])
-        print "File URL is: %s", file_url
+        print "File URL is: %s" % (file_url)
         dump_file = urllib2.urlopen(file_url)
         store_file = open(path_file, 'wb')
         file_meta = dump_file.info()
