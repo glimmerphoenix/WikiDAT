@@ -14,6 +14,7 @@ import re
 import sys
 import os
 import hashlib
+import logging
 
 
 class Error(Exception):
@@ -96,7 +97,6 @@ class Downloader(object):
         if not os.path.exists(self.dump_dir):
             os.makedirs(self.dump_dir)
 
-# UNCOMMENT AGAIN TO ACTIVATE FILE DOWNLOADING
         for url1, url2 in itertools.izip_longest(self.dump_urls[::2],
                                                  self.dump_urls[1::2],
                                                  fillvalue=None):
@@ -141,29 +141,39 @@ class Downloader(object):
         http://stackoverflow.com/questions/15644964/
         python-progress-bar-and-downloads
         """
+        local_dir = os.path.split(path_file)[0]
         file_name = os.path.split(path_file)[1]
         file_url = "".join([self.mirror, dump_url])
         print "File URL is: %s" % (file_url)
+
+        # Setup log file
+        log_file = os.path.join(local_dir, file_name + ".log")
+        logging.basicConfig(filename=log_file, level=logging.INFO)
+
         resp_file = requests.get(file_url, stream=True)
         meta_file_size = resp_file.headers.get('content-length')
-        print "Downloading: %s - [Size: %.2f MB]" % (file_name,
-                                                     meta_file_size/10e6)
+        log_size_msg = "Downloading: %s - [Size: %.2f MB]" % (file_name,
+                                                    float(meta_file_size)/10e6)
+        print log_size_msg
 
         store_file = open(path_file, 'wb')
         part_len = 0
+        completed = 0
         total_length = int(meta_file_size)
+        logging.info(log_size_msg)
         for data in resp_file.iter_content(chunk_size=65536):
             part_len += len(data)
             store_file.write(data)
             done = int(50 * part_len / total_length)
-            sys.stdout.write("\r[%s%s] - [%3d %% completed]" % (
+            if done > completed:
+                # If there is progress to notify, log it
+                completed = done
+                logging.info("[%s%s] - [%3d %% completed]" % (
                              '=' * done,
                              ' ' * (50-done),
                              round(100 * part_len / total_length, 2))
                              )
-            sys.stdout.flush()
-        sys.stdout.write("\n")
-        sys.stdout.flush()
+        logging.info("File %s downloaded OK.")
         store_file.close()
 
     def _verify(self, target_url):
