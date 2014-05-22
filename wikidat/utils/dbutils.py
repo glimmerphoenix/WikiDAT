@@ -38,7 +38,7 @@ class MySQLDB(object):
                                        user=self.user, passwd=self.passwd,
                                        charset="utf8", use_unicode=True)
         else:
-            print "Conectando con base de datos: " + self.db
+            # print "Connected to database: " + self.db
             self.con = MySQLdb.Connect(host=self.host, port=self.port,
                                        user=self.user, passwd=self.passwd,
                                        db=self.db, charset="utf8",
