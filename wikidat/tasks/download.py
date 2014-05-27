@@ -119,7 +119,7 @@ class RevDownloader(object):
                 path_file2 = os.path.join(self.dump_dir, file_name2)
                 self.dump_paths.append(path_file2)
                 proc_get2 = mp.Process(target=self._get_file,
-                                       args=(url2, self.dump_dir,))
+                                       args=(url2, path_file2,))
                 proc_get2.start()
                 proc_get2.join()
 
