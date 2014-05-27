@@ -16,8 +16,8 @@ multiprocessing-goodness-part-2-class.html
 import multiprocessing as mp
 from page import Page
 from revision import Revision
-from logitem import LogItem
-from user import User
+# from logitem import LogItem
+# from user import User
 
 
 class Producer(mp.Process):
@@ -63,13 +63,13 @@ class Producer(mp.Process):
                 if self.out_rev_queue is not None:
                     self.out_rev_queue.put(item)
 
-            elif isinstance(item, LogItem):
-                if self.out_logitem_queue is not None:
-                    self.out_logitem_queue.put(item)
-
-            elif isinstance(item, User):
-                if self.out_user_queue is not None:
-                    self.output_user_queue.put(item)
+#            elif isinstance(item, LogItem):
+#                if self.out_logitem_queue is not None:
+#                    self.out_logitem_queue.put(item)
+#
+#            elif isinstance(item, User):
+#                if self.out_user_queue is not None:
+#                    self.output_user_queue.put(item)
 
         # Introduce poison pills for every consumer in each active queue
         if self.page_consumers > 0:
@@ -82,15 +82,15 @@ class Producer(mp.Process):
                 self.out_rev_queue.put(None)
             self.out_rev_queue.close()
 
-        if self.logitem_consumers > 0:
-            for x in range(self.logitem_consumers):
-                self.out_logitem_queue.put(None)
-            self.out_logitem_queue.close()
-
-        if self.user_consumers > 0:
-            for x in range(self.user_consumers):
-                self.output_user_queue.put(None)
-            self.output_user_queue.close()
+#        if self.logitem_consumers > 0:
+#            for x in range(self.logitem_consumers):
+#                self.out_logitem_queue.put(None)
+#            self.out_logitem_queue.close()
+#
+#        if self.user_consumers > 0:
+#            for x in range(self.user_consumers):
+#                self.output_user_queue.put(None)
+#            self.output_user_queue.close()
 
 
 class Consumer(mp.Process):

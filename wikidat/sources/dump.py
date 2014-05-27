@@ -9,8 +9,8 @@ import subprocess
 import os
 from page import Page
 from revision import Revision
-from logitem import LogItem
-from user import User
+# from logitem import LogItem
+# from user import User
 from wikidat.utils import maps
 
 
@@ -70,10 +70,11 @@ class DumpFile(object):
                 # dbutils.send_query(con, cursor, ns_insert, 5, log_file)
 
             # Retrieve contributor info to be embedded in current revision
+            # TODO: Handle contributor information properly
             if tag == 'contributor':
-                # Build dict {tag:text} for contributor info
+                 # Build dict {tag:text} for contributor info
                 contrib_dict = {x.tag.split('}')[1]: x.text for x in elem}
-                yield User(data_dict=contrib_dict)
+#                yield User(data_dict=contrib_dict)
 
             if tag == 'revision':
                 # First revision for current page, retrieve page info
@@ -114,7 +115,7 @@ class DumpFile(object):
                 while elem.getprevious() is not None:
                     del elem.getparent()[0]
 
-            if tag == 'logitem':
-                ## TODO: Peform some operations with logitems here
-                logitem_dict = {}
-                yield LogItem(data_dict=logitem_dict)
+#            if tag == 'logitem':
+#                ## TODO: Peform some operations with logitems here
+#                logitem_dict = {}
+#                yield LogItem(data_dict=logitem_dict)
