@@ -115,7 +115,7 @@ class RevDownloader(object):
             proc_get1.start()
             # Control here for even number of dumps (last element is None)
             if url2 is not None:
-                file_name2 = url1.split('/')[-1]
+                file_name2 = url2.split('/')[-1]
                 path_file2 = os.path.join(self.dump_dir, file_name2)
                 self.dump_paths.append(path_file2)
                 proc_get2 = mp.Process(target=self._get_file,
