@@ -8,9 +8,9 @@ import multiprocessing as mp
 import sys
 import time
 from processors import Producer, Processor, Consumer
-from page import Page
-from revision import Revision
-from dump import DumpFile
+from dump import DumpFile, process_xml
+from page import process_pages, store_pages_db
+from revision import process_revs, store_revs_db
 from wikidat.utils.dbutils import MySQLDB
 
 
@@ -47,13 +47,6 @@ class PageRevisionETL(ETL):
               self).__init__(paths=paths, page_fan=page_fan,
                              rev_fan=rev_fan, lang=lang, db_name=db_name,
                              db_user=db_user, db_passw=db_passw)
-
-        # Create waiting queues for elements to be processed
-        self.page_queue = mp.JoinableQueue()  # Page elements
-        self.revision_queue = mp.JoinableQueue()  # Revision elements
-        self.user_queue = mp.JoinableQueue()  # User ids and names
-        self.page_insert_queue = mp.JoinableQueue()  # Ext. insert blocks page
-        self.rev_insert_queue = mp.JoinableQueue()  # Ext. insert blocks revs
 
         # DB SCHEMA PREPARATION
         db_create = MySQLDB(host='localhost', port=3306, user=db_user,
@@ -101,12 +94,21 @@ class PageRevisionETL(ETL):
 
         # DATA EXTRACTION
         for path in self.paths:
+            # Create waiting queues for elements to be processed
+            page_queue = mp.JoinableQueue()  # Page elements
+            revision_queue = mp.JoinableQueue()  # Revision elements
+#            user_queue = mp.JoinableQueue()  # User ids and names
+            page_insert_queue = mp.JoinableQueue()  # Ext. insert blocks page
+            rev_insert_queue = mp.JoinableQueue()  # Ext. insert blocks revs
+
             # Start subprocess to extract elements from revision dump file
             dump_file = DumpFile(path)
             xml_reader = Producer(name='xml_reader',
-                                  target=dump_file.extract_elements,
-                                  out_page_queue=self.page_queue,
-                                  out_rev_queue=self.revision_queue,
+                                  target=process_xml,
+                                  kwargs=dict(
+                                      dump_file=dump_file),
+                                  out_page_queue=page_queue,
+                                  out_rev_queue=revision_queue,
                                   page_consumers=self.page_fan,
                                   rev_consumers=self.rev_fan)
 
@@ -121,10 +123,10 @@ class PageRevisionETL(ETL):
             for worker in range(self.page_fan):
                 print "page worker num. ", worker, "started"
                 process_page = Processor(name='process_page_' + unicode(self.page_fan),
-                                         target=Page().process,
+                                         target=process_pages,
                                          #kwargs=dict(LIVE=False),
-                                         input_queue=self.page_queue,
-                                         output_queue=self.page_insert_queue,
+                                         input_queue=page_queue,
+                                         output_queue=page_insert_queue,
                                          producers=1, consumers=1)
                 process_page.start()
                 workers.append(process_page)
@@ -139,27 +141,27 @@ class PageRevisionETL(ETL):
 
                 process_revision = Processor(name="".join(['process_revision_',
                                                            unicode(self.rev_fan)]),
-                                             target=Revision().process,
+                                             target=process_revs,
                                              kwargs=dict(
                                                  con=db_wrev,
                                                  lang=self.lang),
-                                             input_queue=self.revision_queue,
-                                             output_queue=self.rev_insert_queue,
+                                             input_queue=revision_queue,
+                                             output_queue=rev_insert_queue,
                                              producers=1, consumers=1)
                 process_revision.start()
                 workers.append(process_revision)
                 db_workers_revs.append(db_wrev)
     
             page_insert_db = Consumer(name='insert_page',
-                                      target=Page().store_db,
+                                      target=store_pages_db,
                                       kwargs=dict(con=db_pages),
-                                      input_queue=self.page_insert_queue,
+                                      input_queue=page_insert_queue,
                                       producers=self.page_fan)
 
             rev_insert_db = Consumer(name='insert_revision',
-                                     target=Revision().store_db,
+                                     target=store_revs_db,
                                      kwargs=dict(con=db_revs),
-                                     input_queue=self.rev_insert_queue,
+                                     input_queue=rev_insert_queue,
                                      producers=self.rev_fan)
 
             print "And inserting in DB..."
@@ -177,6 +179,13 @@ class PageRevisionETL(ETL):
             self.revision_queue.join()
             self.page_insert_queue.join()
             self.rev_insert_queue.join()
+
+            # Delete queues used with this dump file
+            del page_queue
+            del revision_queue
+#           del user_queue
+            del page_insert_queue
+            del rev_insert_queue
 
         end = time.time()
         print "All tasks done in %.4f sec." % ((end-start)/1.)

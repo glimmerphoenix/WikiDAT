@@ -14,5 +14,5 @@ if __name__ == '__main__':
     # Testing with default options:
     #   - lang: 'scowiki'
     #   - date: latest dump
-    task = tasks.RevisionHistoryTask(lang='scowiki')
+    task = tasks.RevisionHistoryTask(lang='ruwiki')
     task.execute(page_fan=1, rev_fan=3, db_user='auser', db_passw='apassw')

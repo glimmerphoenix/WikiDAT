@@ -12,7 +12,7 @@ class LogItem(DataItem):
     Models LogItem elements extracted from the 'logging' DB table in Wikipedia
     """
 
-    def __init__(self, data_dict, lang):
+    def __init__(self, *args, **kwargs):
         """
         Constructor method for Page objects. Must forward params to
         parent class DataItem (mandatory inheritance)
@@ -23,4 +23,4 @@ class LogItem(DataItem):
         lang: identifier of Wikipedia language edition from which this
         element comes from (e.g. frwiki, eswiki, dewiki...)
         """
-        super(LogItem, self).__init__(data_dict=data_dict, lang=lang)
+        super(LogItem, self).__init__(*args, **kwargs)

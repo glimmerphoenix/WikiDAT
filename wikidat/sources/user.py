@@ -14,7 +14,7 @@ class User(DataItem):
     Models Page elements in Wikipedia database dumps
     """
 
-    def __init__(self, data_dict={}, lang=None):
+    def __init__(self, *args, **kwargs):
         """
         Constructor method for User objects. Must forward params to
         parent class DataItem (mandatory inheritance)
@@ -25,4 +25,4 @@ class User(DataItem):
         lang: identifier of Wikipedia language edition from which this
         element comes from (e.g. frwiki, eswiki, dewiki...)
         """
-        super(User, self).__init__(data_dict=data_dict, lang=lang)
+        super(User, self).__init__(*args, **kwargs)

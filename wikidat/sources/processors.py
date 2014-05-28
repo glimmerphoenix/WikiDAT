@@ -55,11 +55,11 @@ class Producer(mp.Process):
         for item in target(*self.args, **self.kwargs):
             # Classify outcome elements in their corresponding queue
             # for later processing
-            if isinstance(item, Page):
+            if item['item_type'] == 'page':
                 if self.out_page_queue is not None:
                     self.out_page_queue.put(item)
 
-            elif isinstance(item, Revision):
+            elif item['item_type'] == 'revision':
                 if self.out_rev_queue is not None:
                     self.out_rev_queue.put(item)
 
