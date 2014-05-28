@@ -13,12 +13,14 @@ http://slott-softwarearchitect.blogspot.com.es/2012/02/
 multiprocessing-goodness-part-2-class.html
 """
 
+import time
 import multiprocessing as mp
-from page import Page
-from revision import Revision
+import zmq
+from wikidat.utils.comutils import send_ujson, recv_ujson
+# from page import Page
+# from revision import Revision
 # from logitem import LogItem
 # from user import User
-
 
 class Producer(mp.Process):
     """
@@ -31,37 +33,44 @@ class Producer(mp.Process):
     page and another one for revision elements
     """
     def __init__(self, group=None, target=None, name=None, args=None,
-                 kwargs=None, out_page_queue=None,
-                 out_rev_queue=None, out_logitem_queue=None,
-                 out_user_queue=None,
-                 page_consumers=0, rev_consumers=0, logitem_consumers=0,
-                 user_consumers=0):
+                 kwargs=None, page_consumers=0, rev_consumers=0,
+                 logitem_consumers=0, user_consumers=0,
+                 push_pages_port=None, push_revs_port=None):
 
         super(Producer, self).__init__(name=name)
         self.target = target
         self.args = args if args is not None else []
         self.kwargs = kwargs if kwargs is not None else {}
-        self.out_page_queue = out_page_queue
-        self.out_rev_queue = out_rev_queue
-        self.out_logitem_queue = out_logitem_queue
-        self.out_user_queue = out_user_queue
         self.page_consumers = page_consumers
         self.rev_consumers = rev_consumers
         self.logitem_consumers = logitem_consumers
         self.user_consumers = user_consumers
+        self.push_pages_port = push_pages_port
+        self.push_revs_port = push_revs_port
 
     def run(self):
         target = self.target
+
+        context = zmq.Context()
+        # Set up sending channel for page elements
+        channel_pages_send = context.socket(zmq.PUSH)
+        channel_pages_send.bind("tcp://127.0.0.1:" + str(self.push_pages_port))
+
+        # Set up sending channel for revision elements
+        channel_revs_send = context.socket(zmq.PUSH)
+        channel_revs_send.bind("tcp://127.0.0.1:" + str(self.push_revs_port))
+
+        # Wait a second to wake up and connect
+        time.sleep(1)
+
         for item in target(*self.args, **self.kwargs):
             # Classify outcome elements in their corresponding queue
             # for later processing
             if item['item_type'] == 'page':
-                if self.out_page_queue is not None:
-                    self.out_page_queue.put(item)
+                send_ujson(channel_pages_send, item)
 
             elif item['item_type'] == 'revision':
-                if self.out_rev_queue is not None:
-                    self.out_rev_queue.put(item)
+                send_ujson(channel_revs_send, item)
 
 #            elif isinstance(item, LogItem):
 #                if self.out_logitem_queue is not None:
@@ -74,23 +83,19 @@ class Producer(mp.Process):
         # Introduce poison pills for every consumer in each active queue
         if self.page_consumers > 0:
             for x in range(self.page_consumers):
-                self.out_page_queue.put(None)
-            self.out_page_queue.close()
+                # Send poison pills to page workers
+                send_ujson(channel_pages_send, None)
+            # Close pages downstream channel
+            channel_pages_send.close()
 
         if self.rev_consumers > 0:
             for x in range(self.rev_consumers):
-                self.out_rev_queue.put(None)
-            self.out_rev_queue.close()
+                # Send poison pills to revision workers
+                send_ujson(channel_revs_send, None)
+            # Close revisions downstream channel
+            channel_revs_send.close()
 
-#        if self.logitem_consumers > 0:
-#            for x in range(self.logitem_consumers):
-#                self.out_logitem_queue.put(None)
-#            self.out_logitem_queue.close()
-#
-#        if self.user_consumers > 0:
-#            for x in range(self.user_consumers):
-#                self.output_user_queue.put(None)
-#            self.output_user_queue.close()
+        context.term()
 
 
 class Consumer(mp.Process):
@@ -101,22 +106,29 @@ class Consumer(mp.Process):
     only argument.  Therefore, the args value is not used here.
     """
     def __init__(self, group=None, target=None, name=None, args=None,
-                 kwargs=None, input_queue=None, producers=0):
+                 kwargs=None, producers=0, pull_port=None):
 
         super(Consumer, self).__init__(name=name)
         self.target = target
         self.args = args if args is not None else []
         self.kwargs = kwargs if kwargs is not None else {}
-        self.input_queue = input_queue
         self.producers = producers
+        self.pull_port = pull_port
 
     def items(self):
+        context = zmq.Context()
+        channel_receiver = context.socket(zmq.PULL)
+        channel_receiver.bind("tcp://127.0.0.1:"+str(self.pull_port))
+
         while self.producers != 0:
-            for item in iter(self.input_queue.get, None):
+            item = recv_ujson(channel_receiver)
+            while item is not None:
                 yield item
-                self.input_queue.task_done()
-            self.input_queue.task_done()
+                item = recv_ujson(channel_receiver)
             self.producers -= 1
+
+        channel_receiver.close()
+        context.term()
 
     def run(self):
         target = self.target
@@ -132,33 +144,43 @@ class Processor(mp.Process):
     only argument.  Therefore, the args value is not used here.
     """
     def __init__(self, group=None, target=None, name=None, args=None,
-                 kwargs=None, input_queue=None, producers=0,
-                 output_queue=None, consumers=0):
+                 kwargs=None, producers=0, consumers=0,
+                 pull_port=None, push_port=None):
         super(Processor, self).__init__(name=name)
         self.target = target  # String with method name, not method itself
-        #self.args= args if args is not None else []
+        self.args = args if args is not None else []
         self.kwargs = kwargs if kwargs is not None else {}
-        self.input_queue = input_queue
         self.producers = producers
-        self.output_queue = output_queue
         self.consumers = consumers
+        self.pull_port = pull_port
+        self.push_port = push_port
 
     def items(self):
-        while self.producers != 0:
-            for item in iter(self.input_queue.get, None):
-                yield item
-                self.input_queue.task_done()
+        context = zmq.Context()
+        channel_receiver = context.socket(zmq.PULL)
+        channel_receiver.connect("tcp://127.0.0.1:"+str(self.pull_port))
 
-            self.input_queue.task_done()
+        while self.producers != 0:
+            item = recv_ujson(channel_receiver)
+            while item is not None:
+                yield item
+                item = recv_ujson(channel_receiver)
             self.producers -= 1
+
+        channel_receiver.close()
+        context.term()
 
     def run(self):
         target = self.target
+        context = zmq.Context()
+        channel_send = context.socket(zmq.PUSH)
+        channel_send.connect("tcp://127.0.0.1:" + str(self.push_port))
 
         for item in target(self.items(), **self.kwargs):
-            self.output_queue.put(item)
+            send_ujson(channel_send, item)
 
         for x in range(self.consumers):
-            self.output_queue.put(None)
+            send_ujson(channel_send, None)
 
-        self.output_queue.close()
+        channel_send.close()
+        context.term()
