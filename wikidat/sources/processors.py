@@ -22,6 +22,7 @@ from wikidat.utils.comutils import send_ujson, recv_ujson
 # from logitem import LogItem
 # from user import User
 
+
 class Producer(mp.Process):
     """
     Produces items into a Queue.
@@ -95,8 +96,6 @@ class Producer(mp.Process):
             # Close revisions downstream channel
             channel_revs_send.close()
 
-        context.term()
-
 
 class Consumer(mp.Process):
     """
@@ -120,6 +119,9 @@ class Consumer(mp.Process):
         channel_receiver = context.socket(zmq.PULL)
         channel_receiver.bind("tcp://127.0.0.1:"+str(self.pull_port))
 
+        # Wait a second to wake up and connect
+        time.sleep(1)
+
         while self.producers != 0:
             item = recv_ujson(channel_receiver)
             while item is not None:
@@ -128,7 +130,6 @@ class Consumer(mp.Process):
             self.producers -= 1
 
         channel_receiver.close()
-        context.term()
 
     def run(self):
         target = self.target
@@ -160,6 +161,9 @@ class Processor(mp.Process):
         channel_receiver = context.socket(zmq.PULL)
         channel_receiver.connect("tcp://127.0.0.1:"+str(self.pull_port))
 
+        # Wait a second to wake up and connect
+        time.sleep(1)
+
         while self.producers != 0:
             item = recv_ujson(channel_receiver)
             while item is not None:
@@ -168,13 +172,15 @@ class Processor(mp.Process):
             self.producers -= 1
 
         channel_receiver.close()
-        context.term()
 
     def run(self):
         target = self.target
         context = zmq.Context()
         channel_send = context.socket(zmq.PUSH)
         channel_send.connect("tcp://127.0.0.1:" + str(self.push_port))
+
+        # Wait a second to wake up and connect
+        time.sleep(1)
 
         for item in target(self.items(), **self.kwargs):
             send_ujson(channel_send, item)
@@ -183,4 +189,3 @@ class Processor(mp.Process):
             send_ujson(channel_send, None)
 
         channel_send.close()
-        context.term()
