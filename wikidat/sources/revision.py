@@ -9,6 +9,8 @@ import time
 from wikidat.utils import maps
 from data_item import DataItem
 
+import logging
+
 
 class Revision(DataItem):
     """
@@ -259,12 +261,15 @@ def process_revs(rev_iter, con=None, lang=None):
         text_hash = None
 
 
-def store_revs_db(rev_iter, con=None, size_cache=100):
+def store_revs_db(rev_iter, con=None, log_file=None, size_cache=100):
     """
     Processor to insert revision info in DB
     """
     rev_insert_rows = 0
     total_revs = 0
+
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
+    logging.info("Starting parsing process...")
 
     # Retrieve item form intermediate worker
     for new_rev_insert, new_rev_hash in rev_iter:
@@ -341,14 +346,18 @@ def store_revs_db(rev_iter, con=None, size_cache=100):
             rev_hash = "".join(["INSERT INTO revision_hash ",
                                 "VALUES", new_rev_hash])
             # Update general rows counter
-            #print "total revisions: " + unicode(total_revs)
+            # print "total revisions: " + unicode(total_revs)
             rev_insert_rows = 1
 
-        if total_revs % 1000 == 0:
-            print "%s revisions %s." % (
-                total_revs,
-                time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                              time.localtime()))
+        if total_revs % 10000 == 0:
+            logging.info("%s revisions %s." % (
+                         total_revs,
+                         time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                       time.localtime())))
+#            print "%s revisions %s." % (
+#                total_revs,
+#                time.strftime("%Y-%m-%d %H:%M:%S %Z",
+#                              time.localtime()))
 
     # Send last extended insert for revision
     con.send_query(rev_insert)
@@ -356,13 +365,22 @@ def store_revs_db(rev_iter, con=None, size_cache=100):
     # Send last extended insert for revision_hash
     con.send_query(rev_hash)
 
-    print "%s revisions %s." % (
-        total_revs,
-        time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                      time.localtime()))
-    print "END: %s revisions processed %s." % (
-        total_revs, time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                  time.localtime()))
+    logging.info("%s revisions %s." % (
+                 total_revs,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+    logging.info("END: %s revisions processed %s." % (
+                 total_revs,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+
+#    print "%s revisions %s." % (
+#        total_revs,
+#        time.strftime("%Y-%m-%d %H:%M:%S %Z",
+#                      time.localtime()))
+#    print "END: %s revisions processed %s." % (
+#        total_revs, time.strftime("%Y-%m-%d %H:%M:%S %Z",
+#                                  time.localtime()))
 
 
 class RevisionText(DataItem):

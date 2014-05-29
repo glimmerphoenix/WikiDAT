@@ -6,6 +6,7 @@ Created on Sat Mar 29 22:14:09 2014
 """
 import time
 from data_item import DataItem
+import logging
 
 
 class Page(DataItem):
@@ -51,7 +52,7 @@ def process_pages(pages_iter):
         yield new_page_insert
 
 
-def store_pages_db(pages_iter, con=None, size_cache=200):
+def store_pages_db(pages_iter, con=None, log_file=None, size_cache=200):
     """
     Class method, processor to insert Page info in DB
 
@@ -61,10 +62,14 @@ def store_pages_db(pages_iter, con=None, size_cache=200):
     """
     page_insert_rows = 0
     total_pages = 0
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
     print "Starting data loading at %s." % (
         time.strftime("%Y-%m-%d %H:%M:%S %Z",
                       time.localtime()))
+    logging.info("Starting data loading at %s." % (
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
 
     for new_page_insert in pages_iter:
         # Build extended insert for Page objects
@@ -94,6 +99,10 @@ def store_pages_db(pages_iter, con=None, size_cache=200):
 
     # Send last extended insert for page
     con.send_query(page_insert)
+    logging.info("END: %s pages processed %s." % (
+                 total_pages,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
     print "END: %s pages processed %s." % (
         total_pages, time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                    time.localtime()))

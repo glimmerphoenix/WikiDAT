@@ -6,6 +6,7 @@ Created on Sun Mar 30 18:09:16 2014
 """
 # import multiprocessing as mp
 import sys
+import os
 import time
 from processors import Producer, Processor, Consumer
 from dump import DumpFile, process_xml
@@ -140,16 +141,21 @@ class PageRevisionETL(ETL):
                 process_revision.start()
                 workers.append(process_revision)
                 db_workers_revs.append(db_wrev)
-    
+
+            log_file = os.path.join(os.path.split(path)[0],
+                                    'logs',
+                                    os.path.split(path)[1] + '.log')
             page_insert_db = Consumer(name='insert_page',
                                       target=store_pages_db,
-                                      kwargs=dict(con=db_pages),
+                                      kwargs=dict(con=db_pages,
+                                                  log_file=log_file),
                                       producers=self.page_fan,
                                       pull_port=5559)
 
             rev_insert_db = Consumer(name='insert_revision',
                                      target=store_revs_db,
-                                     kwargs=dict(con=db_revs),
+                                     kwargs=dict(con=db_revs,
+                                                 log_file=log_file),
                                      producers=self.rev_fan,
                                      pull_port=5560)
 
