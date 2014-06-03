@@ -123,10 +123,11 @@ class Consumer(mp.Process):
         time.sleep(1)
 
         while self.producers != 0:
-            item = recv_ujson(channel_receiver)
-            while item is not None:
-                yield item
+            while True:
                 item = recv_ujson(channel_receiver)
+                if item is None:
+                    break
+                yield item
             self.producers -= 1
 
         channel_receiver.close()
@@ -165,10 +166,11 @@ class Processor(mp.Process):
         time.sleep(1)
 
         while self.producers != 0:
-            item = recv_ujson(channel_receiver)
-            while item is not None:
-                yield item
+            while True:
                 item = recv_ujson(channel_receiver)
+                if item is None:
+                    break
+                yield item
             self.producers -= 1
 
         channel_receiver.close()
