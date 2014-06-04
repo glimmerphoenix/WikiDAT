@@ -122,7 +122,7 @@ class Consumer(mp.Process):
         # Wait a second to wake up and connect
         time.sleep(1)
 
-        while self.producers != 0:
+        while self.producers > 0:
             while True:
                 item = recv_ujson(channel_receiver)
                 if item is None:
@@ -165,7 +165,7 @@ class Processor(mp.Process):
         # Wait a second to wake up and connect
         time.sleep(1)
 
-        while self.producers != 0:
+        while self.producers > 0:
             while True:
                 item = recv_ujson(channel_receiver)
                 if item is None:
