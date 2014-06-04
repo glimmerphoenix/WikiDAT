@@ -90,7 +90,9 @@ class PageRevisionETL(ETL):
                           passwd=self.db_passw, db=self.db_name)
         db_revs.connect()
 
-#        self.paths = ['/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history4.xml-p000100559p000104998.7z']
+        self.paths = ['/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history4.xml-p000100559p000104998.7z',
+                      '/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history1.xml-p000000010p000003263.7z',
+                      '/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history1.xml-p000003264p000005405.7z']
 
         # DATA EXTRACTION
         for path in self.paths:

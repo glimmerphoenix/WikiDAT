@@ -36,7 +36,8 @@ class Producer(mp.Process):
     def __init__(self, group=None, target=None, name=None, args=None,
                  kwargs=None, page_consumers=0, rev_consumers=0,
                  logitem_consumers=0, user_consumers=0,
-                 push_pages_port=None, push_revs_port=None):
+                 push_pages_port=None, push_revs_port=None,
+                 control_port=None):
 
         super(Producer, self).__init__(name=name)
         self.target = target
@@ -48,6 +49,7 @@ class Producer(mp.Process):
         self.user_consumers = user_consumers
         self.push_pages_port = push_pages_port
         self.push_revs_port = push_revs_port
+        self.control_port = control_port
 
     def run(self):
         target = self.target
@@ -55,11 +57,14 @@ class Producer(mp.Process):
         context = zmq.Context()
         # Set up sending channel for page elements
         channel_pages_send = context.socket(zmq.PUSH)
-        channel_pages_send.bind("tcp://127.0.0.1:" + str(self.push_pages_port))
+        channel_pages_send.bind("tcp://127.0.0.1:%s" % self.push_pages_port)
 
         # Set up sending channel for revision elements
         channel_revs_send = context.socket(zmq.PUSH)
-        channel_revs_send.bind("tcp://127.0.0.1:" + str(self.push_revs_port))
+        channel_revs_send.bind("tcp://127.0.0.1:%s" % self.push_revs_port)
+
+        channel_control = context.socket(zmq.PUB)
+        channel_control.bind("tcp://127.0.0.1:%s" % self.control_port)
 
         # Wait a second to wake up and connect
         time.sleep(1)
@@ -81,20 +86,18 @@ class Producer(mp.Process):
 #                if self.out_user_queue is not None:
 #                    self.output_user_queue.put(item)
 
-        # Introduce poison pills for every consumer in each active queue
-        if self.page_consumers > 0:
+        # Wait few seconds to let workers empty data pipeline
+        time.sleep(20)
+#        channel_pages_send.close()
+#        channel_revs_send.close()
+
+        # Send workers STOP messages and quit
+        if self.page_consumers > 0 and self.rev_consumers > 0:
             for x in range(self.page_consumers):
                 # Send poison pills to page workers
-                send_ujson(channel_pages_send, None)
-            # Close pages downstream channel
-            channel_pages_send.close()
-
-        if self.rev_consumers > 0:
-            for x in range(self.rev_consumers):
-                # Send poison pills to revision workers
-                send_ujson(channel_revs_send, None)
-            # Close revisions downstream channel
-            channel_revs_send.close()
+                channel_control.send('STOP')
+        time.sleep(5)
+#        channel_control.close()
 
 
 class Consumer(mp.Process):
@@ -116,21 +119,21 @@ class Consumer(mp.Process):
 
     def items(self):
         context = zmq.Context()
-        channel_receiver = context.socket(zmq.PULL)
-        channel_receiver.bind("tcp://127.0.0.1:"+str(self.pull_port))
+        data_recv = context.socket(zmq.PULL)
+        data_recv.bind("tcp://127.0.0.1:"+str(self.pull_port))
 
         # Wait a second to wake up and connect
         time.sleep(1)
 
         while self.producers > 0:
             while True:
-                item = recv_ujson(channel_receiver)
-                if item is None:
+                item = recv_ujson(data_recv)
+                if item == 'STOP':
                     break
                 yield item
             self.producers -= 1
 
-        channel_receiver.close()
+#        data_recv.close()
 
     def run(self):
         target = self.target
@@ -147,7 +150,7 @@ class Processor(mp.Process):
     """
     def __init__(self, group=None, target=None, name=None, args=None,
                  kwargs=None, producers=0, consumers=0,
-                 pull_port=None, push_port=None):
+                 pull_port=None, push_port=None, control_port=None):
         super(Processor, self).__init__(name=name)
         self.target = target  # String with method name, not method itself
         self.args = args if args is not None else []
@@ -156,24 +159,42 @@ class Processor(mp.Process):
         self.consumers = consumers
         self.pull_port = pull_port
         self.push_port = push_port
+        self.control_port = control_port
 
     def items(self):
         context = zmq.Context()
-        channel_receiver = context.socket(zmq.PULL)
-        channel_receiver.connect("tcp://127.0.0.1:"+str(self.pull_port))
+        data_recv = context.socket(zmq.PULL)
+        data_recv.connect("tcp://127.0.0.1:%s" % self.pull_port)
+
+        control_sub = context.socket(zmq.SUB)
+        control_sub.connect("tcp://127.0.0.1:%s" % self.control_port)
+        control_sub.setsockopt(zmq.SUBSCRIBE, "STOP")
 
         # Wait a second to wake up and connect
         time.sleep(1)
 
+        # Initialize poll set
+        poller = zmq.Poller()
+        poller.register(data_recv, zmq.POLLIN)
+        poller.register(control_sub, zmq.POLLIN)
+
         while self.producers > 0:
+            # Work on requests from pipelining and control channel
             while True:
-                item = recv_ujson(channel_receiver)
-                if item is None:
-                    break
-                yield item
+                socks = dict(poller.poll())
+                if data_recv in socks and socks[data_recv] == zmq.POLLIN:
+                    yield(recv_ujson(data_recv))
+
+                if control_sub in socks and socks[control_sub] == zmq.POLLIN:
+                    message = control_sub.recv()
+                    if message == "STOP":
+                        print "Recieved exit command, client %s stop recieving messages" % self.name
+                        break  # Exit poll loop
+
             self.producers -= 1
 
-        channel_receiver.close()
+#        data_recv.close()
+#        control_sub.close()
 
     def run(self):
         target = self.target
@@ -188,6 +209,6 @@ class Processor(mp.Process):
             send_ujson(channel_send, item)
 
         for x in range(self.consumers):
-            send_ujson(channel_send, None)
+            send_ujson(channel_send, 'STOP')
 
-        channel_send.close()
+#        channel_send.close()
