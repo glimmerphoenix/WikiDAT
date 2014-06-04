@@ -90,6 +90,8 @@ class PageRevisionETL(ETL):
                           passwd=self.db_passw, db=self.db_name)
         db_revs.connect()
 
+#        self.paths = ['/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history4.xml-p000100559p000104998.7z']
+
         # DATA EXTRACTION
         for path in self.paths:
             # Start subprocess to extract elements from revision dump file
@@ -101,7 +103,8 @@ class PageRevisionETL(ETL):
                                   page_consumers=self.page_fan,
                                   rev_consumers=self.rev_fan,
                                   push_pages_port=5557,
-                                  push_revs_port=5558)
+                                  push_revs_port=5558,
+                                  control_port=10000)
 
             print "Starting data extraction from XML revision history file"
             print "Dump file: " + path
@@ -113,11 +116,12 @@ class PageRevisionETL(ETL):
             # Create and start page processes
             for worker in range(self.page_fan):
                 print "page worker num. ", worker, "started"
-                process_page = Processor(name='process_page_' + unicode(self.page_fan),
+                process_page = Processor(name='process_page_' + unicode(worker),
                                          target=process_pages,
                                          producers=1, consumers=1,
                                          pull_port=5557,
-                                         push_port=5559)
+                                         push_port=5559,
+                                         control_port=10000)
                 process_page.start()
                 workers.append(process_page)
 
@@ -130,14 +134,15 @@ class PageRevisionETL(ETL):
                 db_wrev.connect()
 
                 process_revision = Processor(name="".join(['process_revision_',
-                                                           unicode(self.rev_fan)]),
+                                                           unicode(worker)]),
                                              target=process_revs,
                                              kwargs=dict(
                                                  con=db_wrev,
                                                  lang=self.lang),
                                              producers=1, consumers=1,
                                              pull_port=5558,
-                                             push_port=5560)
+                                             push_port=5560,
+                                             control_port=10000)
                 process_revision.start()
                 workers.append(process_revision)
                 db_workers_revs.append(db_wrev)
