@@ -261,7 +261,7 @@ def process_revs(rev_iter, con=None, lang=None):
         text_hash = None
 
 
-def store_revs_db(rev_iter, con=None, log_file=None, size_cache=100):
+def store_revs_db(rev_iter, con=None, log_file=None, size_cache=500):
     """
     Processor to insert revision info in DB
     """

@@ -52,7 +52,7 @@ def process_pages(pages_iter):
         yield new_page_insert
 
 
-def store_pages_db(pages_iter, con=None, log_file=None, size_cache=200):
+def store_pages_db(pages_iter, con=None, log_file=None, size_cache=500):
     """
     Class method, processor to insert Page info in DB
 
