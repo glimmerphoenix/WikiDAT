@@ -7,8 +7,8 @@ Created on Sat Mar 29 22:13:19 2014
 from lxml import etree
 import subprocess
 import os
-# from page import Page
-# from revision import Revision
+from page import Page
+from revision import Revision
 # from logitem import LogItem
 # from user import User
 from wikidat.utils import maps
@@ -93,7 +93,7 @@ def process_xml(dump_file=None):
             rev_dict['rev_parent_id'] = rev_parent_id
 
             rev_dict['item_type'] = 'revision'
-            yield rev_dict
+            yield Revision(rev_dict)
 
             # Save rev_id (rev_parent_id of the next revision item)
             rev_parent_id = rev_dict['id']
@@ -107,7 +107,7 @@ def process_xml(dump_file=None):
 
         if tag == 'page':
             page_dict['item_type'] = 'page'
-            yield page_dict
+            yield Page(page_dict)
 
             page_dict = None
             rev_parent_id = None

@@ -17,8 +17,8 @@ import time
 import multiprocessing as mp
 import zmq
 from wikidat.utils.comutils import send_ujson, recv_ujson
-# from page import Page
-# from revision import Revision
+from page import Page
+from revision import Revision
 # from logitem import LogItem
 # from user import User
 
@@ -72,10 +72,10 @@ class Producer(mp.Process):
         for item in target(*self.args, **self.kwargs):
             # Classify outcome elements in their corresponding queue
             # for later processing
-            if item['item_type'] == 'page':
+            if isinstance(item, Page):
                 send_ujson(channel_pages_send, item)
 
-            elif item['item_type'] == 'revision':
+            elif isinstance(item, Revision):
                 send_ujson(channel_revs_send, item)
 
 #            elif isinstance(item, LogItem):
