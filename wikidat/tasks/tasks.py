@@ -15,6 +15,7 @@ processes with Wikipedia data:
 
 from wikidat.sources.etl import PageRevisionETL
 from download import RevHistDownloader
+import multiprocessing as mp
 
 
 class Task(object):
@@ -40,7 +41,7 @@ class RevisionHistoryTask(Task):
     A complete, multiprocessing parser of full revision history dump files
     """
 
-    def __init__(self, lang='scowiki', date=None):
+    def __init__(self, lang='scowiki', date=None, etl_lines=1):
         """
         Builder method of class RevisionHistoryRetrieval.
         Arguments:
@@ -48,6 +49,8 @@ class RevisionHistoryTask(Task):
             - date: publication date of target dump files collection
         """
         super(RevisionHistoryTask, self).__init__(lang=lang, date=date)
+        self.etl_lines = etl_lines
+        self.etl_list = []
 
     def execute(self, page_fan, rev_fan, db_user, db_passw,
                 mirror='http://dumps.wikimedia.org/'):
@@ -64,15 +67,36 @@ class RevisionHistoryTask(Task):
         print "Downloaded files for lang %s, date: %s" % (self.lang, self.date)
 
         db_name = self.lang + '_' + self.date.strip('/')
+
         print "paths: " + unicode(self.paths)
-        self.etl = PageRevisionETL(paths=self.paths, lang=self.lang,
-                                   page_fan=page_fan, rev_fan=rev_fan,
-                                   db_name=db_name,
-                                   db_user=db_user, db_passw=db_passw)
+
+        # Complete the queue of paths to be processed and STOP flags for
+        # each ETL subprocess
+        paths_queue = mp.JoinableQueue()
+        for path in self.paths:
+            paths_queue.put(path)
+
+        for x in range(self.etl_lines):
+            paths_queue.put('STOP')
+
+        for x in range(self.etl_lines):
+            new_etl = PageRevisionETL(name="ETL process - %s" % x,
+                                      paths_queue=paths_queue, lang=self.lang,
+                                      page_fan=page_fan, rev_fan=rev_fan,
+                                      db_name=db_name,
+                                      db_user=db_user, db_passw=db_passw,
+                                      base_port=20000+(20*x),
+                                      control_port=30000+(20*x))
+            self.etl_list.append(new_etl)
         print "ETL process for page and revision history defined OK."
-        print "Proceeding with ETL workflow. This may take time..."
+        print "Proceeding with ETL workflows. This may take time..."
         # Extract, process and load information in local DB
-        self.etl.run()
+        for etl in self.etl_list:
+            etl.start()
+
+        # Wait for ETL lines to finish
+        for etl in self.etl_list:
+            etl.join()
 
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
