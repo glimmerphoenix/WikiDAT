@@ -8,6 +8,7 @@ Created on Sun Mar 30 18:09:16 2014
 import sys
 import os
 import time
+import multiprocessing as mp
 from processors import Producer, Processor, Consumer
 from dump import DumpFile, process_xml
 from page import process_pages, store_pages_db
@@ -15,18 +16,24 @@ from revision import process_revs, store_revs_db
 from wikidat.utils.dbutils import MySQLDB
 
 
-class ETL(object):
+class ETL(mp.Process):
     """
     Abstract class defining common behaviour for all ETL (Extraction,
     Tranformation and Load) workflows with Wikipedia data
     """
 
-    def __init__(self, paths=None, page_fan=1, rev_fan=3, lang=None,
-                 db_name=None, db_user=None, db_passw=None):
+    def __init__(self, group=None, target=None, name=None, args=None,
+                 kwargs=None, paths_queue=None, page_fan=1, rev_fan=3,
+                 lang=None, db_name=None, db_user=None, db_passw=None):
         """
         Initialize new worfklow
         """
-        self.paths = paths
+        super(ETL, self).__init__(name=name)
+        self.target = target
+        self.args = args if args is not None else []
+        self.kwargs = kwargs if kwargs is not None else {}
+
+        self.paths_queue = paths_queue
         self.page_fan = page_fan; self.rev_fan = rev_fan; self.lang = lang
         self.db_name = db_name
         self.db_user = db_user
@@ -39,15 +46,22 @@ class PageRevisionETL(ETL):
     database dump files
     """
 
-    def __init__(self, paths=None, lang=None, page_fan=1, rev_fan=3,
-                 db_name=None, db_user=None, db_passw=None):
+    def __init__(self, group=None, target=None, name=None, args=None,
+                 kwargs=None, paths_queue=None, lang=None, page_fan=1,
+                 rev_fan=3, db_name=None, db_user=None, db_passw=None,
+                 base_port=None, control_port=None):
         """
         Initialize new PageRevision workflow
         """
         super(PageRevisionETL,
-              self).__init__(paths=paths, page_fan=page_fan,
-                             rev_fan=rev_fan, lang=lang, db_name=db_name,
+              self).__init__(group=None, target=None, name=None, args=None,
+                             kwargs=None, paths_queue=paths_queue,
+                             page_fan=page_fan, rev_fan=rev_fan, lang=lang,
+                             db_name=db_name,
                              db_user=db_user, db_passw=db_passw)
+
+        self.base_port = base_port
+        self.control_port = control_port
 
         # DB SCHEMA PREPARATION
         db_create = MySQLDB(host='localhost', port=3306, user=db_user,
@@ -91,7 +105,7 @@ class PageRevisionETL(ETL):
         db_revs.connect()
 
         # DATA EXTRACTION
-        for path in self.paths:
+        for path in iter(self.paths_queue.get, 'STOP'):
             # Start subprocess to extract elements from revision dump file
             dump_file = DumpFile(path)
             xml_reader = Producer(name='xml_reader',
@@ -100,9 +114,9 @@ class PageRevisionETL(ETL):
                                       dump_file=dump_file),
                                   page_consumers=self.page_fan,
                                   rev_consumers=self.rev_fan,
-                                  push_pages_port=5557,
-                                  push_revs_port=5558,
-                                  control_port=10000)
+                                  push_pages_port=self.base_port,
+                                  push_revs_port=self.base_port+1,
+                                  control_port=self.control_port)
 
             print "Starting data extraction from XML revision history file"
             print "Dump file: " + path
@@ -117,9 +131,9 @@ class PageRevisionETL(ETL):
                 process_page = Processor(name='process_page_' + unicode(worker),
                                          target=process_pages,
                                          producers=1, consumers=1,
-                                         pull_port=5557,
-                                         push_port=5559,
-                                         control_port=10000)
+                                         pull_port=self.base_port,
+                                         push_port=self.base_port+2,
+                                         control_port=self.control_port)
                 process_page.start()
                 workers.append(process_page)
 
@@ -138,9 +152,9 @@ class PageRevisionETL(ETL):
                                                  con=db_wrev,
                                                  lang=self.lang),
                                              producers=1, consumers=1,
-                                             pull_port=5558,
-                                             push_port=5560,
-                                             control_port=10000)
+                                             pull_port=self.base_port+1,
+                                             push_port=self.base_port+3,
+                                             control_port=self.control_port)
                 process_revision.start()
                 workers.append(process_revision)
                 db_workers_revs.append(db_wrev)
@@ -153,14 +167,14 @@ class PageRevisionETL(ETL):
                                       kwargs=dict(con=db_pages,
                                                   log_file=log_file),
                                       producers=self.page_fan,
-                                      pull_port=5559)
+                                      pull_port=self.base_port+2)
 
             rev_insert_db = Consumer(name='insert_revision',
                                      target=store_revs_db,
                                      kwargs=dict(con=db_revs,
                                                  log_file=log_file),
                                      producers=self.rev_fan,
-                                     pull_port=5560)
+                                     pull_port=self.base_port+3)
 
             print "And inserting in DB..."
             page_insert_db.start()
@@ -172,6 +186,12 @@ class PageRevisionETL(ETL):
                 w.join()
             page_insert_db.join()
             rev_insert_db.join()
+
+            # Mark this path as done
+            self.paths_queue.task_done()
+
+        # Mark STOP message as processed and finish
+        self.paths_queue.task_done()
 
         end = time.time()
         print "All tasks done in %.4f sec." % ((end-start)/1.)
