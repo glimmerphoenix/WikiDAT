@@ -64,64 +64,54 @@ def process_revs(rev_iter, con=None, lang=None):
 
         # Stores SHA-256 hash of revision text
         text_hash = hashlib.sha256()
+        # Default values to 0. These fields will be set below if any of the
+        # target patterns is detected
+        rev['redirect'] = '0'
+        rev['is_fa'] = '0'
+        rev['is_flist'] = '0'
+        rev['is_ga'] = '0'
 
         if rev['text'] is not None:
             text = rev['text'].encode('utf-8')
             text_hash.update(text)
-
             rev['len_text'] = str(len(text))
 
+            # Detect pattern for redirect pages
             if rev['text'][0:9].upper() == '#REDIRECT':
                 rev['redirect'] = '1'
-            else:
-                rev['redirect'] = '0'
 
             # FA and FList detection
-            # TODO: Add support FA detection in more languages
-            # Currently the top-10 languages are supported
+            # Currently 39 languages are supported regarding FA detection
+            # We only enter pattern matching for revisions of pages in
+            # main namespace
+            if rev['ns'] == 0:
+                if fa_pat is not None:
+                    mfa = fa_pat.search(rev['text'])
+                    # Case of standard language, one type of FA template
+                    if (mfa is not None and len(mfa.groups()) == 1):
+                        rev['is_fa'] = '1'
+                    # Case of fawiki or cawiki, 2 types of FA templates
+                    # Possible matches: (A, None) or (None, B)
+                    elif (mfa is not None and len(mfa.groups()) == 2 and
+                            (mfa.groups()[1] is None or
+                             mfa.groups()[0] is None)):
+                        rev['is_fa'] = '1'
 
-            if fa_pat is not None:
-                mfa = fa_pat.search(rev['text'])
-                # Case of standard language, one type of FA template
-                if (mfa is not None and len(mfa.groups()) == 1):
-                    rev['is_fa'] = '1'
-                # Case of fawiki or cawiki, 2 types of FA templates
-                # Possible matches: (A, None) or (None, B)
-                elif (mfa is not None and len(mfa.groups()) == 2 and
-                        (mfa.groups()[1] is None or
-                         mfa.groups()[0] is None)):
-                    rev['is_fa'] = '1'
-                else:
-                    rev['is_fa'] = '0'
-            else:
-                rev['is_fa'] = '0'
+                # Check if FLIST is supported in this language, detect if so
+                if flist_pat is not None:
+                    mflist = flist_pat.search(rev['text'])
+                    if mflist is not None and len(mflist.groups()) == 1:
+                        rev['is_flist'] = '1'
 
-            # Check if FLIST is supported in this language, detect if so
-            if flist_pat is not None:
-                mflist = flist_pat.search(rev['text'])
-                if mflist is not None and len(mflist.groups()) == 1:
-                    rev['is_flist'] = '1'
-                else:
-                    rev['is_flist'] = '0'
-            else:
-                rev['is_flist'] = '0'
-
-            # Check if GA is supported in this language, detect if so
-            if ga_pat is not None:
-                mga = ga_pat.search(rev['text'])
-                if mga is not None and len(mga.groups()) == 1:
-                    rev['is_ga'] = '1'
-                else:
-                    rev['is_ga'] = '0'
-            else:
-                rev['is_ga'] = '0'
-
+                # Check if GA is supported in this language, detect if so
+                if ga_pat is not None:
+                    mga = ga_pat.search(rev['text'])
+                    if mga is not None and len(mga.groups()) == 1:
+                        rev['is_ga'] = '1'
+        # Compute hash for empty text here instead of in default block above
+        # This way, we avoid computing the hash twice for revisions with text
         else:
             rev['len_text'] = '0'
-            rev['redirect'] = '0'
-            rev['is_fa'] = '0'
-            rev['is_flist'] = '0'
-            rev['is_ga'] = '0'
             text_hash.update('')
 
         # SQL query building

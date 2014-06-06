@@ -89,6 +89,8 @@ def process_xml(dump_file=None):
             rev_dict = {x.tag.split('}')[1]: x.text for x in elem}
             # Embed page_id, contrib_dict and return item
             rev_dict['page_id'] = page_dict['id']
+            # To skip pattern matching for non-articles
+            rev_dict['ns'] = page_dict['ns']
             rev_dict['contrib_dict'] = contrib_dict
             rev_dict['rev_parent_id'] = rev_parent_id
 
