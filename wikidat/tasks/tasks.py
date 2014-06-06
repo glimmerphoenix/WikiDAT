@@ -69,10 +69,6 @@ class RevisionHistoryTask(Task):
 
         db_name = self.lang + '_' + self.date.strip('/')
 
-        self.paths = ['/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history4.xml-p000100559p000104998.7z',
-                      '/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history1.xml-p000000010p000003263.7z',
-                      '/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history1.xml-p000003264p000005405.7z']
-
         print "paths: " + unicode(self.paths)
 
         # Complete the queue of paths to be processed and STOP flags for
