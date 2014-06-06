@@ -15,6 +15,7 @@ processes with Wikipedia data:
 
 from wikidat.sources.etl import PageRevisionETL
 from download import RevHistDownloader
+from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
 
 
@@ -68,6 +69,10 @@ class RevisionHistoryTask(Task):
 
         db_name = self.lang + '_' + self.date.strip('/')
 
+        self.paths = ['/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history4.xml-p000100559p000104998.7z',
+                      '/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history1.xml-p000000010p000003263.7z',
+                      '/home/jfelipe/Development/spyder/WikiDAT/wikidat/enwiki_dumps/20140502/enwiki-20140502-pages-meta-history1.xml-p000003264p000005405.7z']
+
         print "paths: " + unicode(self.paths)
 
         # Complete the queue of paths to be processed and STOP flags for
@@ -102,3 +107,13 @@ class RevisionHistoryTask(Task):
         # analysis and visualization
         print "ETL process finished for language %s and date %s" % (
               self.lang, self.date)
+
+        # Create primary keys for all tables
+        # TODO: This must also be tracked by official logging module
+        print "Now creating primary key indexes in database tables."
+        print "This may take a while..."
+        db_pks = MySQLDB(host='localhost', port=3306, user=db_user,
+                         passwd=db_passw, db=db_name)
+        db_pks.connect()
+        db_pks.create_pks()
+        db_pks.close()
