@@ -202,16 +202,6 @@ class PageRevisionETL(ETL):
         for dbcon in db_workers_revs:
             dbcon.close()
 
-        # Finally, create primary keys for all tables
-        # TODO: This must also be tracked by official logging module
-        print "Now creating primary key indexes in database tables."
-        print "This may take a while..."
-        db_pks = MySQLDB(host='localhost', port=3306, user=self.db_user,
-                         passwd=self.db_passw, db=self.db_name)
-        db_pks.connect()
-        db_pks.create_pks()
-        db_pks.close()
-
 
 class PageRevisionMetaETL(ETL):
     """
