@@ -84,7 +84,7 @@ def process_revs(rev_iter, con=None, lang=None):
             # Currently 39 languages are supported regarding FA detection
             # We only enter pattern matching for revisions of pages in
             # main namespace
-            if rev['ns'] == 0:
+            if rev['ns'] == '0':
                 if fa_pat is not None:
                     mfa = fa_pat.search(rev['text'])
                     # Case of standard language, one type of FA template
