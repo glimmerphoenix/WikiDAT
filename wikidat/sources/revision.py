@@ -92,10 +92,11 @@ def process_revs(rev_iter, con=None, lang=None):
                         rev['is_fa'] = '1'
                     # Case of fawiki or cawiki, 2 types of FA templates
                     # Possible matches: (A, None) or (None, B)
-                    elif (mfa is not None and len(mfa.groups()) == 2 and
-                            (mfa.groups()[1] is None or
-                             mfa.groups()[0] is None)):
-                        rev['is_fa'] = '1'
+                    if lang == 'fawiki' or lang == 'cawiki':
+                        if (mfa is not None and len(mfa.groups()) == 2 and
+                                (mfa.groups()[1] is None or
+                                 mfa.groups()[0] is None)):
+                                    rev['is_fa'] = '1'
 
                 # Check if FLIST is supported in this language, detect if so
                 if flist_pat is not None:
