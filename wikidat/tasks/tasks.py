@@ -17,6 +17,9 @@ from wikidat.sources.etl import PageRevisionETL
 from download import RevHistDownloader
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
+import os
+import sys
+import glob
 
 
 class Task(object):
@@ -53,23 +56,68 @@ class RevisionHistoryTask(Task):
         self.etl_lines = etl_lines
         self.etl_list = []
 
-    def execute(self, page_fan, rev_fan, db_user, db_passw,
-                mirror='http://dumps.wikimedia.org/'):
+    # TODO: include args detect_FA, detect_FLIST, detect_GA
+    # and implement flow control in process_revision
+    def execute(self, page_fan, rev_fan, host, port,
+                db_name, db_user, db_passw, db_engine,
+                mirror, download_files,
+                base_ports, control_ports,
+                dumps_dir=None):
         """
         Run data retrieval and loading actions
         """
-        # TODO: Use proper logging module to track execution progress
-        # Choose corresponding file downloader and etl wrapper
-        print "Downloading new dump files from %s, for language %s" % (
-              mirror, self.lang)
-        self.down = RevHistDownloader(mirror, self.lang)
-        # Donwload latest set of dump files
-        self.paths, self.date = self.down.download(self.date)
-        print "Downloaded files for lang %s, date: %s" % (self.lang, self.date)
+        if download_files:
+            # TODO: Use proper logging module to track execution progress
+            # Choose corresponding file downloader and etl wrapper
+            print "Downloading new dump files from %s, for language %s" % (
+                  mirror, self.lang)
+            self.down = RevHistDownloader(mirror, self.lang)
+            # Donwload latest set of dump files
+            self.paths, self.date = self.down.download(self.date)
+            print "Got files for lang %s, date: %s" % (self.lang, self.date)
 
-        db_name = self.lang + '_' + self.date.strip('/')
+            #db_name = self.lang + '_' + self.date.strip('/')
+
+        else:
+            # Case of dumps folder provided explicity
+            if dumps_dir:
+                # Allow specifying relative paths, as well
+                dumps_path = os.path.expanduser(dumps_dir)
+                # Retrieve path to all available files to feed ETL lines
+                if not os.path.exists(dumps_path):
+                    print "No dump files will be downloaded and local folder "
+                    print "with dump files not found. Please, specify a "
+                    print "valid path to local folder containing dump files."
+                    print "Program will exit now."
+                    sys.exit()
+
+                else:
+                    self.paths = glob.glob(dumps_path + '*.7z')
+            else:
+                dumps_dir = os.path.join(self.lang + '_dumps', self.date)
+                # Look up dump files in default directory name
+                if not os.path.exists(dumps_dir):
+                    print "Default directory %s" % dumps_dir
+                    print " containing dump files not found."
+                    print "Program will exit now."
+                    sys.exit()
+
+                else:
+                    self.paths = glob.glob(dumps_dir + '/*.7z')
 
         print "paths: " + unicode(self.paths)
+
+        # DB SCHEMA PREPARATION
+        db_create = MySQLDB(host=host, port=port, user=db_user,
+                            passwd=db_passw)
+        db_create.connect()
+        db_create.create_database(db_name)
+        db_create.close()
+        db_schema = MySQLDB(host=host, port=port, user=db_user,
+                            passwd=db_passw, db=db_name)
+        db_schema.connect()
+        db_schema.create_schema(engine=)
+        db_schema.close()
 
         # Complete the queue of paths to be processed and STOP flags for
         # each ETL subprocess
@@ -86,8 +134,8 @@ class RevisionHistoryTask(Task):
                                       page_fan=page_fan, rev_fan=rev_fan,
                                       db_name=db_name,
                                       db_user=db_user, db_passw=db_passw,
-                                      base_port=20000+(20*x),
-                                      control_port=30000+(20*x))
+                                      base_port=base_ports[x]+(20*x),
+                                      control_port=control_ports[x]+(20*x))
             self.etl_list.append(new_etl)
         print "ETL process for page and revision history defined OK."
         print "Proceeding with ETL workflows. This may take time..."
