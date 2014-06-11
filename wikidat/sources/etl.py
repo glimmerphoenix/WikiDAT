@@ -63,18 +63,6 @@ class PageRevisionETL(ETL):
         self.base_port = base_port
         self.control_port = control_port
 
-        # DB SCHEMA PREPARATION
-        db_create = MySQLDB(host='localhost', port=3306, user=db_user,
-                            passwd=db_passw)
-        db_create.connect()
-        db_create.create_database(self.db_name)
-        db_create.close()
-        db_schema = MySQLDB(host='localhost', port=3306, user=db_user,
-                            passwd=db_passw, db=self.db_name)
-        db_schema.connect()
-        db_schema.create_schema()
-        db_schema.close()
-
     def run(self):
         """
         Execute workflow to import revision history data from dump files
