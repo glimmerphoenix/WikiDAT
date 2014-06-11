@@ -94,15 +94,15 @@ class Producer(mp.Process):
 
         # Wait few seconds to let workers empty data pipeline
         time.sleep(20)
-        channel_pages_send.close()
-        channel_revs_send.close()
+        #channel_pages_send.close()
+        #channel_revs_send.close()
 
         # Send STOP message to all workers and quit
         if self.page_consumers > 0 and self.rev_consumers > 0:
             channel_control.send('STOP')
 
         time.sleep(5)
-        channel_control.close()
+        #channel_control.close()
 
 
 class Consumer(mp.Process):
@@ -139,7 +139,7 @@ class Consumer(mp.Process):
             self.producers -= 1
 
         time.sleep(1)
-        data_recv.close()
+        #data_recv.close()
 
     def run(self):
         target = self.target
@@ -200,8 +200,8 @@ class Processor(mp.Process):
             self.producers -= 1
 
         time.sleep(1)
-        data_recv.close()
-        control_sub.close()
+        #data_recv.close()
+        #control_sub.close()
 
     def run(self):
         target = self.target
@@ -219,4 +219,4 @@ class Processor(mp.Process):
             send_ujson(channel_send, 'STOP')
 
         time.sleep(1)
-        channel_send.close()
+        #channel_send.close()
