@@ -69,12 +69,12 @@ class MySQLDB(object):
         self.send_query(bs.drop_database.format(**params))
         self.send_query(bs.create_database.format(**params))
 
-    def create_schema(self):
+    def create_schema(self, engine='ARIA'):
         """
         Create schema in local database
         """
         # TODO: Parameterize engine with common configuration file
-        params = {'engine': 'ARIA'}
+        params = {'engine': engine}
         self.send_query(bs.drop_page)
         self.send_query(bs.create_page.format(**params))
         self.send_query(bs.drop_revision)
