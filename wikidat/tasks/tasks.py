@@ -93,6 +93,8 @@ class RevisionHistoryTask(Task):
 
                 else:
                     self.paths = glob.glob(dumps_path + '*.7z')
+            # If not provided explicitly, look for default location of
+            # dumps directory
             else:
                 dumps_dir = os.path.join(self.lang + '_dumps', self.date)
                 # Look up dump files in default directory name
