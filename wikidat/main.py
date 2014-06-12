@@ -93,11 +93,12 @@ if __name__ == '__main__':
     args, remain_args = conf_parser.parse_known_args()
 
     # Set up default command-line options
-    # TODO: Deal with default value for 'dumps_dir', 'db_name'
+    # TODO: Deal with default value for 'db_name'
     opts = {'lang': 'scowiki',
             'date': 'latest',
             'mirror': 'http://dumps.wikimedia.your.org/',
             'download_files': False,
+            'dumps_dir': None,
             'etl_lines': 1,
             'page_fan': 1,
             'rev_fan': 1,
