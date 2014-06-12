@@ -116,7 +116,7 @@ class RevisionHistoryTask(Task):
         db_schema = MySQLDB(host=host, port=port, user=db_user,
                             passwd=db_passw, db=db_name)
         db_schema.connect()
-        db_schema.create_schema(engine=)
+        db_schema.create_schema(engine=db_engine)
         db_schema.close()
 
         # Complete the queue of paths to be processed and STOP flags for
