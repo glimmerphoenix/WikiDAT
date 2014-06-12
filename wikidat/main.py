@@ -42,6 +42,8 @@ def get_config(filename='config.ini'):
 
     # Read all options with type
     opts = dict(config.items('General'))
+    if config.has_option('General', 'download_files'):
+        opts['download_files'] = config.getboolean('General', 'download_files')
 
     opts_database = dict(config.items('Database'))
     if config.has_option('Database', 'port'):
@@ -95,6 +97,7 @@ if __name__ == '__main__':
     opts = {'lang': 'scowiki',
             'date': 'latest',
             'mirror': 'http://dumps.wikimedia.your.org/',
+            'download_files': False,
             'etl_lines': 1,
             'page_fan': 1,
             'rev_fan': 1,
