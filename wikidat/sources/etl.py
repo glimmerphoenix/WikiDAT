@@ -147,9 +147,13 @@ class PageRevisionETL(ETL):
                 workers.append(process_revision)
                 db_workers_revs.append(db_wrev)
 
-            log_file = os.path.join(os.path.split(path)[0],
-                                    'logs',
-                                    os.path.split(path)[1] + '.log')
+            # Create directory for logging files if it does not exist
+            log_dir = os.path.join(os.path.split(path)[0], 'logs')
+            file_name = os.path.split(path)[1]
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+            log_file = os.path.join(log_dir, file_name + '.log')
+
             page_insert_db = Consumer(name='insert_page',
                                       target=store_pages_db,
                                       kwargs=dict(con=db_pages,
