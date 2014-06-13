@@ -124,6 +124,26 @@ class MySQLDB(object):
                 # Python logger
                 print "Exception in send_query method: ", e
 
+    def insert_many(self, query_template, values):
+        """
+        Send multiple statements to DB. Typically used in bulk data inserts.
+        """
+        # TODO: Handle errors properly with logger library
+        #chances = 0
+        #while chances < ntimes:
+        with warnings.catch_warnings():
+            # Change filter action to 'error' to raise warnings as if they
+            # were exceptions, to record them in the log file
+            warnings.simplefilter('ignore', MySQLdb.Warning)
+            try:
+                self.cursor.executemany(query_template, values)
+                #self.con.commit()
+            except (Exception), e:
+                # TODO: This is potentially dangerous, we should
+                # capture and log DB exceptions adequately using
+                # Python logger
+                print "Exception in send_query method: ", e
+
     def execute_query(self, query):
         """
         Send query to DB, fetch all returned values
