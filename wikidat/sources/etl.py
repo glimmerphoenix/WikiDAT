@@ -11,8 +11,8 @@ import time
 import multiprocessing as mp
 from processors import Producer, Processor, Consumer
 from dump import DumpFile, process_xml
-from page import process_pages, store_pages_db
-from revision import process_revs, store_revs_db
+from page import process_pages_to_file, store_pages_file_db
+from revision import process_revs_to_file, store_revs_file_db
 from wikidat.utils.dbutils import MySQLDB
 
 
@@ -117,7 +117,7 @@ class PageRevisionETL(ETL):
             for worker in range(self.page_fan):
                 print "page worker num. ", worker, "started"
                 process_page = Processor(name='process_page_' + unicode(worker),
-                                         target=process_pages,
+                                         target=process_pages_to_file,
                                          producers=1, consumers=1,
                                          pull_port=self.base_port,
                                          push_port=self.base_port+2,
@@ -129,13 +129,14 @@ class PageRevisionETL(ETL):
             for worker in range(self.rev_fan):
                 print "revision worker num. ", worker, "started"
 
-                db_wrev = MySQLDB(host='localhost', port=3306, user=self.db_user,
+                db_wrev = MySQLDB(host='localhost', port=3306,
+                                  user=self.db_user,
                                   passwd=self.db_passw, db=self.db_name)
                 db_wrev.connect()
 
                 process_revision = Processor(name="".join(['process_revision_',
                                                            unicode(worker)]),
-                                             target=process_revs,
+                                             target=process_revs_to_file,
                                              kwargs=dict(
                                                  con=db_wrev,
                                                  lang=self.lang),
@@ -149,22 +150,29 @@ class PageRevisionETL(ETL):
 
             # Create directory for logging files if it does not exist
             log_dir = os.path.join(os.path.split(path)[0], 'logs')
+            tmp_dir = os.path.join(os.getcwd(),
+                                   os.path.split(path)[0], 'tmp')
+            print tmp_dir
             file_name = os.path.split(path)[1]
             if not os.path.exists(log_dir):
                 os.makedirs(log_dir)
+            if not os.path.exists(tmp_dir):
+                os.makedirs(tmp_dir)
             log_file = os.path.join(log_dir, file_name + '.log')
 
             page_insert_db = Consumer(name='insert_page',
-                                      target=store_pages_db,
+                                      target=store_pages_file_db,
                                       kwargs=dict(con=db_pages,
-                                                  log_file=log_file),
+                                                  log_file=log_file,
+                                                  tmp_dir=tmp_dir),
                                       producers=self.page_fan,
                                       pull_port=self.base_port+2)
 
             rev_insert_db = Consumer(name='insert_revision',
-                                     target=store_revs_db,
+                                     target=store_revs_file_db,
                                      kwargs=dict(con=db_revs,
-                                                 log_file=log_file),
+                                                 log_file=log_file,
+                                                 tmp_dir=tmp_dir),
                                      producers=self.rev_fan,
                                      pull_port=self.base_port+3)
 
