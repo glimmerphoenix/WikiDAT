@@ -8,6 +8,8 @@ import hashlib
 import time
 from wikidat.utils import maps
 from data_item import DataItem
+import csv
+import os
 
 import logging
 
@@ -250,6 +252,210 @@ def process_revs(rev_iter, con=None, lang=None):
         contrib_dict = None
         text = None
         text_hash = None
+
+
+def process_revs_to_file(rev_iter, con=None, lang=None):
+    """
+    Process iterator of Revision objects extracted from dump files
+    :Parameters:
+        - rev_iter: iterator of Revision objects
+        - lang: identifier of Wikipedia language edition from which this
+        element comes from (e.g. frwiki, eswiki, dewiki...)
+    """
+    # Get tags to identify Featured Articles, Featured Lists and
+    # Good Articles
+    # lang = 'dewiki'
+    # new_user = False
+
+    if ((lang in maps.FA_RE) and (lang in maps.FLIST_RE) and
+            (lang in maps.GA_RE)):
+        fa_pat = maps.FA_RE[lang]
+        flist_pat = maps.FLIST_RE[lang]
+        ga_pat = maps.GA_RE[lang]
+    else:
+        raise RuntimeError('Unsupported language ' + lang)
+
+    for rev in rev_iter:
+        contrib_dict = rev['contrib_dict']
+
+        # ### TEXT-RELATED OPERATIONS ###
+        # Calculate SHA-256 hash, length of revision text and check
+        # for REDIRECT
+        # TODO: Inspect why there are pages without text
+
+        # Stores SHA-256 hash of revision text
+        text_hash = hashlib.sha256()
+        # Default values to 0. These fields will be set below if any of the
+        # target patterns is detected
+        rev['redirect'] = '0'
+        rev['is_fa'] = '0'
+        rev['is_flist'] = '0'
+        rev['is_ga'] = '0'
+
+        if rev['text'] is not None:
+            text = rev['text'].encode('utf-8')
+            text_hash.update(text)
+            rev['len_text'] = str(len(text))
+
+            # Detect pattern for redirect pages
+            if rev['text'][0:9].upper() == '#REDIRECT':
+                rev['redirect'] = '1'
+
+            # FA and FList detection
+            # Currently 39 languages are supported regarding FA detection
+            # We only enter pattern matching for revisions of pages in
+            # main namespace
+            if rev['ns'] == '0':
+                if fa_pat is not None:
+                    mfa = fa_pat.search(rev['text'])
+                    # Case of standard language, one type of FA template
+                    if (mfa is not None and len(mfa.groups()) == 1):
+                        rev['is_fa'] = '1'
+                    # Case of fawiki or cawiki, 2 types of FA templates
+                    # Possible matches: (A, None) or (None, B)
+                    if lang == 'fawiki' or lang == 'cawiki':
+                        if (mfa is not None and len(mfa.groups()) == 2 and
+                                (mfa.groups()[1] is None or
+                                 mfa.groups()[0] is None)):
+                                    rev['is_fa'] = '1'
+
+                # Check if FLIST is supported in this language, detect if so
+                if flist_pat is not None:
+                    mflist = flist_pat.search(rev['text'])
+                    if mflist is not None and len(mflist.groups()) == 1:
+                        rev['is_flist'] = '1'
+
+                # Check if GA is supported in this language, detect if so
+                if ga_pat is not None:
+                    mga = ga_pat.search(rev['text'])
+                    if mga is not None and len(mga.groups()) == 1:
+                        rev['is_ga'] = '1'
+        # Compute hash for empty text here instead of in default block above
+        # This way, we avoid computing the hash twice for revisions with text
+        else:
+            rev['len_text'] = '0'
+            text_hash.update('')
+
+        # Default value is missing user
+        user = -1
+        if len(contrib_dict) > 0:
+            if 'ip' in contrib_dict:
+                user = 0
+            else:
+                user = int(contrib_dict['id'])
+
+        # Tuple of revision values
+        rev_insert = (int(rev['id']), int(rev['page_id']), int(user),
+                      rev['timestamp'].replace('Z', '').replace('T', ' '),
+                      int(rev['len_text']),
+                      (int(rev['rev_parent_id'])
+                       if rev['rev_parent_id'] is not None else u'NULL'),
+                      int(rev['redirect']),
+                      (0 if 'minor' in rev else 1),
+                      int(rev['is_fa']), int(rev['is_flist']),
+                      int(rev['is_ga']),
+                      (rev['comment'] if 'comment' in rev and
+                       rev['comment'] is not None else u'NULL'),
+                      )
+
+        # Tuple of revision_hash values
+        rev_hash = (int(rev['id']), int(rev['page_id']), int(user),
+                    text_hash.hexdigest(),
+                    )
+
+        yield (rev_insert, rev_hash)
+
+        rev = None
+        contrib_dict = None
+        text = None
+        text_hash = None
+
+
+def store_revs_file_db(rev_iter, con=None, log_file=None,
+                       tmp_dir=None, file_rows=1000000):
+    """
+    Processor to insert revision info in DB
+
+    This version uses an intermediate temp data file to speed up bulk data
+    loading in MySQL/MariaDB, using LOAD DATA INFILE.
+
+    Arguments:
+        - rev_iter: Iterator providing tuples (rev_insert, rev_hash_insert)
+        - con: Connection to local DB
+        - log_file: Log file to track progress of data loading operations
+        - tmp_dir: Directory to store temporary data files
+        - file_rows: Number of rows to store in each tmp file
+    """
+    insert_rows = 0
+    total_revs = 0
+
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
+    logging.info("Starting parsing process...")
+
+    insert_rev = """LOAD DATA INFILE '%s' INTO TABLE revision
+                    FIELDS OPTIONALLY ENCLOSED BY '"'
+                    TERMINATED BY '\t' ESCAPED BY '"'
+                    LINES TERMINATED BY '\n'"""
+
+    insert_rev_hash = """LOAD DATA INFILE '%s' INTO TABLE revision_hash
+                         FIELDS OPTIONALLY ENCLOSED BY '"'
+                         TERMINATED BY '\t' ESCAPED BY '"'
+                         LINES TERMINATED BY '\n'"""
+
+    path_file_rev = os.path.join(tmp_dir, 'revision.csv')
+    path_file_rev_hash = os.path.join(tmp_dir, 'revision_hash.csv')
+
+    for rev, rev_hash in rev_iter:
+        total_revs += 1
+
+        # Initialize new temp data file
+        if insert_rows == 0:
+            file_rev = open(path_file_rev, 'wb')
+            file_rev_hash = open(path_file_rev_hash, 'wb')
+            writer = csv.writer(file_rev, dialect='excel-tab',
+                                lineterminator='\n')
+            writer2 = csv.writer(file_rev_hash, dialect='excel-tab',
+                                 lineterminator='\n')
+
+        # While temp file is not full, write data into it
+        if insert_rows < file_rows:
+            try:
+                writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                                 else s for s in rev])
+
+                writer2.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                                 else s for s in rev_hash])
+            except(Exception), e:
+                print e
+                print rev
+
+            insert_rows += 1
+
+        # Call MySQL to load data from file and reset rows counter
+        else:
+            file_rev.close()
+            file_rev_hash.close()
+            con.send_query(insert_rev % path_file_rev)
+            con.send_query(insert_rev_hash % path_file_rev_hash)
+
+            insert_rows == 0
+            # No need to delete tmp files, as they are empty each time we
+            # open them again for writing
+
+    # Load remaining entries in last tmp files into DB
+    file_rev.close()
+    file_rev_hash.close()
+    con.send_query(insert_rev % path_file_rev)
+    con.send_query(insert_rev_hash % path_file_rev_hash)
+
+    logging.info("%s revisions %s." % (
+                 total_revs,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+    logging.info("END: %s revisions processed %s." % (
+                 total_revs,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
 
 
 def store_revs_db(rev_iter, con=None, log_file=None, size_cache=500):
