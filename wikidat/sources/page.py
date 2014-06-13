@@ -7,6 +7,8 @@ Created on Sat Mar 29 22:14:09 2014
 import time
 from data_item import DataItem
 import logging
+import csv
+import os
 
 
 class Page(DataItem):
@@ -31,8 +33,8 @@ class Page(DataItem):
 
 def process_pages(pages_iter):
     """
-    Class method that processes an iterator of Page objects and yields
-    unicode tuples to be appended to an extended insert for DB storage
+    Process an iterator of Page objects and yields unicode tuples to be
+    appended to an extended insert for DB storage
     """
     # Build component for extended insert with info about this Page
     for page in pages_iter:
@@ -50,6 +52,82 @@ def process_pages(pages_iter):
             new_page_insert = "".join([new_page_insert, "'')"])
 
         yield new_page_insert
+
+
+def process_pages_to_file(pages_iter):
+    """
+    Process an iterator of Page objects and yields unicode tuples to be
+    stored in a temp file for later bulk data load in DB.
+    """
+    for page in pages_iter:
+        page_insert = (int(page['id']), int(page['ns']),
+                       page['title'],
+                       (page['restrictions'] if 'restrictions' in page
+                        else u'NULL'),
+                       )
+        yield page_insert
+
+
+def store_pages_file_db(pages_iter, con=None, log_file=None,
+                        tmp_dir=None, file_rows=1000000):
+    """
+    Process page insert items received from iterator. Page inserts are stored
+    in a temp file, then a bulk data load is triggered in MySQL.
+    """
+    insert_rows = 0
+    total_pages = 0
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
+
+    print "Starting data loading at %s." % (
+        time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                      time.localtime()))
+    logging.info("Starting data loading at %s." % (
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+
+    insert_pages = """LOAD DATA INFILE '%s' INTO TABLE page
+                      FIELDS OPTIONALLY ENCLOSED BY '"'
+                      TERMINATED BY '\t' ESCAPED BY '"'
+                      LINES TERMINATED BY '\n'"""
+
+    path_file_page = os.path.join(tmp_dir, 'page.csv')
+
+    for page in pages_iter:
+        total_pages += 1
+
+        if insert_rows == 0:
+            file_page = open(path_file_page, 'wb')
+            writer = csv.writer(file_page, dialect='excel-tab',
+                                lineterminator='\n')
+
+        if insert_rows < file_rows:
+            try:
+                writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                                 else s for s in page])
+            except(Exception), e:
+                print e
+                print page
+
+            insert_rows += 1
+
+        else:
+            # Insert in DB
+            file_page.close()
+            con.send_query(insert_pages % path_file_page)
+            insert_rows == 0
+            # No need to delete tmp files, as they are empty each time we
+            # open them again for writing
+
+    file_page.close()
+    con.send_query(insert_pages % path_file_page)
+
+    logging.info("END: %s pages processed %s." % (
+                 total_pages,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+    print "END: %s pages processed %s." % (
+        total_pages, time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                   time.localtime()))
 
 
 def store_pages_db(pages_iter, con=None, log_file=None, size_cache=500):
