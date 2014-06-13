@@ -372,7 +372,8 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
 
 
 def store_revs_file_db(rev_iter, con=None, log_file=None,
-                       tmp_dir=None, file_rows=1000000):
+                       tmp_dir=None, file_rows=1000000,
+                       etl_prefix=None):
     """
     Processor to insert revision info in DB
 
@@ -402,8 +403,9 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
                          TERMINATED BY '\t' ESCAPED BY '"'
                          LINES TERMINATED BY '\n'"""
 
-    path_file_rev = os.path.join(tmp_dir, 'revision.csv')
-    path_file_rev_hash = os.path.join(tmp_dir, 'revision_hash.csv')
+    path_file_rev = os.path.join(tmp_dir, etl_prefix + '_revision.csv')
+    path_file_rev_hash = os.path.join(tmp_dir,
+                                      etl_prefix + '_revision_hash.csv')
 
     for rev, rev_hash in rev_iter:
         total_revs += 1
