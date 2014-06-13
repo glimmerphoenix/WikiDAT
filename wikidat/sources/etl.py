@@ -54,7 +54,7 @@ class PageRevisionETL(ETL):
         Initialize new PageRevision workflow
         """
         super(PageRevisionETL,
-              self).__init__(group=None, target=None, name=None, args=None,
+              self).__init__(group=None, target=None, name=name, args=None,
                              kwargs=None, paths_queue=paths_queue,
                              page_fan=page_fan, rev_fan=rev_fan, lang=lang,
                              db_name=db_name,
@@ -96,7 +96,7 @@ class PageRevisionETL(ETL):
         for path in iter(self.paths_queue.get, 'STOP'):
             # Start subprocess to extract elements from revision dump file
             dump_file = DumpFile(path)
-            xml_reader = Producer(name='xml_reader',
+            xml_reader = Producer(name='_'.join([self.name, 'xml_reader']),
                                   target=process_xml,
                                   kwargs=dict(
                                       dump_file=dump_file),
@@ -116,7 +116,9 @@ class PageRevisionETL(ETL):
             # Create and start page processes
             for worker in range(self.page_fan):
                 print "page worker num. ", worker, "started"
-                process_page = Processor(name='process_page_' + unicode(worker),
+                process_page = Processor(name='_'.join([self.name,
+                                                        'process_page',
+                                                        unicode(worker)]),
                                          target=process_pages_to_file,
                                          producers=1, consumers=1,
                                          pull_port=self.base_port,
@@ -134,8 +136,9 @@ class PageRevisionETL(ETL):
                                   passwd=self.db_passw, db=self.db_name)
                 db_wrev.connect()
 
-                process_revision = Processor(name="".join(['process_revision_',
-                                                           unicode(worker)]),
+                process_revision = Processor(name='_'.join([self.name,
+                                                            'process_revision',
+                                                            unicode(worker)]),
                                              target=process_revs_to_file,
                                              kwargs=dict(
                                                  con=db_wrev,
@@ -152,27 +155,31 @@ class PageRevisionETL(ETL):
             log_dir = os.path.join(os.path.split(path)[0], 'logs')
             tmp_dir = os.path.join(os.getcwd(),
                                    os.path.split(path)[0], 'tmp')
-            print tmp_dir
             file_name = os.path.split(path)[1]
+
             if not os.path.exists(log_dir):
                 os.makedirs(log_dir)
             if not os.path.exists(tmp_dir):
                 os.makedirs(tmp_dir)
             log_file = os.path.join(log_dir, file_name + '.log')
 
-            page_insert_db = Consumer(name='insert_page',
+            page_insert_db = Consumer(name='_'.join([self.name,
+                                                     'insert_page']),
                                       target=store_pages_file_db,
                                       kwargs=dict(con=db_pages,
                                                   log_file=log_file,
-                                                  tmp_dir=tmp_dir),
+                                                  tmp_dir=tmp_dir,
+                                                  etl_prefix=self.name),
                                       producers=self.page_fan,
                                       pull_port=self.base_port+2)
 
-            rev_insert_db = Consumer(name='insert_revision',
+            rev_insert_db = Consumer(name='_'.join([self.name,
+                                                    'insert_revision']),
                                      target=store_revs_file_db,
                                      kwargs=dict(con=db_revs,
                                                  log_file=log_file,
-                                                 tmp_dir=tmp_dir),
+                                                 tmp_dir=tmp_dir,
+                                                 etl_prefix=self.name),
                                      producers=self.rev_fan,
                                      pull_port=self.base_port+3)
 

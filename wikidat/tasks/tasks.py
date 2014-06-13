@@ -131,7 +131,7 @@ class RevisionHistoryTask(Task):
             paths_queue.put('STOP')
 
         for x in range(self.etl_lines):
-            new_etl = PageRevisionETL(name="ETL process - %s" % x,
+            new_etl = PageRevisionETL(name="ETL-process-%s" % x,
                                       paths_queue=paths_queue, lang=self.lang,
                                       page_fan=page_fan, rev_fan=rev_fan,
                                       db_name=db_name,
