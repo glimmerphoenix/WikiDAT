@@ -425,27 +425,31 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
             writer2 = csv.writer(file_rev_hash, dialect='excel-tab',
                                  lineterminator='\n')
 
-        # While temp file is not full, write data into it
-        if insert_rows < file_rows:
-            try:
-                writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                                 else s for s in rev])
+        # Write data to tmp file
+        try:
+            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                             else s for s in rev])
 
-                writer2.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                                 else s for s in rev_hash])
-            except(Exception), e:
-                print e
-                print rev
+            writer2.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                             else s for s in rev_hash])
+        except(Exception), e:
+            print e
+            print rev
 
-            insert_rows += 1
+        insert_rows += 1
 
         # Call MySQL to load data from file and reset rows counter
-        else:
+        if insert_rows == file_rows:
             file_rev.close()
             file_rev_hash.close()
             con.send_query(insert_rev % path_file_rev)
             con.send_query(insert_rev_hash % path_file_rev_hash)
 
+            logging.info("%s revisions %s." % (
+                         total_revs,
+                         time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                       time.localtime())))
+            # Reset row counter
             insert_rows = 0
             # No need to delete tmp files, as they are empty each time we
             # open them again for writing

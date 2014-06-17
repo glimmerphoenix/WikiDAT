@@ -103,18 +103,18 @@ def store_pages_file_db(pages_iter, con=None, log_file=None,
             file_page = open(path_file_page, 'wb')
             writer = csv.writer(file_page, dialect='excel-tab',
                                 lineterminator='\n')
+        # Write data to tmp file
+        try:
+            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                             else s for s in page])
+        except(Exception), e:
+            print e
+            print page
 
-        if insert_rows < file_rows:
-            try:
-                writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                                 else s for s in page])
-            except(Exception), e:
-                print e
-                print page
+        insert_rows += 1
 
-            insert_rows += 1
-
-        else:
+        # Call MySQL to load data from file and reset rows counter
+        if insert_rows == file_rows:
             # Insert in DB
             file_page.close()
             con.send_query(insert_pages % path_file_page)
