@@ -57,6 +57,10 @@ def get_config(filename='config.ini'):
         opts_etl['page_fan'] = config.getint('ETL', 'page_fan')
     if config.has_option('ETL', 'rev_fan'):
         opts_etl['rev_fan'] = config.getint('ETL', 'rev_fan')
+    if config.has_option('ETL', 'page_cache_size'):
+        opts_etl['page_cache_size'] = config.getint('ETL', 'page_cache_size')
+    if config.has_option('ETL', 'rev_cache_size'):
+        opts_etl['rev_cache_size'] = config.getint('ETL', 'rev_cache_size')
     if config.has_option('ETL', 'base_ports'):
         opts_etl['base_ports'] = json.loads(config.get('ETL', 'base_ports'))
     if config.has_option('ETL', 'control_ports'):
@@ -102,6 +106,8 @@ if __name__ == '__main__':
             'etl_lines': 1,
             'page_fan': 1,
             'rev_fan': 1,
+            'page_cache_size': 1000000,
+            'rev_cache_size': 1000000,
             'db_user': 'root',
             'db_passw': '',
             'db_engine': 'ARIA',
@@ -167,6 +173,16 @@ if __name__ == '__main__':
     parser.add_argument('--rev_fan', type=int, metavar='NUM_REV_WORKERS',
                         help=''.join(['Number of worker process to deal with ',
                                       'revision elements in each ETL line.'])
+                        )
+    parser.add_argument('--page_cache_size', type=int, metavar='CACHE_SIZE',
+                        help=''.join(['Num. of rows to accumulate in tmp ',
+                                      'data dir for page elements before ',
+                                      'flushing data to local DB.'])
+                        )
+    parser.add_argument('--rev_cache_size', type=int, metavar='CACHE_SIZE',
+                        help=''.join(['Num. of rows to accumulate in tmp ',
+                                      'data dir for revision elements before ',
+                                      'flushing data to local DB.'])
                         )
     parser.add_argument('--db_name', type=str, metavar='DB_NAME',
                         help=''.join(['Name of local DB.'])
@@ -236,6 +252,8 @@ if __name__ == '__main__':
                                      etl_lines=args.etl_lines)
 
     task.execute(page_fan=args.page_fan, rev_fan=args.rev_fan,
+                 page_cache_size=args.page_cache_size,
+                 rev_cache_size=args.rev_cache_size,
                  host=args.host, port=args.port,
                  db_name=args.db_name, db_user=args.db_user,
                  db_passw=args.db_passw, db_engine=args.db_engine,
