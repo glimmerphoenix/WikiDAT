@@ -92,6 +92,9 @@ def store_pages_file_db(pages_iter, con=None, log_file=None,
                       LINES TERMINATED BY '\n'"""
 
     path_file_page = os.path.join(tmp_dir, etl_prefix + '_page.csv')
+    # Delete previous versions of tmp files if present
+    if os.path.isfile(path_file_page):
+        os.remove(path_file_page)
 
     for page in pages_iter:
         total_pages += 1
@@ -115,12 +118,14 @@ def store_pages_file_db(pages_iter, con=None, log_file=None,
             # Insert in DB
             file_page.close()
             con.send_query(insert_pages % path_file_page)
-            insert_rows == 0
+            insert_rows = 0
             # No need to delete tmp files, as they are empty each time we
             # open them again for writing
 
     file_page.close()
     con.send_query(insert_pages % path_file_page)
+    # Clean tmp files
+#    os.remove(path_file_page)
 
     logging.info("END: %s pages processed %s." % (
                  total_pages,

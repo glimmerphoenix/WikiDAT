@@ -407,6 +407,12 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
     path_file_rev_hash = os.path.join(tmp_dir,
                                       etl_prefix + '_revision_hash.csv')
 
+    # Delete previous versions of tmp files if present
+    if os.path.isfile(path_file_rev):
+        os.remove(path_file_rev)
+    if os.path.isfile(path_file_rev_hash):
+        os.remove(path_file_rev_hash)
+
     for rev, rev_hash in rev_iter:
         total_revs += 1
 
@@ -440,15 +446,19 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
             con.send_query(insert_rev % path_file_rev)
             con.send_query(insert_rev_hash % path_file_rev_hash)
 
-            insert_rows == 0
+            insert_rows = 0
             # No need to delete tmp files, as they are empty each time we
             # open them again for writing
 
     # Load remaining entries in last tmp files into DB
     file_rev.close()
     file_rev_hash.close()
+
     con.send_query(insert_rev % path_file_rev)
     con.send_query(insert_rev_hash % path_file_rev_hash)
+    # Clean tmp files
+#    os.remove(path_file_rev)
+#    os.remove(path_file_rev_hash)
 
     logging.info("%s revisions %s." % (
                  total_revs,
