@@ -58,8 +58,8 @@ class RevisionHistoryTask(Task):
 
     # TODO: include args detect_FA, detect_FLIST, detect_GA
     # and implement flow control in process_revision
-    def execute(self, page_fan, rev_fan, host, port,
-                db_name, db_user, db_passw, db_engine,
+    def execute(self, page_fan, rev_fan, page_cache_size, rev_cache_size,
+                host, port, db_name, db_user, db_passw, db_engine,
                 mirror, download_files,
                 base_ports, control_ports,
                 dumps_dir=None):
@@ -134,6 +134,8 @@ class RevisionHistoryTask(Task):
             new_etl = PageRevisionETL(name="ETL-process-%s" % x,
                                       paths_queue=paths_queue, lang=self.lang,
                                       page_fan=page_fan, rev_fan=rev_fan,
+                                      page_cache_size=page_cache_size,
+                                      rev_cache_size=rev_cache_size,
                                       db_name=db_name,
                                       db_user=db_user, db_passw=db_passw,
                                       base_port=base_ports[x]+(20*x),
