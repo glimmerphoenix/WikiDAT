@@ -69,12 +69,12 @@ class MySQLDB(object):
         self.send_query(bs.drop_database.format(**params))
         self.send_query(bs.create_database.format(**params))
 
-    def create_schema(self):
+    def create_schema(self, engine='ARIA'):
         """
         Create schema in local database
         """
         # TODO: Parameterize engine with common configuration file
-        params = {'engine': 'ARIA'}
+        params = {'engine': engine}
         self.send_query(bs.drop_page)
         self.send_query(bs.create_page.format(**params))
         self.send_query(bs.drop_revision)
@@ -117,6 +117,26 @@ class MySQLDB(object):
             warnings.simplefilter('ignore', MySQLdb.Warning)
             try:
                 self.cursor.execute(query)
+                #self.con.commit()
+            except (Exception), e:
+                # TODO: This is potentially dangerous, we should
+                # capture and log DB exceptions adequately using
+                # Python logger
+                print "Exception in send_query method: ", e
+
+    def insert_many(self, query_template, values):
+        """
+        Send multiple statements to DB. Typically used in bulk data inserts.
+        """
+        # TODO: Handle errors properly with logger library
+        #chances = 0
+        #while chances < ntimes:
+        with warnings.catch_warnings():
+            # Change filter action to 'error' to raise warnings as if they
+            # were exceptions, to record them in the log file
+            warnings.simplefilter('ignore', MySQLdb.Warning)
+            try:
+                self.cursor.executemany(query_template, values)
                 #self.con.commit()
             except (Exception), e:
                 # TODO: This is potentially dangerous, we should
