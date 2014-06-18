@@ -92,6 +92,9 @@ def store_pages_file_db(pages_iter, con=None, log_file=None,
                       LINES TERMINATED BY '\n'"""
 
     path_file_page = os.path.join(tmp_dir, etl_prefix + '_page.csv')
+    # Delete previous versions of tmp files if present
+    if os.path.isfile(path_file_page):
+        os.remove(path_file_page)
 
     for page in pages_iter:
         total_pages += 1
@@ -100,27 +103,29 @@ def store_pages_file_db(pages_iter, con=None, log_file=None,
             file_page = open(path_file_page, 'wb')
             writer = csv.writer(file_page, dialect='excel-tab',
                                 lineterminator='\n')
+        # Write data to tmp file
+        try:
+            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                             else s for s in page])
+        except(Exception), e:
+            print e
+            print page
 
-        if insert_rows < file_rows:
-            try:
-                writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                                 else s for s in page])
-            except(Exception), e:
-                print e
-                print page
+        insert_rows += 1
 
-            insert_rows += 1
-
-        else:
+        # Call MySQL to load data from file and reset rows counter
+        if insert_rows == file_rows:
             # Insert in DB
             file_page.close()
             con.send_query(insert_pages % path_file_page)
-            insert_rows == 0
+            insert_rows = 0
             # No need to delete tmp files, as they are empty each time we
             # open them again for writing
 
     file_page.close()
     con.send_query(insert_pages % path_file_page)
+    # Clean tmp files
+#    os.remove(path_file_page)
 
     logging.info("END: %s pages processed %s." % (
                  total_pages,

@@ -48,7 +48,8 @@ class PageRevisionETL(ETL):
 
     def __init__(self, group=None, target=None, name=None, args=None,
                  kwargs=None, paths_queue=None, lang=None, page_fan=1,
-                 rev_fan=3, db_name=None, db_user=None, db_passw=None,
+                 rev_fan=3, page_cache_size=1000000, rev_cache_size=1000000,
+                 db_name=None, db_user=None, db_passw=None,
                  base_port=None, control_port=None):
         """
         Initialize new PageRevision workflow
@@ -60,6 +61,8 @@ class PageRevisionETL(ETL):
                              db_name=db_name,
                              db_user=db_user, db_passw=db_passw)
 
+        self.page_cache_size = page_cache_size
+        self.rev_cache_size = rev_cache_size
         self.base_port = base_port
         self.control_port = control_port
 
@@ -169,6 +172,7 @@ class PageRevisionETL(ETL):
                                       kwargs=dict(con=db_pages,
                                                   log_file=log_file,
                                                   tmp_dir=tmp_dir,
+                                                  file_rows=self.page_cache_size,
                                                   etl_prefix=self.name),
                                       producers=self.page_fan,
                                       pull_port=self.base_port+2)
@@ -179,6 +183,7 @@ class PageRevisionETL(ETL):
                                      kwargs=dict(con=db_revs,
                                                  log_file=log_file,
                                                  tmp_dir=tmp_dir,
+                                                 file_rows=self.rev_cache_size,
                                                  etl_prefix=self.name),
                                      producers=self.rev_fan,
                                      pull_port=self.base_port+3)
