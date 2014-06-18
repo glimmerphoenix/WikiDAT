@@ -30,7 +30,8 @@ included in WikiDAT:
 <li>MySQL server and client (v5.5 or later).</li>
 <li>Python programming language (v2.7 or later, but not the v3 branch), 
 MySQLdb (v1.2.3 or later), lxml (v3.3.1-0 or later), beautifulsoup4 (v4.2.1 or later),
-requests (v2.2.1 or later) and configparser (v3.3.0r2 or later).</li>
+pyzmq (v14.3.0 or later), requests (v2.2.1 or later), ujson (v1.3.0 or later) and 
+configparser (v3.3.0r2 or later).</li>
 <li>R programming language and environment (v 2.15.0 or later).</li>
 <li>Additional R libraries with extra data and functionalities (This list will be updated as new
 functionalities are included in this toolkit):</li> 
