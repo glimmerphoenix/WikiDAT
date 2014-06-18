@@ -393,12 +393,12 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
     logging.info("Starting parsing process...")
 
-    insert_rev = """LOAD DATA INFILE '%s' INTO TABLE revision
+    insert_rev = """LOAD DATA LOCAL INFILE '%s' INTO TABLE revision
                     FIELDS OPTIONALLY ENCLOSED BY '"'
                     TERMINATED BY '\t' ESCAPED BY '"'
                     LINES TERMINATED BY '\n'"""
 
-    insert_rev_hash = """LOAD DATA INFILE '%s' INTO TABLE revision_hash
+    insert_rev_hash = """LOAD DATA LOCAL INFILE '%s' INTO TABLE revision_hash
                          FIELDS OPTIONALLY ENCLOSED BY '"'
                          TERMINATED BY '\t' ESCAPED BY '"'
                          LINES TERMINATED BY '\n'"""

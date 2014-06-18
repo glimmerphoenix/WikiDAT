@@ -42,7 +42,7 @@ class MySQLDB(object):
             self.con = MySQLdb.Connect(host=self.host, port=self.port,
                                        user=self.user, passwd=self.passwd,
                                        db=self.db, charset="utf8",
-                                       use_unicode=True)
+                                       use_unicode=True, local_infile=True)
         self.cursor = self.con.cursor()
 
     def close(self):
