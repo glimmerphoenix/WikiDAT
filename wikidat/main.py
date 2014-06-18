@@ -101,7 +101,7 @@ if __name__ == '__main__':
     opts = {'lang': 'scowiki',
             'date': 'latest',
             'mirror': 'http://dumps.wikimedia.your.org/',
-            'download_files': False,
+            'download_files': True,
             'dumps_dir': None,
             'etl_lines': 1,
             'page_fan': 1,
