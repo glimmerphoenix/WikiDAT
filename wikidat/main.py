@@ -259,4 +259,5 @@ if __name__ == '__main__':
                  db_passw=args.db_passw, db_engine=args.db_engine,
                  mirror=args.mirror, download_files=args.download_files,
                  base_ports=args.base_ports,
-                 control_ports=args.control_ports)
+                 control_ports=args.control_ports,
+                 dumps_dir=args.dumps_dir)
