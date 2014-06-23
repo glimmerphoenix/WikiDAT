@@ -98,7 +98,7 @@ class RevisionHistoryTask(Task):
                     sys.exit()
 
                 else:
-                    self.paths = glob.glob(dumps_path + '*.7z')
+                    self.paths = glob.glob(os.path.join(dumps_path, '*.7z'))
             # If not provided explicitly, look for default location of
             # dumps directory
             else:
