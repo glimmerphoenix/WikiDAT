@@ -98,7 +98,16 @@ class RevisionHistoryTask(Task):
                     sys.exit()
 
                 else:
+                    # Attempt to find list of .7z or .xml files to be processed
                     self.paths = glob.glob(os.path.join(dumps_path, '*.7z'))
+                    if not self.paths:
+                        self.paths = glob.glob(os.path.join(dumps_path,
+                                                            '*.xml'))
+                        if not self.paths:
+                            print "Directory %s" % dumps_dir
+                            print "does not contain any valid dump file."
+                            print "Program will exit now."
+                            sys.exit()
             # If not provided explicitly, look for default location of
             # dumps directory
             else:
