@@ -48,7 +48,7 @@ def process_xml(dump_file=None):
     page_dict = None
 
     in_stream = dump_file.open_dump()
-    for event, elem in etree.iterparse(in_stream):
+    for event, elem in etree.iterparse(in_stream, huge_tree=True):
         # Drop tag namespace
         tag = elem.tag.split('}')[1]
 
