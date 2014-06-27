@@ -84,9 +84,12 @@ class Downloader(object):
         # First of all, check that status of dump files is Done (ready)
         status_dumps = soup_dumps.find('p', class_='status').span.text
         if status_dumps != 'Dump complete':
-            # TODO: Raise error if dump is not ready on requested date
-            # Think about offering an alternative to the user (latest dump)
-            pass
+            # TODO: Provide an alternative to the user (e.g. latest dump)
+            print "Data dump for the selected date is not ready yet."
+            print "Please, provide a valid date for a completed dump process"
+            print "or select the latest available dump"
+            print "Program will exit now."
+            sys.exit()
 
         # Dump file(s) ready, proceed with list of files and download
         self.dump_urls = [link.get('href') for link in (soup_dumps.
@@ -212,7 +215,7 @@ class RevHistDownloader(Downloader):
         super(RevHistDownloader, self).__init__(mirror=mirror,
                                                 language=language)
         # Customized pattern to find dump files on mirror server page
-        self.match_pattern = 'pages-meta-history[\S]*\.xml\.7z'
+        self.match_pattern = 'pages-meta-history[\S]*\.xml[\S]*\.7z'
 
 
 class RevMetaDownloader(Downloader):
