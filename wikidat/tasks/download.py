@@ -156,7 +156,7 @@ class Downloader(object):
         resp_file = requests.get(file_url, stream=True)
         meta_file_size = resp_file.headers.get('content-length')
         log_size_msg = "Downloading: %s - [Size: %.2f MB]" % (file_name,
-                                                    float(meta_file_size)/10e6)
+                                                    float(meta_file_size)/1e6)
         print log_size_msg
 
         store_file = open(path_file, 'wb')
