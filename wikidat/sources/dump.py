@@ -9,7 +9,7 @@ import subprocess
 import os
 from page import Page
 from revision import Revision
-# from logitem import LogItem
+from logitem import LogItem
 # from user import User
 from wikidat.utils import maps
 
@@ -118,7 +118,24 @@ def process_xml(dump_file=None):
             while elem.getprevious() is not None:
                 del elem.getparent()[0]
 
-#        if tag == 'logitem':
-#            ## TODO: Peform some operations with logitems here
-#            logitem_dict = {}
-#            yield LogItem(data_dict=logitem_dict)
+        if tag == 'logitem':
+            log_dict = {x.tag.split('}')[1]: x.text for x in elem}
+
+            # Get namespace for this log item from page title prefix
+            if 'logtitle' in log_dict:
+                ns_prefix = log_dict['logtitle'].split(':')
+                if (len(ns_prefix) == 2 and ns_prefix[0] in ns_dict):
+                    log_dict['namespace'] = str(ns_dict[ns_prefix[0]])
+                else:
+                    log_dict['namespace'] = '0'
+            else:
+                log_dict['logtitle'] = ''
+                log_dict['namespace'] = '-1000'  # Fake namespace
+
+            yield LogItem(log_dict)
+
+            #Clear memory
+            log_dict = None
+            elem.clear()
+            while elem.getprevious() is not None:
+                del elem.getparent()[0]
