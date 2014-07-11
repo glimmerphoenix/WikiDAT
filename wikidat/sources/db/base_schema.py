@@ -12,7 +12,8 @@ DB-related tasks
 
 drop_database = """DROP DATABASE IF EXISTS {dbname!s}"""
 create_database = """CREATE DATABASE {dbname!s}
-                     CHARACTER SET utf8 COLLATE utf8_general_ci"""
+                     CHARACTER SET utf8 COLLATE utf8_general_ci
+                     """
 
 # TABLE page: Metadata about pages
 """
@@ -33,15 +34,14 @@ page_restrictions:
   -- Comma-separated set of permission keys indicating who
   -- can move or edit the page.
 """
-drop_page = """DROP TABLE IF EXISTS page
-            """
+drop_page = """DROP TABLE IF EXISTS page"""
 create_page = """CREATE TABLE page (
                  page_id int unsigned NOT NULL,
                  page_namespace smallint NOT NULL,
                  page_title varchar(255) BINARY NOT NULL,
                  page_restrictions tinyblob NOT NULL default ''
                  ) MAX_ROWS=1000000000 AVG_ROW_LENGTH=2048 ENGINE {engine!s};
-              """
+                 """
 
 # TABLE revision: Metadata for revisions of every page
 """
@@ -89,8 +89,7 @@ rev_comment:
   -- rendered in a subset of wiki markup by Linker::formatComment()
 
 """
-drop_revision = """DROP TABLE IF EXISTS revision
-                """
+drop_revision = """DROP TABLE IF EXISTS revision"""
 create_revision = """CREATE TABLE revision (
                      rev_id int unsigned NOT NULL ,
                      rev_page int unsigned NOT NULL,
@@ -106,7 +105,7 @@ create_revision = """CREATE TABLE revision (
                      rev_comment text NOT NULL default ''
                      ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=2048
                      ENGINE {engine!s}
-                  """
+                     """
 
 # TABLE revision_hash: MD5 hashes of text of every revision
 """
@@ -124,8 +123,7 @@ rev_hash:
   -- MD5 hash of text of this revision
 
 """
-drop_revision_hash = """DROP TABLE IF EXISTS revision_hash
-                     """
+drop_revision_hash = """DROP TABLE IF EXISTS revision_hash"""
 create_revision_hash = """CREATE TABLE revision_hash (
                           rev_id int unsigned NOT NULL,
                           rev_page int unsigned NOT NULL,
@@ -133,7 +131,7 @@ create_revision_hash = """CREATE TABLE revision_hash (
                           rev_hash varbinary(256) NOT NULL
                           ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=512
                           ENGINE {engine!s}
-                       """
+                          """
 
 # TABLE namespaces: identifiers of MediaWiki namespaces
 # http://www.mediawiki.org/wiki/Namespaces
@@ -144,13 +142,12 @@ code:
 name:
   -- Name of this namespace, defaults to '' for main (encyclopedic articles)
 """
-drop_namespaces = """DROP TABLE IF EXISTS namespace
-                  """
+drop_namespaces = """DROP TABLE IF EXISTS namespace"""
 create_namespaces = """CREATE TABLE namespaces (
                        code SMALLINT NOT NULL,
                        name VARCHAR(50) NOT NULL
                        ) ENGINE {engine!s}
-                    """
+                       """
 # TABLE people: identifiers of logged users
 """
 rev_user:
@@ -162,14 +159,13 @@ rev_user:
 rev_user_text:
   -- Text username or IP address of the editor.
 """
-drop_people = """DROP TABLE IF EXISTS people
-              """
+drop_people = """DROP TABLE IF EXISTS people"""
 create_people = """CREATE TABLE people (
                    rev_user INT NOT NULL DEFAULT 0,
                    rev_user_text VARCHAR(255) BINARY DEFAULT ''
                    ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=512
                    ENGINE {engine!s}
-                """
+                   """
 
 # TABLE logging: log of administrative and relevant tasks
 """
@@ -214,8 +210,7 @@ log_old_flag:
   -- page
 
 """
-drop_logging = """DROP TABLE IF EXISTS logging
-               """
+drop_logging = """DROP TABLE IF EXISTS logging"""
 create_logging = """CREATE TABLE logging (
                     log_id INT UNSIGNED NOT NULL,
                     log_type VARCHAR(15) BINARY NOT NULL,
@@ -230,7 +225,27 @@ create_logging = """CREATE TABLE logging (
                     log_new_flag INT UNSIGNED NOT NULL DEFAULT 0,
                     log_old_flag INT UNSIGNED NOT NULL DEFAULT 0
                     ) ENGINE {engine!s}
-                 """
+                    """
+
+drop_block = """DROP TABLE IF EXISTS block"""
+create_block = """CREATE TABLE block (
+                  block_id INT UNSIGNED NOT NULL,
+                  block_action VARCHAR(15) BINARY NOT NULL,
+                  block_user INT UNSIGNED NOT NULL,
+                  block_target INT NOT NULL,
+                  block_ip INT(10) UNSIGNED NOT NULL,
+                  block_duration INT UNSIGNED NOT NULL
+                  ) ENGINE {engine!s}
+                  """
+
+drop_newuser = """DROP TABLE IF EXISTS newuser"""
+create_newuser = """CREATE TABLE newuser (
+                    user_id INT UNSIGNED NOT NULL,
+                    username VARCHAR(255) NOT NULL,
+                    user_timestamp DATETIME NOT NULL
+                    user_action VARCHAR 15 NOT NULL
+                    ) ENGINE {engine!s}
+                    """
 
 pk_page = """ALTER TABLE page ADD PRIMARY KEY page_id(page_id)"""
 pk_revision = """ALTER TABLE revision ADD PRIMARY KEY rev_id(rev_id)"""
