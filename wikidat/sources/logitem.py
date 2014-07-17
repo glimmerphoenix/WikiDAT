@@ -145,8 +145,10 @@ def process_logitem(log_iter):
             # TODO: Build data packet to be inserted in table blocks
 
         # INFO DELETIONS
+        # TODO:
 
         # INFO PROTECTIONS
+        # TODO:
 
         # INFO USER REGISTRATIONS
         # TODO: Check later, but no special actions required so far
@@ -158,6 +160,28 @@ def process_logitem(log_iter):
 #             logitem['action'] == 'byemail')):
 
         # INFO RIGHTS GRANTING
+        if (logitem['type'] == 'rights' and
+                logitem['action'] == 'rights'):
+            pars = logitem['params'].split('\n')
+            # Case of old format for parameters, with previous status in first
+            # line, then new list of privileges in new line
+            if len(pars) > 1:
+                logitem['right_old'] = pars[0]
+                logitem['right_new'] = pars[1]
+            else:
+                # Case of new single-line format oldgroups --> new groups
+                if (re.search('"4::oldgroups"', pars[0])):
+                    priv_list = (pars[0].partition('"4::oldgroups"')[2].
+                                 partition('"5::newgroups"'))
+                    priv_old = re.findall(r'\"(.+?)\"', priv_list[0])
+                    priv_new = re.findall(r'\"(.+?)\"', priv_list[2])
+                    logitem['right_old'] = unicode(priv_old)
+                    logitem['right_new'] = unicode(priv_new)
+
+                # Case of primitive free format
+                else:
+                    logitem['right_old'] = None
+                    logitem['right_new'] = pars[0]
 
 
 def process_logitem_to_file(log_iter):
