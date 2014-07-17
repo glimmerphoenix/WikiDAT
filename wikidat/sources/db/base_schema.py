@@ -232,6 +232,7 @@ create_block = """CREATE TABLE block (
                   block_id INT UNSIGNED NOT NULL,
                   block_action VARCHAR(15) BINARY NOT NULL,
                   block_user INT UNSIGNED NOT NULL,
+                  block_timestamp DATETIME NOT NULL,
                   block_target INT NOT NULL,
                   block_ip INT(10) UNSIGNED NOT NULL,
                   block_duration INT UNSIGNED NOT NULL
@@ -246,6 +247,16 @@ create_newuser = """CREATE TABLE newuser (
                     user_action VARCHAR 15 NOT NULL
                     ) ENGINE {engine!s}
                     """
+
+drop_right = """DROP TABLE IF EXISTS right"""
+create_right = """CREATE TABLE right(
+                  right_id INT UNSIGNED NOT NULL,
+                  right_username VARCHAR(255) NOT NULL,
+                  right_timestamp DATETIME NOT NULL,
+                  right_old VARCHAR(255) NOT NULL,
+                  right_new VARCHAR(255) NOT NULL
+                  ) ENGINE {engine!s}
+                  """
 
 pk_page = """ALTER TABLE page ADD PRIMARY KEY page_id(page_id)"""
 pk_revision = """ALTER TABLE revision ADD PRIMARY KEY rev_id(rev_id)"""
