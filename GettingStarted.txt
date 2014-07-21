@@ -1,0 +1,45 @@
+Step by step
+
+Download
+
+git clone https://github.com/c-martinez/WikiDAT.git
+
+Install
+
+sudo python setup.py install
+
+(should wikidat.tasks be included in setup.py)
+
+OR 
+
+run from local directory.
+
+cd wikidata
+
+Make sure WIKIDATA packages are reachable through PYTHONPATH
+
+Edit config.ini as required.
+  > database?
+  > username?
+  > password?
+
+NOTE: will not worki with LATEST wikimedia dumps.
+
+Make sure 7za is installed (should program check it is / throw a more explicit error if it is not?)
+
+NOTE: LOAD DATA LOCAL must be enabled. You should set the option local-infile=1 into your [mysql] entry of my.cnf file (http://stackoverflow.com/questions/10762239/mysql-enable-load-data-local-infile). This mighe be a security concern (Section 6.1.6, “Security Issues with LOAD DATA LOCAL”.) Should we look for an alternative ?
+
+
+Run :
+
+python pages_meta_history.py scowiki_20140705 wikiuser wikiuser enwiki ~/Projects/BeyondTheBook/WikiDAT/wikidat/scowiki_dumps/20140705/scowiki-20140705-pages-meta-history.xml.7z pages_meta_history.log
+
+python pages_logging.py scowiki_20140705 wikiuser wikiuser ~/Projects/BeyondTheBook/WikiDAT/wikidat/scowiki_dumps/20140705/scowiki-20140705-pages-logging.xml.gz log_file.log
+
+and
+
+mysql scowiki_20140705 -u wikiuser -p < scowiki-20140705-user_groups.sql
+
+NOTE: Should main.py also download *-pages-logging.xml.gz, *-user_broups.sql.gz and *-pages-meta-history.xml.7z and run corresponding *.py files for importing?
+
+NOTE: Maybe, I would check that parameters in Section 4.2 of "Companion*.pdf" match with those on the scripts.
