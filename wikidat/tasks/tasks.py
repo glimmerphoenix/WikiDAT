@@ -13,7 +13,7 @@ processes with Wikipedia data:
 @author: jfelipe
 """
 
-from wikidat.sources.etl import PageRevisionETL
+from wikidat.retrieval.etl import PageRevisionETL
 from download import RevHistDownloader
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
@@ -77,18 +77,20 @@ class RevisionHistoryTask(Task):
             # Choose corresponding file downloader and etl wrapper
             print "Downloading new dump files from %s, for language %s" % (
                   mirror, self.lang)
-            self.down = RevHistDownloader(mirror, self.lang)
+            self.down = RevHistDownloader(mirror, self.lang, dumps_dir)
             # Donwload latest set of dump files
             self.paths, self.date = self.down.download(self.date)
             print "Got files for lang %s, date: %s" % (self.lang, self.date)
 
-            #db_name = self.lang + '_' + self.date.strip('/')
+            # db_name = self.lang + '_' + self.date.strip('/')
 
         else:
             # Case of dumps folder provided explicity
             if dumps_dir:
                 # Allow specifying relative paths, as well
-                dumps_path = os.path.expanduser(dumps_dir)
+                abs_dumps_path = os.path.expanduser(dumps_dir)
+                dumps_path = os.path.join(abs_dumps_path,
+                                          self.lang + '_dumps', self.date)
                 # Retrieve path to all available files to feed ETL lines
                 if not os.path.exists(dumps_path):
                     print "No dump files will be downloaded and local folder "
@@ -104,14 +106,15 @@ class RevisionHistoryTask(Task):
                         self.paths = glob.glob(os.path.join(dumps_path,
                                                             '*.xml'))
                         if not self.paths:
-                            print "Directory %s" % dumps_dir
+                            print "Directory %s" % dumps_path
                             print "does not contain any valid dump file."
                             print "Program will exit now."
                             sys.exit()
             # If not provided explicitly, look for default location of
             # dumps directory
             else:
-                dumps_dir = os.path.join(self.lang + '_dumps', self.date)
+                dumps_dir = os.path.join("data", self.lang + '_dumps',
+                                         self.date)
                 # Look up dump files in default directory name
                 if not os.path.exists(dumps_dir):
                     print "Default directory %s" % dumps_dir
@@ -120,7 +123,7 @@ class RevisionHistoryTask(Task):
                     sys.exit()
 
                 else:
-                    self.paths = glob.glob(dumps_dir + '/*.7z')
+                    self.paths = glob.glob(os.path.join(dumps_dir, '*.7z'))
 
         print "paths: " + unicode(self.paths)
 

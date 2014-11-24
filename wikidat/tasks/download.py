@@ -11,18 +11,12 @@ import multiprocessing as mp
 import itertools
 import requests
 import re
-import sys
 import os
 import hashlib
 import logging
 
 
-class Error(Exception):
-    """Base class for exceptions in this module."""
-    pass
-
-
-class DumpIntegrityError(Error):
+class DumpIntegrityError(Exception):
     """Exception raised for errors in the input.
 
     Attributes:
@@ -46,7 +40,7 @@ class Downloader(object):
     """
 
     def __init__(self, mirror="http://dumps.wikimedia.your.org/",
-                 language='scowiki'):
+                 language='scowiki', dumps_dir=None):
         self.language = language
         self.mirror = mirror
         self.base_url = "".join([self.mirror, self.language])
@@ -60,8 +54,13 @@ class Downloader(object):
                              for link in soup_dates.find_all('a')][1:]
         self.dump_dates = [link.text
                            for link in soup_dates.find_all('td', 'm')][1:]
-        self.match_pattern = ""  # Store re in subclass for type of dump file
-        self.dump_basedir = language + "_dumps"
+        # Stores re in subclass for type of dump file
+        # To be filled in subclass with pattern for dump files
+        self.match_pattern = ""
+        if dumps_dir:
+            self.dump_basedir = os.path.join("data", dumps_dir)
+        else:
+            self.dump_basedir = os.path.join("data", language + "_dumps")
         self.dump_paths = []  # List of paths to dumps in local filesystem
         self.md5_codes = {}  # Dict for md5 codes to verify dump files
 
@@ -97,8 +96,11 @@ class Downloader(object):
 
         # Create directory for dump files if needed
         self.dump_dir = os.path.join(self.dump_basedir, dump_date)
+        self.logs_dir = os.path.join(self.dump_basedir, dump_date, "logs")
         if not os.path.exists(self.dump_dir):
             os.makedirs(self.dump_dir)
+        if not os.path.exists(self.logs_dir):
+            os.makedirs(self.logs_dir)
 
         for url1, url2 in itertools.izip_longest(self.dump_urls[::2],
                                                  self.dump_urls[1::2],
@@ -150,13 +152,13 @@ class Downloader(object):
         print "File URL is: %s" % (file_url)
 
         # Setup log file
-        log_file = os.path.join(local_dir, file_name + ".log")
+        log_file = os.path.join(local_dir, "logs", file_name + ".log")
         logging.basicConfig(filename=log_file, level=logging.INFO)
 
         resp_file = requests.get(file_url, stream=True)
         meta_file_size = resp_file.headers.get('content-length')
         log_size_msg = "Downloading: %s - [Size: %.2f MB]" % (file_name,
-                                                    float(meta_file_size)/1e6)
+                                                              float(meta_file_size)/10e6)
         print log_size_msg
 
         store_file = open(path_file, 'wb')
@@ -176,7 +178,7 @@ class Downloader(object):
                              ' ' * (50-done),
                              round(100 * part_len / total_length, 2))
                              )
-        logging.info("File %s downloaded OK.")
+        logging.info("File %s downloaded OK." % file_name)
         store_file.close()
 
     def _verify(self, target_url):
@@ -211,7 +213,7 @@ class RevHistDownloader(Downloader):
     These are files with complete revision history information (all text)
     """
 
-    def __init__(self, mirror, language):
+    def __init__(self, mirror, language, dumps_dir):
         super(RevHistDownloader, self).__init__(mirror=mirror,
                                                 language=language)
         # Customized pattern to find dump files on mirror server page
@@ -225,7 +227,7 @@ class RevMetaDownloader(Downloader):
     rev_len, as stored in Wikipedia DB) but no revision text
     """
 
-    def __init__(self, mirror, language):
+    def __init__(self, mirror, language, dumps_dir):
         super(RevMetaDownloader, self).__init__(mirror=mirror,
                                                 language=language)
 # Customized pattern to find dump files on mirror server page
