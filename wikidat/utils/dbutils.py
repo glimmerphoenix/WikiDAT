@@ -6,7 +6,7 @@ Created on Sat Mar 29 22:27:02 2014
 """
 import MySQLdb
 import warnings
-import wikidat.sources.db.base_schema as bs
+import wikidat.retrieval.db.base_schema as bs
 
 
 class MySQLDB(object):

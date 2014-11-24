@@ -40,7 +40,7 @@ class Downloader(object):
     """
 
     def __init__(self, mirror="http://dumps.wikimedia.your.org/",
-                 language='scowiki'):
+                 language='scowiki', dumps_dir=None):
         self.language = language
         self.mirror = mirror
         self.base_url = "".join([self.mirror, self.language])
@@ -54,8 +54,13 @@ class Downloader(object):
                              for link in soup_dates.find_all('a')][1:]
         self.dump_dates = [link.text
                            for link in soup_dates.find_all('td', 'm')][1:]
-        self.match_pattern = ""  # Store re in subclass for type of dump file
-        self.dump_basedir = language + "_dumps"
+        # Stores re in subclass for type of dump file
+        # To be filled in subclass with pattern for dump files
+        self.match_pattern = ""
+        if dumps_dir:
+            self.dump_basedir = os.path.join("data", dumps_dir)
+        else:
+            self.dump_basedir = os.path.join("data", language + "_dumps")
         self.dump_paths = []  # List of paths to dumps in local filesystem
         self.md5_codes = {}  # Dict for md5 codes to verify dump files
 
@@ -88,8 +93,11 @@ class Downloader(object):
 
         # Create directory for dump files if needed
         self.dump_dir = os.path.join(self.dump_basedir, dump_date)
+        self.logs_dir = os.path.join(self.dump_basedir, dump_date, "logs")
         if not os.path.exists(self.dump_dir):
             os.makedirs(self.dump_dir)
+        if not os.path.exists(self.logs_dir):
+            os.makedirs(self.logs_dir)
 
         for url1, url2 in itertools.izip_longest(self.dump_urls[::2],
                                                  self.dump_urls[1::2],
@@ -141,13 +149,13 @@ class Downloader(object):
         print "File URL is: %s" % (file_url)
 
         # Setup log file
-        log_file = os.path.join(local_dir, file_name + ".log")
+        log_file = os.path.join(local_dir, "logs", file_name + ".log")
         logging.basicConfig(filename=log_file, level=logging.INFO)
 
         resp_file = requests.get(file_url, stream=True)
         meta_file_size = resp_file.headers.get('content-length')
         log_size_msg = "Downloading: %s - [Size: %.2f MB]" % (file_name,
-                                                    float(meta_file_size)/10e6)
+                                                              float(meta_file_size)/10e6)
         print log_size_msg
 
         store_file = open(path_file, 'wb')

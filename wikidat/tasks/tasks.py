@@ -13,7 +13,7 @@ processes with Wikipedia data:
 @author: jfelipe
 """
 
-from wikidat.sources.etl import PageRevisionETL
+from wikidat.retrieval.etl import PageRevisionETL
 from download import RevHistDownloader
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
