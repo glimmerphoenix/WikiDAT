@@ -341,8 +341,10 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
         if len(contrib_dict) > 0:
             if 'ip' in contrib_dict:
                 user = 0
+                ip = contrib_dict['ip']
             else:
                 user = int(contrib_dict['id'])
+                ip = u'NULL'
 
         # Tuple of revision values
         rev_insert = (int(rev['id']), int(rev['page_id']), int(user),
@@ -356,6 +358,7 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
                       int(rev['is_ga']),
                       (rev['comment'] if 'comment' in rev and
                        rev['comment'] is not None else u'NULL'),
+                      ip,
                       )
 
         # Tuple of revision_hash values

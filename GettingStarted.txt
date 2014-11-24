@@ -1,0 +1,45 @@
+Step by step
+
+Software dependencies:
+  Make sure 7za is installed [should program check it is / throw a more explicit error if it is not?]
+  sudo apt-get install p7zip-full
+
+Follow installation guide from:
+  https://github.com/glimmerphoenix/WikiDAT/wiki/Installation-guide
+
+NOTE: on the configuration file config.ini, using date=latest will not work for downloading the latest wiki dump. A particular date MUST be specified. [This is because the /latest/ page is formatted differently, I guess it shouldn't be too difficult to fix]
+
+NOTE: LOAD DATA LOCAL must be enabled. You should set the option local-infile=1 into your MySQL entry of my.cnf file (http://stackoverflow.com/questions/10762239/mysql-enable-load-data-local-infile). [This might be a security concern (Section 6.1.6, “Security Issues with LOAD DATA LOCAL”.) Should we look for an alternative ]
+
+Run :
+
+As described on the Quick start guide (https://github.com/glimmerphoenix/WikiDAT/wiki/Quick-start-guide) run the following command to start file download and data extraction:
+
+python main.py -c MyConfigFile.ini
+
+[The following steps are not on the quick start guide. Maybe they should?]
+
+Import meta-history pages:
+
+python pages_meta_history.py DB_NAME DB_USER DB_PASSWORD enwiki somewiki_dumps/date/somewiki-date-pages-meta-history.xml.7z pages_meta_history.log
+
+Import logging-info pages:
+
+python pages_logging.py DB_NAME DB_USER DB_PASSWORD somewiki_dumps/date/somewiki-date-pages-logging.xml.gz log_file.log
+
+Import user groups
+
+mysql DB_NAME -u USER -p < somewiki-date-user_groups.sql
+
+[ Should main.py also download *-pages-logging.xml.gz, *-user_groups.sql.gz and *-pages-meta-history.xml.7z and run corresponding *.py files for importing ]
+
+NOTE: Maybe, I would check that parameters in Section 4.2 of "Companion*.pdf" match with those on the scripts.
+
+
+
+
+
+
+
+
+
