@@ -86,7 +86,7 @@ def store_pages_file_db(pages_iter, con=None, log_file=None,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
 
-    insert_pages = """LOAD DATA LOCAL INFILE '%s' INTO TABLE page
+    insert_pages = """LOAD DATA INFILE '%s' INTO TABLE page
                       FIELDS OPTIONALLY ENCLOSED BY '"'
                       TERMINATED BY '\t' ESCAPED BY '"'
                       LINES TERMINATED BY '\n'"""
