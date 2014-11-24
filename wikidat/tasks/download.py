@@ -175,7 +175,7 @@ class Downloader(object):
                              ' ' * (50-done),
                              round(100 * part_len / total_length, 2))
                              )
-        logging.info("File %s downloaded OK.")
+        logging.info("File %s downloaded OK." % file_name)
         store_file.close()
 
     def _verify(self, target_url):
@@ -210,7 +210,7 @@ class RevHistDownloader(Downloader):
     These are files with complete revision history information (all text)
     """
 
-    def __init__(self, mirror, language):
+    def __init__(self, mirror, language, dumps_dir):
         super(RevHistDownloader, self).__init__(mirror=mirror,
                                                 language=language)
         # Customized pattern to find dump files on mirror server page
@@ -224,7 +224,7 @@ class RevMetaDownloader(Downloader):
     rev_len, as stored in Wikipedia DB) but no revision text
     """
 
-    def __init__(self, mirror, language):
+    def __init__(self, mirror, language, dumps_dir):
         super(RevMetaDownloader, self).__init__(mirror=mirror,
                                                 language=language)
 # Customized pattern to find dump files on mirror server page
