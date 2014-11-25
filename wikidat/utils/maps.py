@@ -147,7 +147,8 @@ FA_RE = {'dewiki': DE_FA_RE, 'enwiki': EN_FA_RE, 'eswiki': ES_FA_RE,
          'ltwiki': LT_FA_RE, 'slwiki': SL_FA_RE, 'etwiki': ET_FA_RE,
          'mswiki': MS_FA_RE, 'euwiki': EU_FA_RE, 'glwiki': GL_FA_RE,
          'simplewiki': SIMPLE_FA_RE,
-         'iswiki': IS_FA_RE, 'fowiki': FO_FA_RE, 'scowiki': None
+         'iswiki': IS_FA_RE, 'fowiki': FO_FA_RE, 'scowiki': None,
+         'furwiki': None
          }
 
 # Dictionary of supported languages for Featured List detection
@@ -162,7 +163,7 @@ FLIST_RE = {'dewiki': DE_FLIST_RE, 'enwiki': EN_FLIST_RE, 'eswiki': None,
             'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
             'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
             'euwiki': None, 'glwiki': None, 'simplewiki': None,
-            'iswiki': None, 'fowiki': None, 'scowiki': None
+            'iswiki': None, 'fowiki': None, 'scowiki': None, 'furwiki': None
             }
 
 # Dictionary of supported languages for Good Article detection
@@ -177,5 +178,5 @@ GA_RE = {'dewiki': DE_GA_RE, 'enwiki': EN_GA_RE, 'eswiki': ES_GA_RE,
          'hrwiki': None, 'elwiki': None, 'skwiki': None, 'srwiki': None,
          'ltwiki': None, 'slwiki': None, 'etwiki': None, 'mswiki': None,
          'euwiki': None, 'glwiki': None, 'simplewiki': None,
-         'iswiki': IS_GA_RE, 'fowiki': None, 'scowiki': None
+         'iswiki': IS_GA_RE, 'fowiki': None, 'scowiki': None,'furwiki': None
          }
