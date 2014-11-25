@@ -149,6 +149,7 @@ class RevisionHistoryTask(Task):
             paths_queue.put('STOP')
 
         for x in range(self.etl_lines):
+            # Only ETL-0 will process user information
             new_etl = PageRevisionETL(name="ETL-process-%s" % x,
                                       paths_queue=paths_queue, lang=self.lang,
                                       page_fan=page_fan, rev_fan=rev_fan,
@@ -157,7 +158,8 @@ class RevisionHistoryTask(Task):
                                       db_name=db_name,
                                       db_user=db_user, db_passw=db_passw,
                                       base_port=base_ports[x]+(20*x),
-                                      control_port=control_ports[x]+(20*x))
+                                      control_port=control_ports[x]+(20*x),
+                                      process_users=(not x))
             self.etl_list.append(new_etl)
 
         print "ETL process for page and revision history defined OK."

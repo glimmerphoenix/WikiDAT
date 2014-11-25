@@ -10,7 +10,8 @@ from wikidat.utils import maps
 from data_item import DataItem
 import csv
 import os
-
+import redis
+import ipaddress
 import logging
 
 
@@ -45,8 +46,6 @@ def process_revs(rev_iter, con=None, lang=None):
     """
     # Get tags to identify Featured Articles, Featured Lists and
     # Good Articles
-    # lang = 'dewiki'
-    # new_user = False
 
     if ((lang in maps.FA_RE) and (lang in maps.FLIST_RE) and
             (lang in maps.GA_RE)):
@@ -125,8 +124,9 @@ def process_revs(rev_iter, con=None, lang=None):
         rev_hash = "".join(["(", rev['id'], ",",
                             rev['page_id'], ","])
 
-        # Check that revision has a valid contributor
-        # and build extended insert for people
+        # USER ID PROCESSING
+        # Check if revision has a valid contributor, update contrib_dict
+        # accordingly
         if len(contrib_dict) > 0:
             # Anonymous user
             if 'ip' in contrib_dict:
@@ -202,6 +202,7 @@ def process_revs(rev_iter, con=None, lang=None):
             rev_insert = "".join([rev_insert, "-1, "])
             rev_hash = "".join([rev_hash, "-1, "])
 
+        # TIMESTAMP PROCESSING
         # rev_timestamp
         rev['timestamp'] = rev['timestamp'].\
             replace('Z', '').replace('T', ' ')
@@ -262,11 +263,12 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
         - lang: identifier of Wikipedia language edition from which this
         element comes from (e.g. frwiki, eswiki, dewiki...)
     """
+    # Initialize connections to Redis DBs
+    redis_db_anons = redis.Redis(host='localhost', db=0)
+    redis_db_users = redis.Redis(host='localhost', db=1)    
+
     # Get tags to identify Featured Articles, Featured Lists and
     # Good Articles
-    # lang = 'dewiki'
-    # new_user = False
-
     if ((lang in maps.FA_RE) and (lang in maps.FLIST_RE) and
             (lang in maps.GA_RE)):
         fa_pat = maps.FA_RE[lang]
@@ -336,15 +338,32 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
             rev['len_text'] = '0'
             text_hash.update('')
 
-        # Default value is missing user
-        user = -1
+        # USER PROCESSING
+        # Case of known user
         if len(contrib_dict) > 0:
+            # Anonymous user
             if 'ip' in contrib_dict:
                 user = 0
-                ip = contrib_dict['ip']
+                ip = unicode(contrib_dict['ip'])
+                redis_db_anons.set(int(rev['id']),
+                                   int(ipaddress.ip_address(ip)))
+            # Registered user
             else:
                 user = int(contrib_dict['id'])
-                ip = u'NULL'
+                username = contrib_dict['username']
+                # Username is known
+                if username is not None:
+                    redis_db_users.set(user, username)
+                # Handle strange cases of user ID w/o username
+                else:
+                    stored_name = redis_db_users.get(user)
+                    # If user is not known, then insert entry w/o username
+                    # Otherwise, skip and wait for other entry w/ username
+                    if not stored_name:
+                        redis_db_users.add(user, '')
+        # Case of unknown user
+        else:
+            user = -1
 
         # Tuple of revision values
         rev_insert = (int(rev['id']), int(rev['page_id']), int(user),
@@ -358,7 +377,6 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
                       int(rev['is_ga']),
                       (rev['comment'] if 'comment' in rev and
                        rev['comment'] is not None else u'NULL'),
-                      ip,
                       )
 
         # Tuple of revision_hash values
@@ -372,6 +390,7 @@ def process_revs_to_file(rev_iter, con=None, lang=None):
         contrib_dict = None
         text = None
         text_hash = None
+        # TODO: Handle disconnection of clients from Redis server??
 
 
 def store_revs_file_db(rev_iter, con=None, log_file=None,
@@ -389,6 +408,7 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
         - log_file: Log file to track progress of data loading operations
         - tmp_dir: Directory to store temporary data files
         - file_rows: Number of rows to store in each tmp file
+        - etl_prefix: Identifies the ETL process for this worker
     """
     insert_rows = 0
     total_revs = 0
@@ -396,6 +416,7 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
     logging.info("Starting parsing process...")
 
+    # LOAD REVISION DATA
     insert_rev = """LOAD DATA INFILE '%s' INTO TABLE revision
                     FIELDS OPTIONALLY ENCLOSED BY '"'
                     TERMINATED BY '\t' ESCAPED BY '"'
@@ -463,16 +484,100 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
 
     con.send_query(insert_rev % path_file_rev)
     con.send_query(insert_rev_hash % path_file_rev_hash)
-    # Clean tmp files
+    # TODO: Clean tmp files, uncomment the following lines
 #    os.remove(path_file_rev)
 #    os.remove(path_file_rev_hash)
 
-    logging.info("%s revisions %s." % (
+    # Log end of tasks and exit
+    logging.info("COMPLETED: %s revisions processed %s." % (
                  total_revs,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
-    logging.info("END: %s revisions processed %s." % (
-                 total_revs,
+
+
+def store_users_file_db(con=None, log_file=None, tmp_dir=None,
+                        etl_prefix=None):
+    """
+    Processor to insert revision info in DB
+
+    This version uses an intermediate temp data file to speed up bulk data
+    loading in MySQL/MariaDB, using LOAD DATA INFILE.
+
+    Arguments:
+        - con: Connection to local DB
+        - log_file: Log file to track progress of data loading operations
+        - tmp_dir: Directory to store temporary data files
+        - etl_prefix: Identifies the ETL process for this worker
+    """
+    # Initialize connections to Redis DBs
+    redis_anons = redis.Redis(host='localhost', db=0)
+    redis_users = redis.Redis(host='localhost', db=1)
+
+    # LOAD USERS DATA
+    # Load user info from Redis cache into persistent DB storage
+    insert_anons = """LOAD DATA INFILE '%s' INTO TABLE user_anon
+                      FIELDS OPTIONALLY ENCLOSED BY '"'
+                      TERMINATED BY '\t' ESCAPED BY '"'
+                      LINES TERMINATED BY '\n'"""
+
+    insert_users = """LOAD DATA INFILE '%s' INTO TABLE user_reg
+                      FIELDS OPTIONALLY ENCLOSED BY '"'
+                      TERMINATED BY '\t' ESCAPED BY '"'
+                      LINES TERMINATED BY '\n'"""
+    # Anonymous IPs
+    path_file_anons = os.path.join(tmp_dir, etl_prefix + '_anon_IPs.csv')
+    file_anons = open(path_file_anons, 'wb')
+    writer_anons = csv.writer(file_anons, dialect='excel-tab',
+                              lineterminator='\n')
+
+    keys_anons = redis_anons.keys()
+    list_anons = zip(keys_anons, redis_anons.mget(keys_anons))
+    total_anons = len(list_anons)
+
+    for item_anon in list_anons:
+        try:
+            writer_anons.writerow([s for s in item_anon])
+        except(Exception), e:
+            print e
+
+    file_anons.close()
+
+    # Registered users
+    path_file_users = os.path.join(tmp_dir, etl_prefix + '_users.csv')
+    file_users = open(path_file_users, 'wb')
+    writer_users = csv.writer(file_users, dialect='excel-tab',
+                              lineterminator='\n')
+
+    keys_users = redis_users.keys()
+    list_users = zip(keys_users, redis_users.mget(keys_users))
+    total_users = len(list_users)
+
+    for item_user in list_users:
+        try:
+            writer_users.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                                   else s for s in item_user])
+        except(Exception), e:
+            print e
+
+    file_users.close()
+    list_anons = None
+    list_users = None
+
+    #    con.send_query(insert_anons % path_file_anons)
+    #    con.send_query(insert_users % path_file_users)
+    #    # TODO: Clean tmp files, uncomment the following lines
+    #    os.remove(path_file_anons)
+    #    os.remove(path_file_users)
+    #    # Clean up Redis databases to free memory
+    redis_anons.flushdb()
+    redis_users.flushdb()
+
+    logging.info("COMPLETED: %s anonymous users processed %s." % (
+                 total_anons,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+    logging.info("COMPLETED: %s registered users processed %s." % (
+                 total_users,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
 

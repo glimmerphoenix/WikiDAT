@@ -12,7 +12,7 @@ import multiprocessing as mp
 from processors import Producer, Processor, Consumer
 from dump import DumpFile, process_xml
 from page import process_pages_to_file, store_pages_file_db
-from revision import process_revs_to_file, store_revs_file_db
+from revision import process_revs_to_file, store_revs_file_db, store_users_file_db
 from wikidat.utils.dbutils import MySQLDB
 
 
@@ -50,7 +50,7 @@ class PageRevisionETL(ETL):
                  kwargs=None, paths_queue=None, lang=None, page_fan=1,
                  rev_fan=3, page_cache_size=1000000, rev_cache_size=1000000,
                  db_name=None, db_user=None, db_passw=None,
-                 base_port=None, control_port=None):
+                 base_port=None, control_port=None, process_users=False):
         """
         Initialize new PageRevision workflow
         """
@@ -65,6 +65,7 @@ class PageRevisionETL(ETL):
         self.rev_cache_size = rev_cache_size
         self.base_port = base_port
         self.control_port = control_port
+        self.process_users = process_users
 
     def run(self):
         """
@@ -204,6 +205,11 @@ class PageRevisionETL(ETL):
 
         # Mark STOP message as processed and finish
         self.paths_queue.task_done()
+
+        # LOAD users data if this is ETL-0
+        if self.process_users:
+            store_users_file_db(con=db_revs, log_file=log_file,
+                                tmp_dir=tmp_dir, etl_prefix=self.name)
 
         end = time.time()
         print "All tasks done in %.4f sec." % ((end-start)/1.)
