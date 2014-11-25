@@ -36,10 +36,10 @@ page_restrictions:
 """
 drop_page = """DROP TABLE IF EXISTS page"""
 create_page = """CREATE TABLE page (
-                 page_id int unsigned NOT NULL,
-                 page_namespace smallint NOT NULL,
-                 page_title varchar(255) BINARY NOT NULL,
-                 page_restrictions tinyblob NOT NULL default ''
+                 page_id INT UNSIGNED NOT NULL,
+                 page_namespace SMALLINT NOT NULL,
+                 page_title VARCHAR(255) BINARY NOT NULL,
+                 page_restrictions TINYBLOB NOT NULL default ''
                  ) MAX_ROWS=1000000000 AVG_ROW_LENGTH=2048 ENGINE {engine!s};
                  """
 
@@ -91,19 +91,19 @@ rev_comment:
 """
 drop_revision = """DROP TABLE IF EXISTS revision"""
 create_revision = """CREATE TABLE revision (
-                     rev_id int unsigned NOT NULL ,
-                     rev_page int unsigned NOT NULL,
-                     rev_user int NOT NULL default '0',
-                     rev_timestamp datetime NOT NULL,
-                     rev_len int unsigned NOT NULL,
-                     rev_parent_id int unsigned default NULL,
-                     rev_is_redirect tinyint(1) unsigned NOT NULL default '0',
-                     rev_minor_edit tinyint(1) unsigned NOT NULL default '0',
-                     rev_fa tinyint(1) unsigned NOT NULL default '0',
-                     rev_flist tinyint(1) unsigned NOT NULL default '0',
-                     rev_ga tinyint(1) unsigned NOT NULL default '0',
-                     rev_comment text NOT NULL default '',
-                     rev_ip varchar(40) NULL default NULL
+                     rev_id INT UNSIGNED NOT NULL,
+                     rev_page INT UNSIGNED NOT NULL,
+                     rev_user INT NOT NULL default '0',
+                     rev_timestamp DATETIME NOT NULL,
+                     rev_len INT UNSIGNED NOT NULL,
+                     rev_parent_id INT UNSIGNED default NULL,
+                     rev_is_redirect TINYINT(1) UNSIGNED NOT NULL default '0',
+                     rev_minor_edit TINYINT(1) UNSIGNED NOT NULL default '0',
+                     rev_fa TINYINT(1) UNSIGNED NOT NULL default '0',
+                     rev_flist TINYINT(1) UNSIGNED NOT NULL default '0',
+                     rev_ga TINYINT(1) UNSIGNED NOT NULL default '0',
+                     rev_comment TEXT NOT NULL default '',
+                     rev_ip VARCHAR(40) NULL default NULL
                      ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=2048
                      ENGINE {engine!s}
                      """
@@ -126,9 +126,9 @@ rev_hash:
 """
 drop_revision_hash = """DROP TABLE IF EXISTS revision_hash"""
 create_revision_hash = """CREATE TABLE revision_hash (
-                          rev_id int unsigned NOT NULL,
-                          rev_page int unsigned NOT NULL,
-                          rev_user int NOT NULL default '0',
+                          rev_id INT UNSIGNED NOT NULL,
+                          rev_page INT UNSIGNED NOT NULL,
+                          rev_user INT NOT NULL default '0',
                           rev_hash varbinary(256) NOT NULL
                           ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=512
                           ENGINE {engine!s}
@@ -149,24 +149,24 @@ create_namespaces = """CREATE TABLE namespaces (
                        name VARCHAR(50) NOT NULL
                        ) ENGINE {engine!s}
                        """
-# TABLE people: identifiers of logged users
+# TABLE user: identifiers of registered users
 """
-rev_user:
+user_id:
   -- Key to user.user_id of the user who made this edit.
   -- Stores 0 for anonymous edits and for some mass imports
   -- Revisions without user will be marked with '-1'
   -- Instead of NULL to speed up query lookup and sort.
 
-rev_user_text:
+user_name:
   -- Text username or IP address of the editor.
 """
-drop_people = """DROP TABLE IF EXISTS people"""
-create_people = """CREATE TABLE people (
-                   rev_user INT NOT NULL DEFAULT 0,
-                   rev_user_text VARCHAR(255) BINARY DEFAULT ''
-                   ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=512
-                   ENGINE {engine!s}
-                   """
+drop_user = """DROP TABLE IF EXISTS user"""
+create_user = """CREATE TABLE user (
+                 user_id INT NOT NULL DEFAULT 0,
+                 user_name VARCHAR(255) BINARY DEFAULT ''
+                 ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=512
+                 ENGINE {engine!s}
+                 """
 
 # TABLE logging: log of administrative and relevant tasks
 """
@@ -240,27 +240,46 @@ create_block = """CREATE TABLE block (
                   ) ENGINE {engine!s}
                   """
 
-drop_newuser = """DROP TABLE IF EXISTS newuser"""
-create_newuser = """CREATE TABLE newuser (
+drop_new_user = """DROP TABLE IF EXISTS new_user"""
+create_new_user = """CREATE TABLE new_user (
                     user_id INT UNSIGNED NOT NULL,
-                    username VARCHAR(255) NOT NULL,
-                    user_timestamp DATETIME NOT NULL
-                    user_action VARCHAR 15 NOT NULL
+                    user_name VARCHAR(255) NOT NULL,
+                    user_timestamp DATETIME NOT NULL,
+                    user_action VARCHAR(15) NOT NULL
                     ) ENGINE {engine!s}
                     """
 
-drop_right = """DROP TABLE IF EXISTS right"""
-create_right = """CREATE TABLE right(
-                  right_id INT UNSIGNED NOT NULL,
-                  right_username VARCHAR(255) NOT NULL,
-                  right_timestamp DATETIME NOT NULL,
-                  right_old VARCHAR(255) NOT NULL,
-                  right_new VARCHAR(255) NOT NULL
+drop_user_level = """DROP TABLE IF EXISTS user_level"""
+create_user_level = """CREATE TABLE user_level (
+                  level_id INT UNSIGNED NOT NULL,
+                  level_username VARCHAR(255) NOT NULL,
+                  level_timestamp DATETIME NOT NULL,
+                  level_old VARCHAR(255) NOT NULL,
+                  level_new VARCHAR(255) NOT NULL
                   ) ENGINE {engine!s}
                   """
+
+drop_revision_IP = """DROP TABLE IF EXISTS revision_IP"""
+create_revision_IP = """CREATE TABLE revision_IP (
+                        rev_id INT UNSIGNED NOT NULL,
+                        ip INT UNSIGNED NOT NULL
+                        ) ENGINE {engine!s}
+                        """
+
+drop_IP_country = """DROP TABLE IF EXISTS IP_country"""
+create_IP_country = """CREATE TABLE IP_country (
+                        ip INT UNSIGNED NOT NULL,
+                        country VARCHAR(3) NOT NULL
+                        ) ENGINE {engine!s}
+                        """
 
 pk_page = """ALTER TABLE page ADD PRIMARY KEY page_id(page_id)"""
 pk_revision = """ALTER TABLE revision ADD PRIMARY KEY rev_id(rev_id)"""
 pk_namespaces = """ALTER TABLE namespaces ADD PRIMARY KEY code(code)"""
-pk_people = """ALTER TABLE people ADD PRIMARY KEY rev_user(rev_user)"""
+pk_user = """ALTER TABLE user ADD PRIMARY KEY user_id(user_id)"""
 pk_logging = """ALTER TABLE logging ADD PRIMARY KEY log_id(log_id)"""
+pk_block = """ALTER TABLE block ADD PRIMARY KEY block_id(block_id)"""
+pk_new_user = """ALTER TABLE new_user ADD PRIMARY KEY user_id(user_id)"""
+pk_user_level = """ALTER TABLE user_level ADD PRIMARY KEY level_id(level_id)"""
+pk_revision_IP = """ALTER TABLE revision_IP ADD PRIMARY KEY rev_id(rev_id)"""
+pk_IP_country = """ALTER TABLE IP_country ADD PRIMARY KEY ip(ip)"""

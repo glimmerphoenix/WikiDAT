@@ -83,10 +83,20 @@ class MySQLDB(object):
         self.send_query(bs.create_revision_hash.format(**params))
         self.send_query(bs.drop_namespaces)
         self.send_query(bs.create_namespaces.format(**params))
-        self.send_query(bs.drop_people)
-        self.send_query(bs.create_people.format(**params))
+        self.send_query(bs.drop_user)
+        self.send_query(bs.create_user.format(**params))
         self.send_query(bs.drop_logging)
         self.send_query(bs.create_logging.format(**params))
+        self.send_query(bs.drop_block)
+        self.send_query(bs.create_block.format(**params))
+        self.send_query(bs.drop_new_user)
+        self.send_query(bs.create_new_user.format(**params))
+        self.send_query(bs.drop_user_level)
+        self.send_query(bs.create_user_level.format(**params))
+        self.send_query(bs.drop_revision_IP)
+        self.send_query(bs.create_revision_IP.format(**params))
+        self.send_query(bs.drop_IP_country)
+        self.send_query(bs.create_IP_country.format(**params))
 
     def create_pks(self):
         """
@@ -99,9 +109,15 @@ class MySQLDB(object):
         print "Creating primary key for table namespaces..."
         self.send_query(bs.pk_namespaces)
         print "Creating primary key for table people..."
-        self.send_query(bs.pk_people)
+        self.send_query(bs.pk_user)
         print "Creating primary key for table logging..."
         self.send_query(bs.pk_logging)
+        # PKs for additional tables used in data processing
+        self.send_query(bs.pk_block)
+        self.send_query(bs.pk_new_user)
+        self.send_query(bs.pk_user_level)
+        self.send_query(bs.pk_revision_IP)
+        self.send_query(bs.pk_IP_country)
 
     def send_query(self, query):
         """
@@ -109,15 +125,13 @@ class MySQLDB(object):
         query: query to be sent to DB
         """
         # TODO: Handle errors properly with logger library
-        #chances = 0
-        #while chances < ntimes:
         with warnings.catch_warnings():
             # Change filter action to 'error' to raise warnings as if they
             # were exceptions, to record them in the log file
             warnings.simplefilter('ignore', MySQLdb.Warning)
             try:
                 self.cursor.execute(query)
-                #self.con.commit()
+                # self.con.commit()
             except (Exception), e:
                 # TODO: This is potentially dangerous, we should
                 # capture and log DB exceptions adequately using
@@ -129,15 +143,13 @@ class MySQLDB(object):
         Send multiple statements to DB. Typically used in bulk data inserts.
         """
         # TODO: Handle errors properly with logger library
-        #chances = 0
-        #while chances < ntimes:
         with warnings.catch_warnings():
             # Change filter action to 'error' to raise warnings as if they
             # were exceptions, to record them in the log file
             warnings.simplefilter('ignore', MySQLdb.Warning)
             try:
                 self.cursor.executemany(query_template, values)
-                #self.con.commit()
+                # self.con.commit()
             except (Exception), e:
                 # TODO: This is potentially dangerous, we should
                 # capture and log DB exceptions adequately using
