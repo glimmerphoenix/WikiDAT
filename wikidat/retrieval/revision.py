@@ -414,7 +414,7 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
     total_revs = 0
 
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
-    logging.info("Starting parsing process...")
+    logging.info("Starting revisions processing...")
 
     # LOAD REVISION DATA
     insert_rev = """LOAD DATA INFILE '%s' INTO TABLE revision
@@ -509,18 +509,19 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
         - tmp_dir: Directory to store temporary data files
         - etl_prefix: Identifies the ETL process for this worker
     """
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
     # Initialize connections to Redis DBs
     redis_anons = redis.Redis(host='localhost', db=0)
     redis_users = redis.Redis(host='localhost', db=1)
 
     # LOAD USERS DATA
     # Load user info from Redis cache into persistent DB storage
-    insert_anons = """LOAD DATA INFILE '%s' INTO TABLE user_anon
+    insert_anons = """LOAD DATA INFILE '%s' INTO TABLE revision_IP
                       FIELDS OPTIONALLY ENCLOSED BY '"'
                       TERMINATED BY '\t' ESCAPED BY '"'
                       LINES TERMINATED BY '\n'"""
 
-    insert_users = """LOAD DATA INFILE '%s' INTO TABLE user_reg
+    insert_users = """LOAD DATA INFILE '%s' INTO TABLE user
                       FIELDS OPTIONALLY ENCLOSED BY '"'
                       TERMINATED BY '\t' ESCAPED BY '"'
                       LINES TERMINATED BY '\n'"""
@@ -562,17 +563,17 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
     file_users.close()
     list_anons = None
     list_users = None
-
-    #    con.send_query(insert_anons % path_file_anons)
-    #    con.send_query(insert_users % path_file_users)
-    #    # TODO: Clean tmp files, uncomment the following lines
-    #    os.remove(path_file_anons)
-    #    os.remove(path_file_users)
-    #    # Clean up Redis databases to free memory
+    print "Inserting user info in DB"
+    con.send_query(insert_anons % path_file_anons)
+    con.send_query(insert_users % path_file_users)
+    # TODO: Clean tmp files, uncomment the following lines
+    # os.remove(path_file_anons)
+    # os.remove(path_file_users)
+    # Clean up Redis databases to free memory
     redis_anons.flushdb()
     redis_users.flushdb()
 
-    logging.info("COMPLETED: %s anonymous users processed %s." % (
+    logging.info("COMPLETED: %s anonymous revisions processed %s." % (
                  total_anons,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
