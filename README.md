@@ -3,9 +3,9 @@ WikiDAT
 
 ### Wikipedia Data Analysis Toolkit
 
-**Author**: Felipe Ortega.
-**Contributors**: Carlos Martínez, Efrayim D Zitron, Aaron Halfaker.
-**License**: GPLv3 (http://www.gnu.org/licenses/gpl.txt).
+**Author**: Felipe Ortega.</br>
+**Contributors**: Carlos Martínez, Efrayim D Zitron, Aaron Halfaker.</br>
+**License**: GPLv3 (http://www.gnu.org/licenses/gpl.txt).</br>
 
 The aim of WikiDAT is to create an extensible toolkit for Wikipedia data 
 analysis, using Python and R.
