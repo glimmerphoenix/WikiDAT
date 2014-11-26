@@ -145,7 +145,6 @@ class PageRevisionETL(ETL):
                                                             unicode(worker)]),
                                              target=process_revs_to_file,
                                              kwargs=dict(
-                                                 con=db_wrev,
                                                  lang=self.lang),
                                              producers=1, consumers=1,
                                              pull_port=self.base_port+1,

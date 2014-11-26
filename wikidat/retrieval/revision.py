@@ -255,7 +255,7 @@ def process_revs(rev_iter, con=None, lang=None):
         text_hash = None
 
 
-def process_revs_to_file(rev_iter, con=None, lang=None):
+def process_revs_to_file(rev_iter, lang=None):
     """
     Process iterator of Revision objects extracted from dump files
     :Parameters:
