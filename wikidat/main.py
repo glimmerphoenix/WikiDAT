@@ -106,7 +106,7 @@ if __name__ == '__main__':
             'etl_lines': 1,
             'page_fan': 1,
             'rev_fan': 1,
-            'page_cache_size': 1000000,
+            'page_cache_size': 100000,
             'rev_cache_size': 1000000,
             'db_user': 'root',
             'db_passw': '',
