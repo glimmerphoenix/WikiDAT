@@ -208,7 +208,6 @@ class PageRevisionETL(ETL):
 
         # LOAD users data if this is ETL-0
         if self.process_users:
-            print "Procesando usuarios"
             store_users_file_db(con=db_revs, log_file=log_file,
                                 tmp_dir=tmp_dir, etl_prefix=self.name)
 
