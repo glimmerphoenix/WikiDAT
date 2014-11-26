@@ -14,6 +14,7 @@ import re
 import os
 import hashlib
 import logging
+from utils.misc import hfile_size
 
 
 class DumpIntegrityError(Exception):
@@ -156,10 +157,9 @@ class Downloader(object):
         logging.basicConfig(filename=log_file, level=logging.INFO)
 
         resp_file = requests.get(file_url, stream=True)
-        meta_file_size = resp_file.headers.get('content-length')
-        log_size_msg = "Downloading: %s - [Size: %.2f MB]" % (file_name,
-                                                              float(meta_file_size)/10e6)
-        print log_size_msg
+        meta_file_size = float(resp_file.headers.get('content-length'))
+        log_size_msg = "Downloading: {0} - [Size: {1}]"
+        print log_size_msg.format(file_name, hfile_size(meta_file_size))
 
         store_file = open(path_file, 'wb')
         part_len = 0
