@@ -29,5 +29,5 @@ planned.
 ### Required dependencies
 
 For a complete list of hardware and software requirements, please check the 
-[requirements.md](https://github.com/glimmerphoenix/WikiDAT/blob/master/README.md)
+[requirements.md](https://github.com/glimmerphoenix/WikiDAT/blob/master/requirements.md)
 file.
