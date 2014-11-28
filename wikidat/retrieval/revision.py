@@ -531,17 +531,31 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
     writer_anons = csv.writer(file_anons, dialect='excel-tab',
                               lineterminator='\n')
 
-    keys_anons = redis_anons.keys()
-    list_anons = zip(keys_anons, redis_anons.mget(keys_anons))
+    keys_anons = set()
+    for keys in redis_anons.scan_iter(count=1000):
+        keys_anons.update((keys,))  # Makes sure we do not have duplicates
+
+    keys_anons = list(keys_anons)  # To iterate and retrieve values
+    ips_anons = []
+    pipe_anons = redis_anons.pipeline()
+    for i in xrange(0, len(keys_anons), 1000):
+        pipe_anons.mget(keys_anons[i:i+1000])
+
+    for ips_chunk in pipe_anons.execute():
+        ips_anons += ips_chunk
+
+    list_anons = zip(keys_anons, ips_anons)
+    del keys_anons
+    del ips_anons
     total_anons = len(list_anons)
 
-    for item_anon in list_anons:
+    for item_anon in list_anons:  # Save list of anonymous revs to tmp file
         try:
             writer_anons.writerow([s for s in item_anon])
         except(Exception), e:
             print e
-
     file_anons.close()
+    del list_anons
 
     # Registered users
     path_file_users = os.path.join(tmp_dir, etl_prefix + '_users.csv')
@@ -549,8 +563,22 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
     writer_users = csv.writer(file_users, dialect='excel-tab',
                               lineterminator='\n')
 
-    keys_users = redis_users.keys()
-    list_users = zip(keys_users, redis_users.mget(keys_users))
+    keys_users = set()
+    for keys in redis_users.scan_iter(count=100):
+        keys_users.update((keys,))
+
+    keys_users = list(keys_users)  # To iterate and retrieve values
+    usernames = []
+    pipe_users = redis_users.pipeline()
+    for i in xrange(0, len(keys_users), 1000):
+        pipe_users.mget(keys_users[i:i+1000])
+
+    for usernames_chunk in pipe_users.execute():
+        usernames += usernames_chunk
+
+    list_users = zip(keys_users, usernames)
+    del keys_users
+    del usernames
     total_users = len(list_users)
 
     for item_user in list_users:
@@ -559,12 +587,12 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
                                    else s for s in item_user])
         except(Exception), e:
             print e
-
     file_users.close()
-    list_anons = None
-    list_users = None
-    print "Inserting user info in DB"
+    del list_users
+
+    print "Inserting anonymous revisions info in DB"
     con.send_query(insert_anons % path_file_anons)
+    print "Inserting users info in DB"
     con.send_query(insert_users % path_file_users)
     # TODO: Clean tmp files, uncomment the following lines
     # os.remove(path_file_anons)
