@@ -264,8 +264,7 @@ def process_revs_to_file(rev_iter, lang=None):
         element comes from (e.g. frwiki, eswiki, dewiki...)
     """
     # Initialize connections to Redis DBs
-    redis_db_anons = redis.Redis(host='localhost', db=0)
-    redis_db_users = redis.Redis(host='localhost', db=1)    
+    redis_cache = redis.Redis(host='localhost')
 
     # Get tags to identify Featured Articles, Featured Lists and
     # Good Articles
@@ -345,25 +344,32 @@ def process_revs_to_file(rev_iter, lang=None):
             if 'ip' in contrib_dict:
                 user = 0
                 ip = unicode(contrib_dict['ip'])
-                redis_db_anons.set(int(rev['id']),
-                                   int(ipaddress.ip_address(ip)))
+                redis_cache.hset(lang + ':revsanon', int(rev['id']),
+                                 int(ipaddress.ip_address(ip)))
             # Registered user
             else:
                 user = int(contrib_dict['id'])
                 username = contrib_dict['username']
+                # Case of missing user id but w/ username
+                # The username is probably invalid now,
+                # insert in separate table
+                if user == 0:
+                    user = -2  # Special value for case: (NULL, username)
+                    redis_cache.hset(lang + ':userzero', int(rev['id']),
+                                     username)
                 # Username is known
                 if username is not None:
-                    redis_db_users.set(user, username)
+                    redis_cache.hset(lang + ':users', user, username)
                 # Handle strange cases of user ID w/o username
                 else:
-                    stored_name = redis_db_users.get(user)
+                    stored_name = redis_cache.hget(lang + ':users', user)
                     # If user is not known, then insert entry w/o username
                     # Otherwise, skip and wait for other entry w/ username
                     if not stored_name:
-                        redis_db_users.add(user, '')
-        # Case of unknown user
+                        redis_cache.hset(lang + ':users', user, '')
+        # Case of unknown user: neither user_id nor user_name
         else:
-            user = -1
+            user = -1  # Special value
 
         # Tuple of revision values
         rev_insert = (int(rev['id']), int(rev['page_id']), int(user),
@@ -495,7 +501,7 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
                                time.localtime())))
 
 
-def store_users_file_db(con=None, log_file=None, tmp_dir=None,
+def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None,
                         etl_prefix=None):
     """
     Processor to insert revision info in DB
@@ -511,8 +517,12 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
     """
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
     # Initialize connections to Redis DBs
-    redis_anons = redis.Redis(host='localhost', db=0)
-    redis_users = redis.Redis(host='localhost', db=1)
+    redis_cache = redis.Redis(host='localhost')
+
+    # Add special values to hash 'users'
+    redis_cache.hset(lang + ':users', 0, 'Anonymous user')
+    redis_cache.hset(lang + ':users', -1, 'NA')
+    redis_cache.hset(lang + ':users', -2, 'Missing ID')
 
     # LOAD USERS DATA
     # Load user info from Redis cache into persistent DB storage
@@ -525,33 +535,26 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
                       FIELDS OPTIONALLY ENCLOSED BY '"'
                       TERMINATED BY '\t' ESCAPED BY '"'
                       LINES TERMINATED BY '\n'"""
+
+    insert_users_zero = """LOAD DATA INFILE '%s' INTO TABLE revision_user_zero
+                           FIELDS OPTIONALLY ENCLOSED BY '"'
+                           TERMINATED BY '\t' ESCAPED BY '"'
+                           LINES TERMINATED BY '\n'"""
     # Anonymous IPs
     path_file_anons = os.path.join(tmp_dir, etl_prefix + '_anon_IPs.csv')
     file_anons = open(path_file_anons, 'wb')
     writer_anons = csv.writer(file_anons, dialect='excel-tab',
                               lineterminator='\n')
 
-    keys_anons = set()
-    for keys in redis_anons.scan_iter(count=1000):
-        keys_anons.update((keys,))  # Makes sure we do not have duplicates
+    list_anons = []
+    for rev_anon in redis_cache.hscan_iter(lang + ':revsanon', count=1000):
+        list_anons.append(rev_anon)  # Makes sure we do not have duplicates
 
-    keys_anons = list(keys_anons)  # To iterate and retrieve values
-    ips_anons = []
-    pipe_anons = redis_anons.pipeline()
-    for i in xrange(0, len(keys_anons), 1000):
-        pipe_anons.mget(keys_anons[i:i+1000])
-
-    for ips_chunk in pipe_anons.execute():
-        ips_anons += ips_chunk
-
-    list_anons = zip(keys_anons, ips_anons)
-    del keys_anons
-    del ips_anons
     total_anons = len(list_anons)
 
-    for item_anon in list_anons:  # Save list of anonymous revs to tmp file
+    for rev_anon in list_anons:  # Save list of anonymous revs to tmp file
         try:
-            writer_anons.writerow([s for s in item_anon])
+            writer_anons.writerow([s for s in rev_anon])
         except(Exception), e:
             print e
     file_anons.close()
@@ -563,22 +566,10 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
     writer_users = csv.writer(file_users, dialect='excel-tab',
                               lineterminator='\n')
 
-    keys_users = set()
-    for keys in redis_users.scan_iter(count=100):
-        keys_users.update((keys,))
+    list_users = []
+    for item_user in redis_cache.hscan_iter(lang + ':users', count=1000):
+        list_users.append(item_user)
 
-    keys_users = list(keys_users)  # To iterate and retrieve values
-    usernames = []
-    pipe_users = redis_users.pipeline()
-    for i in xrange(0, len(keys_users), 1000):
-        pipe_users.mget(keys_users[i:i+1000])
-
-    for usernames_chunk in pipe_users.execute():
-        usernames += usernames_chunk
-
-    list_users = zip(keys_users, usernames)
-    del keys_users
-    del usernames
     total_users = len(list_users)
 
     for item_user in list_users:
@@ -590,16 +581,41 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
     file_users.close()
     del list_users
 
+    # Users with ID = 0 in dump file
+    path_file_users_zero = os.path.join(tmp_dir,
+                                        etl_prefix + '_users_zero.csv')
+    file_users_zero = open(path_file_users_zero, 'wb')
+    writer_users_zero = csv.writer(file_users_zero, dialect='excel-tab',
+                                   lineterminator='\n')
+
+    list_users_zero = []
+    for item_user_zero in redis_cache.hscan_iter(lang + ':userzero',
+                                                 count=1000):
+        list_users_zero.append(item_user_zero)
+
+    total_users_zero = len(list_users_zero)
+
+    for item_user_zero in list_users_zero:
+        try:
+            writer_users_zero.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                                       else s for s in item_user])
+        except(Exception), e:
+            print e
+    file_users_zero.close()
+    del list_users_zero
+
     print "Inserting anonymous revisions info in DB"
     con.send_query(insert_anons % path_file_anons)
     print "Inserting users info in DB"
     con.send_query(insert_users % path_file_users)
+    print "Inserting missing users info in DB"
+    con.send_query(insert_users_zero % path_file_users_zero)
     # TODO: Clean tmp files, uncomment the following lines
     # os.remove(path_file_anons)
     # os.remove(path_file_users)
     # Clean up Redis databases to free memory
-    redis_anons.flushdb()
-    redis_users.flushdb()
+    redis_cache.delete(lang + ':revsanon', lang + ':users')
+    redis_cache.delete(lang + ':userzero')
 
     logging.info("COMPLETED: %s anonymous revisions processed %s." % (
                  total_anons,
@@ -607,6 +623,11 @@ def store_users_file_db(con=None, log_file=None, tmp_dir=None,
                                time.localtime())))
     logging.info("COMPLETED: %s registered users processed %s." % (
                  total_users,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
+
+    logging.info("COMPLETED: %s users with missing ID processed %s." % (
+                 total_users_zero,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
 
