@@ -265,6 +265,13 @@ create_revision_IP = """CREATE TABLE revision_IP (
                         ) ENGINE {engine!s}
                         """
 
+drop_revision_user_zero = """DROP TABLE IF EXISTS revision_user_zero"""
+create_revision_user_zero = """CREATE TABLE revision_user_zero (
+                               rev_id INT UNSIGNED NOT NULL,
+                               user_name VARCHAR(255) NOT NULL
+                               ) ENGINE {engine!s}
+                               """
+
 drop_IP_country = """DROP TABLE IF EXISTS IP_country"""
 create_IP_country = """CREATE TABLE IP_country (
                         ip INT UNSIGNED NOT NULL,
@@ -278,7 +285,9 @@ pk_namespaces = """ALTER TABLE namespaces ADD PRIMARY KEY code(code)"""
 pk_user = """ALTER TABLE user ADD PRIMARY KEY user_id(user_id)"""
 pk_logging = """ALTER TABLE logging ADD PRIMARY KEY log_id(log_id)"""
 pk_block = """ALTER TABLE block ADD PRIMARY KEY block_id(block_id)"""
-pk_new_user = """ALTER TABLE new_user ADD PRIMARY KEY user_id(user_id)"""
+pk_user_new = """ALTER TABLE user_new ADD PRIMARY KEY user_id(user_id)"""
 pk_user_level = """ALTER TABLE user_level ADD PRIMARY KEY level_id(level_id)"""
 pk_revision_IP = """ALTER TABLE revision_IP ADD PRIMARY KEY rev_id(rev_id)"""
+pk_revision_user_zero = """ALTER TABLE revision_user_zero
+                           ADD PRIMARY KEY rev_id(rev_id)"""
 pk_IP_country = """ALTER TABLE IP_country ADD PRIMARY KEY ip(ip)"""
