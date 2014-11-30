@@ -239,8 +239,8 @@ create_block = """CREATE TABLE block (
                   ) ENGINE {engine!s}
                   """
 
-drop_new_user = """DROP TABLE IF EXISTS new_user"""
-create_new_user = """CREATE TABLE new_user (
+drop_user_new = """DROP TABLE IF EXISTS user_new"""
+create_user_new = """CREATE TABLE user_new (
                     user_id INT UNSIGNED NOT NULL,
                     user_name VARCHAR(255) NOT NULL,
                     user_timestamp DATETIME NOT NULL,
