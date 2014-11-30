@@ -102,8 +102,7 @@ create_revision = """CREATE TABLE revision (
                      rev_fa TINYINT(1) UNSIGNED NOT NULL default '0',
                      rev_flist TINYINT(1) UNSIGNED NOT NULL default '0',
                      rev_ga TINYINT(1) UNSIGNED NOT NULL default '0',
-                     rev_comment TEXT NOT NULL default '',
-                     rev_ip VARCHAR(40) NULL default NULL
+                     rev_comment TEXT NOT NULL default ''
                      ) MAX_ROWS=100000000000 AVG_ROW_LENGTH=2048
                      ENGINE {engine!s}
                      """
