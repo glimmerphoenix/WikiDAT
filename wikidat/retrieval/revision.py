@@ -501,8 +501,7 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
                                time.localtime())))
 
 
-def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None,
-                        etl_prefix=None):
+def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None):
     """
     Processor to insert revision info in DB
 
@@ -513,7 +512,6 @@ def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None,
         - con: Connection to local DB
         - log_file: Log file to track progress of data loading operations
         - tmp_dir: Directory to store temporary data files
-        - etl_prefix: Identifies the ETL process for this worker
     """
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
     # Initialize connections to Redis DBs
@@ -541,7 +539,7 @@ def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None,
                            TERMINATED BY '\t' ESCAPED BY '"'
                            LINES TERMINATED BY '\n'"""
     # Anonymous IPs
-    path_file_anons = os.path.join(tmp_dir, etl_prefix + '_anon_IPs.csv')
+    path_file_anons = os.path.join(tmp_dir, lang + '_anon_IPs.csv')
     file_anons = open(path_file_anons, 'wb')
     writer_anons = csv.writer(file_anons, dialect='excel-tab',
                               lineterminator='\n')
@@ -561,7 +559,7 @@ def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None,
     del list_anons
 
     # Registered users
-    path_file_users = os.path.join(tmp_dir, etl_prefix + '_users.csv')
+    path_file_users = os.path.join(tmp_dir, lang + '_users.csv')
     file_users = open(path_file_users, 'wb')
     writer_users = csv.writer(file_users, dialect='excel-tab',
                               lineterminator='\n')
@@ -583,7 +581,7 @@ def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None,
 
     # Users with ID = 0 in dump file
     path_file_users_zero = os.path.join(tmp_dir,
-                                        etl_prefix + '_users_zero.csv')
+                                        lang + '_users_zero.csv')
     file_users_zero = open(path_file_users_zero, 'wb')
     writer_users_zero = csv.writer(file_users_zero, dialect='excel-tab',
                                    lineterminator='\n')

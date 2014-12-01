@@ -14,6 +14,7 @@ processes with Wikipedia data:
 """
 
 from wikidat.retrieval.etl import PageRevisionETL
+from wikidat.retrieval.revision import store_users_file_db
 from download import RevHistDownloader
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
@@ -158,8 +159,8 @@ class RevisionHistoryTask(Task):
                                       db_name=db_name,
                                       db_user=db_user, db_passw=db_passw,
                                       base_port=base_ports[x]+(20*x),
-                                      control_port=control_ports[x]+(20*x),
-                                      process_users=(not x))
+                                      control_port=control_ports[x]+(20*x)
+                                      )
             self.etl_list.append(new_etl)
 
         print "ETL process for page and revision history defined OK."
@@ -172,6 +173,18 @@ class RevisionHistoryTask(Task):
         for etl in self.etl_list:
             etl.join()
 
+        # Insert user info after all ETL lines have finished
+        # to ensure that all metadata are stored in Redis cache
+        # disregarding of the execution order
+        data_dir = os.path.join(os.getcwd(), os.path.split(self.paths[0])[0])
+        db_users = MySQLDB(host=host, port=port, user=db_user,
+                           passwd=db_passw, db=db_name)
+        db_users.connect()
+        store_users_file_db(con=db_users, lang=self.lang,
+                            log_file=os.path.join(data_dir, 'logs',
+                                                  'users.log'),
+                            tmp_dir=os.path.join(data_dir, 'tmp'))
+        db_users.close()
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
         print "ETL process finished for language %s and date %s" % (

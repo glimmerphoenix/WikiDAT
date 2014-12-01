@@ -50,7 +50,7 @@ class PageRevisionETL(ETL):
                  kwargs=None, paths_queue=None, lang=None, page_fan=1,
                  rev_fan=3, page_cache_size=1000000, rev_cache_size=1000000,
                  db_name=None, db_user=None, db_passw=None,
-                 base_port=None, control_port=None, process_users=False):
+                 base_port=None, control_port=None):
         """
         Initialize new PageRevision workflow
         """
@@ -65,7 +65,6 @@ class PageRevisionETL(ETL):
         self.rev_cache_size = rev_cache_size
         self.base_port = base_port
         self.control_port = control_port
-        self.process_users = process_users
 
     def run(self):
         """
@@ -204,12 +203,6 @@ class PageRevisionETL(ETL):
 
         # Mark STOP message as processed and finish
         self.paths_queue.task_done()
-
-        # LOAD users data if this is ETL-0
-        if self.process_users:
-            store_users_file_db(con=db_revs, lang=self.lang,
-                                log_file=log_file, tmp_dir=tmp_dir,
-                                etl_prefix=self.name)
 
         end = time.time()
         print "All tasks done in %.4f sec." % ((end-start)/1.)
