@@ -255,7 +255,7 @@ def process_revs(rev_iter, con=None, lang=None):
         text_hash = None
 
 
-def process_revs_to_file(rev_iter, lang=None):
+def revs_to_file(rev_iter, lang=None):
     """
     Process iterator of Revision objects extracted from dump files
     :Parameters:
@@ -399,9 +399,8 @@ def process_revs_to_file(rev_iter, lang=None):
         # TODO: Handle disconnection of clients from Redis server??
 
 
-def store_revs_file_db(rev_iter, con=None, log_file=None,
-                       tmp_dir=None, file_rows=1000000,
-                       etl_prefix=None):
+def revs_file_to_db(rev_iter, con=None, log_file=None,
+                    tmp_dir=None, file_rows=1000000, etl_prefix=None):
     """
     Processor to insert revision info in DB
 
@@ -501,7 +500,7 @@ def store_revs_file_db(rev_iter, con=None, log_file=None,
                                time.localtime())))
 
 
-def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None):
+def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
     """
     Processor to insert revision info in DB
 
@@ -595,8 +594,9 @@ def store_users_file_db(con=None, lang=None, log_file=None, tmp_dir=None):
 
     for item_user_zero in list_users_zero:
         try:
-            writer_users_zero.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                                       else s for s in item_user])
+            writer_users_zero.writerow([(s.encode('utf-8')
+                                         if isinstance(s, unicode)
+                                         else s for s in item_user)])
         except(Exception), e:
             print e
     file_users_zero.close()

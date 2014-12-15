@@ -54,7 +54,7 @@ def process_pages(pages_iter):
         yield new_page_insert
 
 
-def process_pages_to_file(pages_iter):
+def pages_to_file(pages_iter):
     """
     Process an iterator of Page objects and yields unicode tuples to be
     stored in a temp file for later bulk data load in DB.
@@ -68,9 +68,8 @@ def process_pages_to_file(pages_iter):
         yield page_insert
 
 
-def store_pages_file_db(pages_iter, con=None, log_file=None,
-                        tmp_dir=None, file_rows=1000000,
-                        etl_prefix=None):
+def pages_file_to_db(pages_iter, con=None, log_file=None,
+                     tmp_dir=None, file_rows=1000000, etl_prefix=None):
     """
     Process page insert items received from iterator. Page inserts are stored
     in a temp file, then a bulk data load is triggered in MySQL.
