@@ -9,6 +9,7 @@ Basic DB schema to import data from Wikipedia dump files.
 Subsequent implementations of this module will use SQLAlchemy to manage
 DB-related tasks
 """
+check_database = """SHOW DATABASES LIKE '{dbname!s}'"""
 
 drop_database = """DROP DATABASE IF EXISTS {dbname!s}"""
 create_database = """CREATE DATABASE {dbname!s}
@@ -142,7 +143,7 @@ code:
 name:
   -- Name of this namespace, defaults to '' for main (encyclopedic articles)
 """
-drop_namespaces = """DROP TABLE IF EXISTS namespace"""
+drop_namespaces = """DROP TABLE IF EXISTS namespaces"""
 create_namespaces = """CREATE TABLE namespaces (
                        code SMALLINT NOT NULL,
                        name VARCHAR(50) NOT NULL
