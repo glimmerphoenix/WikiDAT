@@ -25,7 +25,7 @@ import zmq
 from wikidat.utils.comutils import send_ujson, recv_ujson
 from page import Page
 from revision import Revision
-# from logitem import LogItem
+from logitem import LogItem
 # from user import User
 
 
@@ -40,37 +40,44 @@ class Producer(mp.Process):
     page and another one for revision elements
     """
     def __init__(self, group=None, target=None, name=None, args=None,
-                 kwargs=None, page_consumers=0, rev_consumers=0,
-                 logitem_consumers=0, user_consumers=0,
-                 push_pages_port=None, push_revs_port=None,
+                 kwargs=None, consumers=0, push_pages_port=None,
+                 push_revs_port=None, push_logs_port=None,
                  control_port=None):
 
         super(Producer, self).__init__(name=name)
         self.target = target
         self.args = args if args is not None else []
         self.kwargs = kwargs if kwargs is not None else {}
-        self.page_consumers = page_consumers
-        self.rev_consumers = rev_consumers
-        self.logitem_consumers = logitem_consumers
-        self.user_consumers = user_consumers
+        self.consumers = consumers
         self.push_pages_port = push_pages_port
         self.push_revs_port = push_revs_port
+        self.push_logs_port = push_logs_port
         self.control_port = control_port
 
     def run(self):
         target = self.target
 
+        # Set up sending ZMQ data and control channels
         context = zmq.Context()
-        # Set up sending channel for page elements
-        channel_pages_send = context.socket(zmq.PUSH)
-        channel_pages_send.bind("tcp://127.0.0.1:%s" % self.push_pages_port)
 
-        # Set up sending channel for revision elements
-        channel_revs_send = context.socket(zmq.PUSH)
-        channel_revs_send.bind("tcp://127.0.0.1:%s" % self.push_revs_port)
+        if (self.push_pages_port):
+            channel_pages_send = context.socket(zmq.PUSH)
+            channel_pages_send.bind("tcp://127.0.0.1:%s" %
+                                    self.push_pages_port)
+
+        if (self.push_revs_port):
+            channel_revs_send = context.socket(zmq.PUSH)
+            channel_revs_send.bind("tcp://127.0.0.1:%s" %
+                                   self.push_revs_port)
+
+        if (self.push_logs_port):
+            channel_logs_send = context.socket(zmq.PUSH)
+            channel_logs_send.bind("tcp://127.0.0.1:%s" %
+                                   self.push_logs_port)
 
         channel_control = context.socket(zmq.PUB)
-        channel_control.bind("tcp://127.0.0.1:%s" % self.control_port)
+        channel_control.bind("tcp://127.0.0.1:%s" %
+                             self.control_port)
 
         # Wait a second to wake up and connect
         time.sleep(1)
@@ -84,13 +91,8 @@ class Producer(mp.Process):
             elif isinstance(item, Revision):
                 send_ujson(channel_revs_send, item)
 
-#            elif isinstance(item, LogItem):
-#                if self.out_logitem_queue is not None:
-#                    self.out_logitem_queue.put(item)
-#
-#            elif isinstance(item, User):
-#                if self.out_user_queue is not None:
-#                    self.output_user_queue.put(item)
+            elif isinstance(item, LogItem):
+                send_ujson(channel_logs_send, item)
 
         # Wait few seconds to let workers empty data pipeline
         time.sleep(20)
@@ -98,7 +100,7 @@ class Producer(mp.Process):
         #channel_revs_send.close()
 
         # Send STOP message to all workers and quit
-        if self.page_consumers > 0 and self.rev_consumers > 0:
+        if self.consumers > 0:
             channel_control.send('STOP')
 
         time.sleep(5)
@@ -194,7 +196,7 @@ class Processor(mp.Process):
                 if control_sub in socks and socks[control_sub] == zmq.POLLIN:
                     message = control_sub.recv()
                     if message == "STOP":
-                        print "Recieved exit command, client %s stop recieving messages" % self.name
+                        print "Received exit command, client %s stopped" % self.name
                         break  # Exit poll loop
 
             self.producers -= 1
