@@ -8,6 +8,10 @@ from data_item import DataItem
 import dateutil
 import datetime
 import re
+import os
+import csv
+import time
+import logging
 
 
 class LogItem(DataItem):
@@ -35,7 +39,8 @@ def process_logitem(log_iter):
     Wikipedia
     """
     ip_pat = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
-    time_unit_ft = re.compile(r"sec|min|h|d|week|fortnight|year|indefinite|infinite")
+    time_unit_ft = re.compile(r"""sec|min|h|d|week|fortnight|month|year|
+                                  indefinite|infinite""")
 
     # Case 'month', rounded to 30 days per month
     # Case 'year', multiply by 365.25 days per year
@@ -52,8 +57,8 @@ def process_logitem(log_iter):
                   }
     time_fac = {'sec': 1,
                 'min': 1,
-                'hour': 1,
-                'day': 1,
+                'h': 1,
+                'd': 1,
                 'week': 1,
                 'fortnight': 2,
                 'month': 30,
@@ -64,7 +69,6 @@ def process_logitem(log_iter):
         # Clean timestamp string
         logitem['timestamp'] = (logitem['timestamp'].
                                 replace('Z', '').replace('T', ' '))
-
         # INFO FLAGGED REVISIONS
         # Content of log_old_flag and log_new_flag
         # for languages with flagged revisions
@@ -120,7 +124,7 @@ def process_logitem(log_iter):
             # Case 1: Figure + range (e.g. '1 week', '2 days', '6 months')
             # Case 2: Timestamp with expiration date for block
             # e.g. Wed, 22 Jan 2014 10:14:10 GMT
-            if logitem['params']:
+            if 'params' in logitem and logitem['params']:
                 # Identify formation of duration param
                 par_dur = logitem['params'].split('\n')
                 if re.search('GMT', par_dur[0]):
@@ -129,20 +133,24 @@ def process_logitem(log_iter):
                     logitem['duration'] = (exp-ts).total_seconds()
                 else:
                     exp_par = re.split(r'(\D+)', par_dur[0])
+                    duration = exp_par[0]
+                    units = exp_par[1]
                     # Try automated detection of block duration, expressed
                     # in "natural language" units
-                    if (exp_par[0] == 'infinite' or
-                            exp_par[0] == 'indefininte'):
+                    if (units == 'infinite' or
+                            units == 'indefininte'):
                         logitem['duration'] = (datetime.timedelta.max.
                                                total_seconds())
-                    else:
+                    elif duration:
                         time_unit = re.search(time_unit_ft,
-                                              exp_par[1]).group()
+                                              units).group()
                         delta_args = {time_units[time_unit]:
-                                      int(exp_par[0]) * time_fac[time_unit]}
+                                      int(duration) * time_fac[time_unit]}
                         logitem['duration'] = datetime.timedelta(**delta_args)
-
-            # TODO: Build data packet to be inserted in table blocks
+                    else:
+                        # TODO: Inspect this case later on
+                        # Address case of empty duration
+                        logitem['duration'] = 0
 
         # INFO DELETIONS
         # TODO:
@@ -151,17 +159,17 @@ def process_logitem(log_iter):
         # TODO:
 
         # INFO USER REGISTRATIONS
-        # TODO: Check later, but no special actions required so far
-#        if (logitem['type'] == 'newusers' and
-#            (logitem['action'] == 'newusers' or
-#             logitem['action'] == 'create' or
-#             logitem['action'] == 'create2' or
-#             logitem['action'] == 'autocreate' or
-#             logitem['action'] == 'byemail')):
+        if (logitem['type'] == 'newusers' and
+            (logitem['action'] == 'newusers' or
+             logitem['action'] == 'create' or
+             logitem['action'] == 'create2' or
+             logitem['action'] == 'autocreate' or
+             logitem['action'] == 'byemail')):
+                logitem['newuser'] = True  # Flag new user for later
 
         # INFO RIGHTS GRANTING
-        if (logitem['type'] == 'rights' and
-                logitem['action'] == 'rights'):
+        if (logitem['type'] == 'rights' and logitem['action'] == 'rights'):
+            logitem['rights'] = True  # Flag new rights granting for later
             pars = logitem['params'].split('\n')
             # Case of old format for parameters, with previous status in first
             # line, then new list of privileges in new line
@@ -183,19 +191,114 @@ def process_logitem(log_iter):
                     logitem['right_old'] = None
                     logitem['right_new'] = pars[0]
 
+        yield(logitem)
+        logitem = None
 
-def process_logitem_to_file(log_iter):
+
+def logitem_to_file(log_iter):
     """
     Processor for LogItem objects extracted from the 'logging' DB table in
     Wikipedia, using intermediate tmp files for bulk data loading
     """
-    pass
+    for logitem in process_logitem(log_iter):
+        contrib_dict = logitem['contrib_dict']
+
+        logitem_insert = (int(logitem['id']), logitem['type'],
+                          logitem['action'], logitem['timestamp'],
+                          (int(contrib_dict['id']) if 'id' in contrib_dict
+                           else -1),
+                          (contrib_dict['username'] if 'username' in
+                           contrib_dict else ""),
+                          int(logitem['namespace']),
+                          logitem['logtitle'],
+                          (logitem['comment'] if 'comment' in logitem and
+                           logitem['comment'] else u""),
+                          (logitem['params'] if 'params' in logitem and
+                           logitem['params'] else u""),
+                          (int(logitem['new_flag']) if 'new_flag' in logitem
+                           else 0),
+                          (int(logitem['old_flag']) if 'old_flag' in logitem
+                           else 0),
+                          )
+
+        # Case of new user to process
+        if 'newuser' in logitem and logitem['newuser']:
+            # TODO: Build data packet to be inserted in table newusers
+            pass
+
+        # Case of new rights granting action
+        if 'rights' in logitem and logitem['rights']:
+            # TODO: Build data packet to be inserted in table new rights
+            pass
+
+        yield(logitem_insert)
 
 
-def store_logitem_file_db(log_iter, con=None, log_file=None,
-                          tmp_dir=None, file_rows=1000000,
-                          etl_prefix=None):
+def logitem_file_to_db(log_iter, con=None, log_file=None,
+                       tmp_dir=None, file_rows=1000000, etl_prefix=None):
     """
     Store processed logitems in DB from intermediate tmp data files
     """
-    pass
+    insert_rows = 0
+    total_logs = 0
+
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
+    logging.info("Starting revisions processing...")
+
+    insert_logitem = """LOAD DATA INFILE '%s' INTO TABLE logging
+                        FIELDS OPTIONALLY ENCLOSED BY '"'
+                        TERMINATED BY '\t' ESCAPED BY '"'
+                        LINES TERMINATED BY '\n'"""
+
+    # TODO: insert newuser
+    # TODO: insert block action
+
+    path_file_logitem = os.path.join(tmp_dir, etl_prefix + '_logging.csv')
+    # Delete previous versions of tmp files if present
+    if os.path.isfile(path_file_logitem):
+        os.remove(path_file_logitem)
+
+    for logitem in log_iter:
+        total_logs += 1
+
+        # Initialize new temp data file
+        if insert_rows == 0:
+            file_logitem = open(path_file_logitem, 'wb')
+            writer = csv.writer(file_logitem, dialect='excel-tab',
+                                lineterminator='\n')
+        # Write data to tmp file
+        try:
+            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
+                             else s for s in logitem])
+        except(Exception), e:
+            print e
+            print logitem
+
+        insert_rows += 1
+
+        # Call MySQL to load data from file and reset rows counter
+        if insert_rows == file_rows:
+            file_logitem.close()
+            con.send_query(insert_logitem % path_file_logitem)
+
+            logging.info("%s revisions %s." % (
+                         total_logs,
+                         time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                       time.localtime())))
+            # Reset row counter
+            insert_rows = 0
+            # No need to delete tmp files, as they are empty each time we
+            # open them again for writing
+
+    # Load remaining entries in last tmp files into DB
+    file_logitem.close()
+
+    con.send_query(insert_logitem % path_file_logitem)
+    # TODO: Clean tmp files, uncomment the following lines
+#    os.remove(path_file_logitem)
+
+    # Log end of tasks and exit
+    logging.info("COMPLETED: %s logging records processed %s." % (
+                 total_logs,
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
