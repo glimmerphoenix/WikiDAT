@@ -30,6 +30,7 @@ class DumpFile(object):
             path : `str`
                 the path to the dump file to read
         """
+#        print "Path: "+unicode(self.path)
         match = maps.EXT_RE.search(self.path)
         ext = match.groups()[0]
         p = subprocess.Popen(
@@ -48,7 +49,8 @@ def process_xml(dump_file=None):
     page_dict = None
 
     in_stream = dump_file.open_dump()
-    for event, elem in etree.iterparse(in_stream, huge_tree=True):
+    for event, elem in etree.iterparse(in_stream, recover=True,
+                                       huge_tree=True):
         # Drop tag namespace
         tag = elem.tag.split('}')[1]
 
@@ -110,17 +112,16 @@ def process_xml(dump_file=None):
         if tag == 'page':
             page_dict['item_type'] = 'page'
             yield Page(page_dict)
-
+            # Clear memory
             page_dict = None
             rev_parent_id = None
-            # Clear memory
             elem.clear()
             while elem.getprevious() is not None:
                 del elem.getparent()[0]
 
         if tag == 'logitem':
             log_dict = {x.tag.split('}')[1]: x.text for x in elem}
-
+            log_dict['contrib_dict'] = contrib_dict
             # Get namespace for this log item from page title prefix
             if 'logtitle' in log_dict:
                 ns_prefix = log_dict['logtitle'].split(':')
@@ -133,8 +134,7 @@ def process_xml(dump_file=None):
                 log_dict['namespace'] = '-1000'  # Fake namespace
 
             yield LogItem(log_dict)
-
-            #Clear memory
+            # Clear memory
             log_dict = None
             elem.clear()
             while elem.getprevious() is not None:
