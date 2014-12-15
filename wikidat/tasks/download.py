@@ -12,6 +12,7 @@ import itertools
 import requests
 import re
 import os
+import sys
 import hashlib
 import logging
 from utils.misc import hfile_size
@@ -94,7 +95,6 @@ class Downloader(object):
         # Dump file(s) ready, proceed with list of files and download
         self.dump_urls = [link.get('href') for link in (soup_dumps.
                           find_all(href=re.compile(self.match_pattern)))]
-
         # Create directory for dump files if needed
         self.dump_dir = os.path.join(self.dump_basedir, dump_date)
         self.logs_dir = os.path.join(self.dump_basedir, dump_date, "logs")
@@ -226,25 +226,131 @@ class RevMetaDownloader(Downloader):
     These are files with complete metadata for every revision (including
     rev_len, as stored in Wikipedia DB) but no revision text
     """
-
     def __init__(self, mirror, language, dumps_dir):
         super(RevMetaDownloader, self).__init__(mirror=mirror,
                                                 language=language)
-# Customized pattern to find dump files on mirror server page
-        self.match_pattern = 'stub-meta-history[\d]+\.xml\.gz'
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'stub-meta-history[\d]*\.xml\.gz'
 
 
 class LoggingDownloader(Downloader):
     """
-    Download logging dump files
+    Download dump files for logging table, containing records of
+    administrative and maintenance actions performed on pages and users
     """
-    pass
+    def __init__(self, mirror, language, dumps_dir):
+        super(LoggingDownloader, self).__init__(mirror=mirror,
+                                                language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'pages-logging[\d]*\.xml\.gz'
 
 
-class SQLDumpDownloader(Downloader):
+class UserGroupsDownloader(Downloader):
     """
-    Download compressed or uncompressed sql dump files ready to be directly
-    loaded to the local database
+    Download SQL dump with assignments of users to groups
     """
-    pass
-    
+    def __init__(self, mirror, language, dumps_dir):
+        super(UserGroupsDownloader, self).__init__(mirror=mirror,
+                                                   language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'user_groups[\d]*\.sql\.gz'
+
+
+class IWLinksDownloader(Downloader):
+    """
+    Download SQL dump with interwiki link tracking records
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(IWLinksDownloader, self).__init__(mirror=mirror,
+                                                language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'iwlinks[\d]*\.sql\.gz'
+
+
+class InterWikiDownloader(Downloader):
+    """
+    Download SQL dump with interwiki prefixes and links for this Wikipedia
+    language
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(InterWikiDownloader, self).__init__(mirror=mirror,
+                                                  language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'interwiki[\d]*\.sql\.gz'
+
+
+class PageRestrDownloader(Downloader):
+    """
+    Download SQL dump with current page restrictions
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(PageRestrDownloader, self).__init__(mirror=mirror,
+                                                  language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'page_restrictions[\d]*\.sql\.gz'
+
+
+class CategoryDownloader(Downloader):
+    """
+    Download SQL dump with category information
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(CategoryDownloader, self).__init__(mirror=mirror,
+                                                 language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'category[\d]*\.sql\.gz'
+
+
+class CatLinksDownloader(Downloader):
+    """
+    Download SQL dump with category membership links for every page
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(CatLinksDownloader, self).__init__(mirror=mirror,
+                                                 language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'categorylinks[\d]*\.sql\.gz'
+
+
+class LangLinksDownloader(Downloader):
+    """
+    Download SQL dump with interlanguage link records
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(LangLinksDownloader, self).__init__(mirror=mirror,
+                                                  language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'langlinks[\d]*\.sql\.gz'
+
+
+class ExtLinksDownloader(Downloader):
+    """
+    Download SQL dump with external URL link records
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(ExtLinksDownloader, self).__init__(mirror=mirror,
+                                                 language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'externallinks[\d]*\.sql\.gz'
+
+
+class InterLinksDownloader(Downloader):
+    """
+    Download SQL dump with external URL link records
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(InterLinksDownloader, self).__init__(mirror=mirror,
+                                                   language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'categorylinks[\d]*\.sql\.gz'
+
+
+class ImageLinksDownloader(Downloader):
+    """
+    Download SQL dump with media and file usage information
+    """
+    def __init__(self, mirror, language, dumps_dir):
+        super(ImageLinksDownloader, self).__init__(mirror=mirror,
+                                                   language=language)
+        # Customized pattern to find dump files on mirror server page
+        self.match_pattern = 'imagelinks[\d]*\.sql\.gz'
