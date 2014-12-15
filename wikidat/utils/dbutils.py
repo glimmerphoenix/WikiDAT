@@ -59,6 +59,13 @@ class MySQLDB(object):
             to database %r in host %r at port %r""" % (
             self.db, self.host, self.port)
 
+    def db_exists(self, db):
+        """
+        Check if DB already exists or not
+        """
+        params = {'dbname': db}
+        return self.execute_query(bs.check_database.format(**params))
+
     def create_database(self, db):
         """
         Create schema in local database
@@ -69,9 +76,9 @@ class MySQLDB(object):
         self.send_query(bs.drop_database.format(**params))
         self.send_query(bs.create_database.format(**params))
 
-    def create_schema(self, engine='ARIA'):
+    def create_schema_revhist(self, engine='ARIA'):
         """
-        Create schema in local database
+        Create schema in local database for tables related to rev-history dumps
         """
         # TODO: Parameterize engine with common configuration file
         params = {'engine': engine}
@@ -85,10 +92,6 @@ class MySQLDB(object):
         self.send_query(bs.create_namespaces.format(**params))
         self.send_query(bs.drop_user)
         self.send_query(bs.create_user.format(**params))
-        self.send_query(bs.drop_logging)
-        self.send_query(bs.create_logging.format(**params))
-        self.send_query(bs.drop_block)
-        self.send_query(bs.create_block.format(**params))
         self.send_query(bs.drop_user_new)
         self.send_query(bs.create_user_new.format(**params))
         self.send_query(bs.drop_user_level)
@@ -100,9 +103,21 @@ class MySQLDB(object):
         self.send_query(bs.drop_IP_country)
         self.send_query(bs.create_IP_country.format(**params))
 
-    def create_pks(self):
+    def create_schema_logitem(self, engine='ARIA'):
         """
-        Create primary keys for baselines database tables
+        Create schema in local database for tables related with logging dump
+        """
+        # TODO: Parameterize engine with common configuration file
+        params = {'engine': engine}
+        self.send_query(bs.drop_logging)
+        self.send_query(bs.create_logging.format(**params))
+        self.send_query(bs.drop_block)
+        self.send_query(bs.create_block.format(**params))
+
+    def create_pks_revhist(self):
+        """
+        Create primary keys for baselines database tables in revision
+        history dumps
         """
         print "Creating primary key for table page..."
         self.send_query(bs.pk_page)
@@ -110,16 +125,21 @@ class MySQLDB(object):
         self.send_query(bs.pk_revision)
         print "Creating primary key for table namespaces..."
         self.send_query(bs.pk_namespaces)
-        print "Creating primary key for table people..."
+        print "Creating primary key for table user and others..."
         self.send_query(bs.pk_user)
-        print "Creating primary key for table logging..."
-        self.send_query(bs.pk_logging)
-        # PKs for additional tables used in data processing
-        self.send_query(bs.pk_block)
         self.send_query(bs.pk_user_new)
         self.send_query(bs.pk_user_level)
         self.send_query(bs.pk_revision_IP)
         self.send_query(bs.pk_IP_country)
+
+    def create_pks_logitem(self):
+        """
+        Create primary keys for baselines database tables in logging dump
+        """
+        print "Creating primary key for table logging and block..."
+        self.send_query(bs.pk_logging)
+        # PKs for additional tables used in data processing
+        self.send_query(bs.pk_block)
 
     def send_query(self, query):
         """
@@ -139,6 +159,7 @@ class MySQLDB(object):
                 # capture and log DB exceptions adequately using
                 # Python logger
                 print "Exception in send_query method: ", e
+                print query
 
     def insert_many(self, query_template, values):
         """
