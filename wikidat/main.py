@@ -22,7 +22,7 @@ def get_config(filename='config.ini'):
     """
     Read options from configuration file
     """
-    mandatory_secs = ['General', 'Database', 'ETL']
+    mandatory_secs = ['General', 'Database']
     config = configparser.SafeConfigParser()
     config._interpolation = configparser.ExtendedInterpolation()
 
@@ -50,30 +50,47 @@ def get_config(filename='config.ini'):
         opts_database['port'] = config.getint('Database', 'port')
     opts.update(opts_database)
 
-    opts_etl = dict()
-    if config.has_option('ETL', 'etl_lines'):
-        opts_etl['etl_lines'] = config.getint('ETL', 'etl_lines')
-    if config.has_option('ETL', 'page_fan'):
-        opts_etl['page_fan'] = config.getint('ETL', 'page_fan')
-    if config.has_option('ETL', 'rev_fan'):
-        opts_etl['rev_fan'] = config.getint('ETL', 'rev_fan')
-    if config.has_option('ETL', 'page_cache_size'):
-        opts_etl['page_cache_size'] = config.getint('ETL', 'page_cache_size')
-    if config.has_option('ETL', 'rev_cache_size'):
-        opts_etl['rev_cache_size'] = config.getint('ETL', 'rev_cache_size')
-    if config.has_option('ETL', 'base_ports'):
-        opts_etl['base_ports'] = json.loads(config.get('ETL', 'base_ports'))
-    if config.has_option('ETL', 'control_ports'):
-        opts_etl['control_ports'] = json.loads(config.get('ETL',
-                                                          'control_ports'))
-    if config.has_option('ETL', 'detect_FA'):
-        opts_etl['detect_FA'] = config.getboolean('ETL', 'detect_FA')
-    if config.has_option('ETL', 'detect_FLIST'):
-        opts_etl['detect_FLIST'] = config.getboolean('ETL', 'detect_FLIST')
-    if config.has_option('ETL', 'detect_GA'):
-        opts_etl['detect_GA'] = config.getboolean('ETL', 'detect_GA')
-    opts.update(opts_etl)
+    if config.has_section('ETL:RevHistory'):
+        opts_etl_revhist = dict()
+        sec = 'ETL:RevHistory'
+        if config.has_option(sec, 'etl_lines'):
+            opts_etl_revhist['etl_lines'] = config.getint(sec, 'etl_lines')
+        if config.has_option(sec, 'page_fan'):
+            opts_etl_revhist['page_fan'] = config.getint(sec, 'page_fan')
+        if config.has_option(sec, 'rev_fan'):
+            opts_etl_revhist['rev_fan'] = config.getint(sec, 'rev_fan')
+        if config.has_option(sec, 'page_cache_size'):
+            opts_etl_revhist['page_cache_size'] = config.getint(sec, 'page_cache_size')
+        if config.has_option(sec, 'rev_cache_size'):
+            opts_etl_revhist['rev_cache_size'] = config.getint(sec, 'rev_cache_size')
+        if config.has_option(sec, 'base_ports'):
+            opts_etl_revhist['base_ports'] = json.loads(config.get(sec, 'base_ports'))
+        if config.has_option(sec, 'control_ports'):
+            opts_etl_revhist['control_ports'] = json.loads(config.get(sec, 'control_ports'))
+        if config.has_option(sec, 'detect_FA'):
+            opts_etl_revhist['detect_FA'] = config.getboolean(sec, 'detect_FA')
+        if config.has_option(sec, 'detect_FLIST'):
+            opts_etl_revhist['detect_FLIST'] = config.getboolean(sec, 'detect_FLIST')
+        if config.has_option(sec, 'detect_GA'):
+            opts_etl_revhist['detect_GA'] = config.getboolean(sec, 'detect_GA')
+        opts.update(opts_etl_revhist)
 
+    if config.has_section('ETL:PagesLogging'):
+        opts_etl_logging = dict()
+        sec = 'ETL:PagesLogging'
+        if config.has_option(sec, 'etl_lines'):
+            opts_etl_logging['etl_lines'] = config.getint(sec, 'etl_lines')
+        if config.has_option(sec, 'log_fan'):
+            opts_etl_logging['log_fan'] = config.getint(sec, 'log_fan')
+        if config.has_option(sec, 'log_cache_size'):
+            opts_etl_logging['log_cache_size'] = config.getint(sec, 'log_cache_size')
+        if config.has_option(sec, 'base_ports'):
+            opts_etl_logging['base_ports'] = json.loads(config.get(sec, 'base_ports'))
+        if config.has_option(sec, 'control_ports'):
+            opts_etl_logging['control_ports'] = json.loads(config.get(sec, 'control_ports'))
+        opts.update(opts_etl_logging)
+
+    opts['tool_secs'] = set(config.sections()) - set(mandatory_secs)
     return opts
 
 if __name__ == '__main__':
@@ -106,10 +123,12 @@ if __name__ == '__main__':
             'etl_lines': 1,
             'page_fan': 1,
             'rev_fan': 1,
-            'page_cache_size': 100000,
+            'log_fan': 1,
+            'page_cache_size': 200000,
             'rev_cache_size': 1000000,
-            'db_user': 'root',
-            'db_passw': '',
+            'log_cache_size': 1000000,
+            'db_user': 'auser',
+            'db_passw': 'apassw',
             'db_engine': 'ARIA',
             'base_ports': 10000,
             'control_ports': 11000,
@@ -167,11 +186,15 @@ if __name__ == '__main__':
                                       'for data processing.'])
                         )
     parser.add_argument('--page_fan', type=int, metavar='NUM_PAGE_WORKERS',
-                        help=''.join(['Number of worker process to deal with ',
+                        help=''.join(['Number of worker processes to deal with ',
                                       'page elements in each ETL line.'])
                         )
     parser.add_argument('--rev_fan', type=int, metavar='NUM_REV_WORKERS',
-                        help=''.join(['Number of worker process to deal with ',
+                        help=''.join(['Number of worker processes to deal with ',
+                                      'revision elements in each ETL line.'])
+                        )
+    parser.add_argument('--log_fan', type=int, metavar='NUM_LOG_WORKERS',
+                        help=''.join(['Number of worker processes to deal with ',
                                       'revision elements in each ETL line.'])
                         )
     parser.add_argument('--page_cache_size', type=int, metavar='CACHE_SIZE',
@@ -182,6 +205,11 @@ if __name__ == '__main__':
     parser.add_argument('--rev_cache_size', type=int, metavar='CACHE_SIZE',
                         help=''.join(['Num. of rows to accumulate in tmp ',
                                       'data dir for revision elements before ',
+                                      'flushing data to local DB.'])
+                        )
+    parser.add_argument('--log_cache_size', type=int, metavar='CACHE_SIZE',
+                        help=''.join(['Num. of rows to accumulate in tmp ',
+                                      'data dir for page elements before ',
                                       'flushing data to local DB.'])
                         )
     parser.add_argument('--db_name', type=str, metavar='DB_NAME',
@@ -244,20 +272,45 @@ if __name__ == '__main__':
 
     # TODO: Control for incompatible combinations of command-line arguments
 
-    # Testing with default options:
-    #   - lang: 'scowiki'
-    #   - date: latest dump
-    task = tasks.RevisionHistoryTask(lang=args.lang,
-                                     date=args.date,
-                                     etl_lines=args.etl_lines)
+    if 'ETL:RevHistory' in opts['tool_secs']:
+        # Testing with default options:
+        #   - lang: 'scowiki'
+        #   - date: latest dump
+        task = tasks.RevHistoryTask(lang=args.lang,
+                                    date=args.date,
+                                    etl_lines=args.etl_lines,
+                                    host=args.host, port=args.port,
+                                    db_name=args.db_name, db_user=args.db_user,
+                                    db_passw=args.db_passw,
+                                    db_engine=args.db_engine,)
 
-    task.execute(page_fan=args.page_fan, rev_fan=args.rev_fan,
-                 page_cache_size=args.page_cache_size,
-                 rev_cache_size=args.rev_cache_size,
-                 host=args.host, port=args.port,
-                 db_name=args.db_name, db_user=args.db_user,
-                 db_passw=args.db_passw, db_engine=args.db_engine,
-                 mirror=args.mirror, download_files=args.download_files,
-                 base_ports=args.base_ports,
-                 control_ports=args.control_ports,
-                 dumps_dir=args.dumps_dir)
+        task.execute(page_fan=args.page_fan, rev_fan=args.rev_fan,
+                     page_cache_size=args.page_cache_size,
+                     rev_cache_size=args.rev_cache_size,
+                     mirror=args.mirror, download_files=args.download_files,
+                     base_ports=args.base_ports,
+                     control_ports=args.control_ports,
+                     dumps_dir=args.dumps_dir)
+
+    if 'ETL:RevMeta' in opts['tool_secs']:
+        pass
+
+    if 'ETL:PagesLogging' in opts['tool_secs']:
+        # Testing with default options:
+        #   - lang: 'scowiki'
+        #   - date: latest dump
+        task = tasks.PagesLoggingTask(lang=args.lang,
+                                      date=args.date,
+                                      etl_lines=args.etl_lines,
+                                      host=args.host, port=args.port,
+                                      db_name=args.db_name,
+                                      db_user=args.db_user,
+                                      db_passw=args.db_passw,
+                                      db_engine=args.db_engine)
+
+        task.execute(log_fan=args.log_fan,
+                     log_cache_size=args.log_cache_size,
+                     mirror=args.mirror, download_files=args.download_files,
+                     base_ports=args.base_ports,
+                     control_ports=args.control_ports,
+                     dumps_dir=args.dumps_dir)
