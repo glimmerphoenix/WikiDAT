@@ -222,6 +222,8 @@ class RevHistoryTask(Task):
         # Extract, process and load information in local DB
         for etl in self.etl_list:
             etl.start()
+            # Wait a second for new ETL process to start all subprocesses
+            time.sleep(1)
 
         # Wait for ETL lines to finish
         for etl in self.etl_list:
