@@ -298,7 +298,6 @@ class LoggingETL(ETL):
 
         # Create directory for logging files if it does not exist
         log_dir = os.path.join(os.path.split(file_path)[0], 'logs')
-        print "Hola hemos empezado a insertar..."
         tmp_dir = os.path.join(os.getcwd(), os.path.split(file_path)[0], 'tmp')
         file_name = os.path.split(file_path)[1]
 
