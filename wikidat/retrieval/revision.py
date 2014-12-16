@@ -419,7 +419,12 @@ def revs_file_to_db(rev_iter, con=None, log_file=None,
     total_revs = 0
 
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
-    logging.info("Starting revisions processing...")
+    print "Starting revision data loading at %s." % (
+        time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                      time.localtime()))
+    logging.info("Starting revision data loading at %s." % (
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
 
     # LOAD REVISION DATA
     insert_rev = """LOAD DATA INFILE '%s' INTO TABLE revision
@@ -607,6 +612,7 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
     print "Inserting users info in DB"
     con.send_query(insert_users % path_file_users)
     print "Inserting missing users info in DB"
+    print
     con.send_query(insert_users_zero % path_file_users_zero)
     # TODO: Clean tmp files, uncomment the following lines
     # os.remove(path_file_anons)

@@ -243,7 +243,12 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
     total_logs = 0
 
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
-    logging.info("Starting revisions processing...")
+    print "Starting logitem data loading at %s." % (
+        time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                      time.localtime()))
+    logging.info("Starting logitem data loading at %s." % (
+                 time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                               time.localtime())))
 
     insert_logitem = """LOAD DATA INFILE '%s' INTO TABLE logging
                         FIELDS OPTIONALLY ENCLOSED BY '"'

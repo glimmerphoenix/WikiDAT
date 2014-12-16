@@ -78,10 +78,10 @@ def pages_file_to_db(pages_iter, con=None, log_file=None,
     total_pages = 0
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
-    print "Starting data loading at %s." % (
+    print "Starting page data loading at %s." % (
         time.strftime("%Y-%m-%d %H:%M:%S %Z",
                       time.localtime()))
-    logging.info("Starting data loading at %s." % (
+    logging.info("Starting page data loading at %s." % (
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
 
