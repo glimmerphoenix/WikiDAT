@@ -20,6 +20,7 @@ from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
 import os
 import sys
+import time
 import glob
 
 
@@ -54,6 +55,7 @@ class Task(object):
         db_exists = db_check.db_exists(self.db_name)
         db_check.close()
         return db_exists
+
 
 class RevHistoryTask(Task):
     """
@@ -93,7 +95,7 @@ class RevHistoryTask(Task):
     # and implement flow control in process_revision
     def execute(self, page_fan, rev_fan, page_cache_size, rev_cache_size,
                 mirror, download_files, base_ports, control_ports,
-                dumps_dir=None):
+                dumps_dir=None, debug=False):
         """
         Run data retrieval and loading actions.
         Arguments:
@@ -103,6 +105,15 @@ class RevHistoryTask(Task):
             - db_passw = Password for database user
             - mirror = Base URL of site hosting XML dumps
         """
+        print "----------------------------------------------------------"
+        print "Executing ETL:RevHistory on lang:", self.lang, "date:", self.date
+        print "ETL lines =", self.etl_lines, "page_fan =", page_fan,
+        "rev_fan =", rev_fan
+        print "Download files =", download_files
+        print "Start time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                  time.localtime()))
+        print "----------------------------------------------------------"
+        print
         if download_files:
             # TODO: Use proper logging module to track execution progress
             # Choose corresponding file downloader and etl wrapper
@@ -117,11 +128,12 @@ class RevHistoryTask(Task):
                 print "Program will exit now."
                 sys.exit()
 
-            print "Got files for lang %s, date: %s" % (self.lang, self.date)
-
-            # db_name = self.lang + '_' + self.date.strip('/')
+            print "Retrieved dump files for lang %s, date: %s" % (self.lang,
+                                                                  self.date)
+            print
 
         else:
+            print "Looking for revision-history dump file(s) in data dir"
             # Case of dumps folder provided explicity
             if dumps_dir:
                 # Allow specifying relative paths, as well
@@ -166,8 +178,12 @@ class RevHistoryTask(Task):
                             print "Directory %s does not contain any valid dump file." % dumps_dir
                             print "Program will exit now."
                             sys.exit()
-
-        print "paths: " + unicode(self.paths)
+            print "Found revision-history dump file(s) to process."
+            print
+        # Print list of file paths in debug mode
+        if debug:
+            print "paths: " + unicode(self.paths)
+            print
 
         # Create database
         # TODO: Empty correspoding tables if DB already exists
@@ -187,7 +203,7 @@ class RevHistoryTask(Task):
             paths_queue.put('STOP')
 
         for x in range(self.etl_lines):
-            new_etl = PageRevisionETL(name="ETL:RevHistory-process-%s" % x,
+            new_etl = PageRevisionETL(name="[ETL:RevHistory-%s]" % x,
                                       paths_queue=paths_queue, lang=self.lang,
                                       page_fan=page_fan, rev_fan=rev_fan,
                                       page_cache_size=page_cache_size,
@@ -201,6 +217,7 @@ class RevHistoryTask(Task):
 
         print "ETL:RevHistory process for page and revision history defined OK."
         print "Proceeding with ETL workflows. This may take time..."
+        print
         # Extract, process and load information in local DB
         for etl in self.etl_list:
             etl.start()
@@ -223,13 +240,14 @@ class RevHistoryTask(Task):
         db_users.close()
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
-        print "ETL:RevHistory process finished for language %s and date %s" % (
+        print "ETL:RevHistory task finished for language %s and date %s" % (
               self.lang, self.date)
-
+        print
         # Create primary keys for all tables
         # TODO: This must also be tracked by main logging module
         print "Now creating primary key indexes in database tables."
         print "This may take a while..."
+        print
         db_pks = MySQLDB(host='localhost', port=3306, user=self.db_user,
                          passwd=self.db_passw, db=self.db_name)
         db_pks.connect()
@@ -273,7 +291,7 @@ class PagesLoggingTask(Task):
 
     def execute(self, log_fan, log_cache_size,
                 mirror, download_files, base_ports, control_ports,
-                dumps_dir=None):
+                dumps_dir=None, debug=False):
         """
         Run data retrieval and loading actions.
         Arguments:
@@ -282,7 +300,14 @@ class PagesLoggingTask(Task):
             - db_passw = Password for database user
             - mirror = Base URL of site hosting XML dumps
         """
-        # ****************************************************
+        print "----------------------------------------------------------"
+        print "Executing ETL:PagesLogging on lang:", self.lang, "date:", self.date
+        print "log_fan =", log_fan
+        print "Download files =", download_files
+        print "Start time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                  time.localtime()))
+        print "----------------------------------------------------------"
+        print
         if download_files:
             # TODO: Use proper logging module to track execution progress
             # Choose corresponding file downloader and etl wrapper
@@ -300,6 +325,7 @@ class PagesLoggingTask(Task):
             print "Got files for lang %s, date: %s" % (self.lang, self.date)
 
         else:
+            print "Looking for pages-logging dump file in data dir"
             # Case of dumps folder provided explicity
             if dumps_dir:
                 # Allow specifying relative paths, as well
@@ -345,7 +371,11 @@ class PagesLoggingTask(Task):
                             print "Program will exit now."
                             sys.exit()
 
-        print "paths: " + unicode(self.paths)
+            print "Found pages-logging dump file to process."
+            print
+        if debug:
+            print "paths: " + unicode(self.paths)
+            print
 
         # Create database if not exists
         # empty logging table otherwise
@@ -354,7 +384,7 @@ class PagesLoggingTask(Task):
         else:
             self.create_DB(complete=True)
 
-        new_etl = LoggingETL(name="ETL:Logging-process-0",
+        new_etl = LoggingETL(name="[ETL:PagesLogging-0]",
                              path=self.paths, lang=self.lang,
                              log_fan=log_fan,
                              log_cache_size=log_cache_size,
@@ -363,21 +393,23 @@ class PagesLoggingTask(Task):
                              base_port=base_ports[0]+(30),
                              control_port=control_ports[0]+(30)
                              )
-        print "ETL:Logging process for administrative records defined OK."
+        print "ETL:Logging task for administrative records defined OK."
         print "Proceeding with ETL workflow. This may take time..."
+        print 
         # Extract, process and load information in local DB
         new_etl.start()
         # Wait for ETL line to finish
         new_etl.join()
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
-        print "ETL:Logging process finished for language %s and date %s" % (
+        print "ETL:Logging task finished for lang %s and date %s" % (
               self.lang, self.date)
-
+        print
         # Create primary keys for all tables
         # TODO: This must also be tracked by official logging module
         print "Now creating primary key indexes in database tables."
         print "This may take a while..."
+        print
         db_pks = MySQLDB(host='localhost', port=3306, user=self.db_user,
                          passwd=self.db_passw, db=self.db_name)
         db_pks.connect()

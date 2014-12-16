@@ -126,6 +126,7 @@ class MySQLDB(object):
         print "Creating primary key for table namespaces..."
         self.send_query(bs.pk_namespaces)
         print "Creating primary key for table user and others..."
+        print
         self.send_query(bs.pk_user)
         self.send_query(bs.pk_user_new)
         self.send_query(bs.pk_user_level)
@@ -137,6 +138,7 @@ class MySQLDB(object):
         Create primary keys for baselines database tables in logging dump
         """
         print "Creating primary key for table logging and block..."
+        print
         self.send_query(bs.pk_logging)
         # PKs for additional tables used in data processing
         self.send_query(bs.pk_block)
