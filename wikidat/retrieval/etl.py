@@ -40,7 +40,7 @@ class ETL(mp.Process):
         self.db_passw = db_passw
 
 
-class PageRevisionETL(ETL):
+class RevisionHistoryETL(ETL):
     """
     Models workflow to import page and revision history data from Wikipedia
     database dump files
@@ -53,7 +53,7 @@ class PageRevisionETL(ETL):
         """
         Initialize new PageRevision workflow
         """
-        super(PageRevisionETL,
+        super(RevisionHistoryETL,
               self).__init__(group=None, target=None, name=name, args=None,
                              kwargs=None, lang=lang, db_name=db_name,
                              db_user=db_user, db_passw=db_passw)
@@ -218,7 +218,7 @@ class PageRevisionETL(ETL):
             dbcon.close()
 
 
-class PageRevisionMetaETL(ETL):
+class RevisionMetaETL(ETL):
     """
     Implements workflow to extract and store metadata for pages and
     revisions (stub-meta-history.xml files)

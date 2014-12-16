@@ -13,7 +13,7 @@ processes with Wikipedia data:
 @author: jfelipe
 """
 
-from wikidat.retrieval.etl import PageRevisionETL, LoggingETL
+from wikidat.retrieval.etl import RevisionHistoryETL, LoggingETL
 from wikidat.retrieval.revision import users_file_to_db
 import download
 from wikidat.utils.dbutils import MySQLDB
@@ -203,19 +203,20 @@ class RevHistoryTask(Task):
             paths_queue.put('STOP')
 
         for x in range(self.etl_lines):
-            new_etl = PageRevisionETL(name="[ETL:RevHistory-%s]" % x,
-                                      paths_queue=paths_queue, lang=self.lang,
-                                      page_fan=page_fan, rev_fan=rev_fan,
-                                      page_cache_size=page_cache_size,
-                                      rev_cache_size=rev_cache_size,
-                                      db_name=self.db_name,
-                                      db_user=self.db_user, db_passw=self.db_passw,
-                                      base_port=base_ports[x]+(20*x),
-                                      control_port=control_ports[x]+(20*x)
-                                      )
+            new_etl = RevisionHistoryETL(
+                name="[ETL:RevHistory-%s]" % x,
+                paths_queue=paths_queue, lang=self.lang,
+                page_fan=page_fan, rev_fan=rev_fan,
+                page_cache_size=page_cache_size,
+                rev_cache_size=rev_cache_size,
+                db_name=self.db_name,
+                db_user=self.db_user, db_passw=self.db_passw,
+                base_port=base_ports[x]+(20*x),
+                control_port=control_ports[x]+(20*x)
+                )
             self.etl_list.append(new_etl)
 
-        print "ETL:RevHistory process for page and revision history defined OK."
+        print "ETL:RevHistory task defined OK."
         print "Proceeding with ETL workflows. This may take time..."
         print
         # Extract, process and load information in local DB
