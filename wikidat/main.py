@@ -313,7 +313,7 @@ if __name__ == '__main__':
         #   - date: latest dump
         task = tasks.PagesLoggingTask(lang=args.lang,
                                       date=args.date,
-                                      etl_lines=args.etl_lines,
+                                      etl_lines=1,
                                       host=args.host, port=args.port,
                                       db_name=args.db_name,
                                       db_user=args.db_user,
