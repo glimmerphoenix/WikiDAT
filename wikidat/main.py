@@ -14,6 +14,7 @@ import argparse
 import configparser
 import codecs
 import sys
+import time
 import json
 from wikidat.tasks import tasks
 
@@ -44,6 +45,8 @@ def get_config(filename='config.ini'):
     opts = dict(config.items('General'))
     if config.has_option('General', 'download_files'):
         opts['download_files'] = config.getboolean('General', 'download_files')
+    if config.has_option('General', 'debug'):
+        opts['debug'] = config.getboolean('General', 'debug')
 
     opts_database = dict(config.items('Database'))
     if config.has_option('Database', 'port'):
@@ -120,6 +123,7 @@ if __name__ == '__main__':
             'mirror': 'http://dumps.wikimedia.your.org/',
             'download_files': True,
             'dumps_dir': None,
+            'debug': False,
             'etl_lines': 1,
             'page_fan': 1,
             'rev_fan': 1,
@@ -176,6 +180,9 @@ if __name__ == '__main__':
                         action='store_true',
                         help=''.join(['Download dump files for the specified ',
                                       'language, date and mirror site.']))
+    parser.add_argument('--debug', dest='debug',
+                        action='store_true',
+                        help=''.join(['Turn debug mode ON ']))
     parser.add_argument('--no_download_files', dest='download_files',
                         action='store_false',
                         help=''.join(['Skip download of dump files.']))
@@ -268,7 +275,11 @@ if __name__ == '__main__':
     # Finally, any option directly specified on the command-line will
     # override previous values assigned to any argument
     args = parser.parse_args(remain_args)
-    print args
+    print
+    print "*** WIKIPEDIA DATA ANALYSIS TOOLKIT ***"
+    print
+    if args.debug:
+        print args
 
     # TODO: Control for incompatible combinations of command-line arguments
 
@@ -282,7 +293,7 @@ if __name__ == '__main__':
                                     host=args.host, port=args.port,
                                     db_name=args.db_name, db_user=args.db_user,
                                     db_passw=args.db_passw,
-                                    db_engine=args.db_engine,)
+                                    db_engine=args.db_engine)
 
         task.execute(page_fan=args.page_fan, rev_fan=args.rev_fan,
                      page_cache_size=args.page_cache_size,
@@ -290,7 +301,8 @@ if __name__ == '__main__':
                      mirror=args.mirror, download_files=args.download_files,
                      base_ports=args.base_ports,
                      control_ports=args.control_ports,
-                     dumps_dir=args.dumps_dir)
+                     dumps_dir=args.dumps_dir,
+                     debug=args.debug)
 
     if 'ETL:RevMeta' in opts['tool_secs']:
         pass
@@ -313,4 +325,9 @@ if __name__ == '__main__':
                      mirror=args.mirror, download_files=args.download_files,
                      base_ports=args.base_ports,
                      control_ports=args.control_ports,
-                     dumps_dir=args.dumps_dir)
+                     dumps_dir=args.dumps_dir,
+                     debug=args.debug)
+
+    print "Finish time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                               time.localtime()))
+    print "All tasks FINISHED, exit."
