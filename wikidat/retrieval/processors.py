@@ -31,7 +31,8 @@ from logitem import LogItem
 
 class Producer(mp.Process):
     """
-    Produces items into a Queue.
+    Produces items to be sent downstream to a ZMQ pipeline.
+    http://nichol.as/zeromq-an-introduction
 
     The "target" must be a generator function which yields
     pickable items.
@@ -109,7 +110,8 @@ class Producer(mp.Process):
 
 class Consumer(mp.Process):
     """
-    Consumes items from a Queue.
+    Consumes items from ZMQ pipeline, coming from Processors.
+    http://nichol.as/zeromq-an-introduction
 
     The "target" must be a function which expects an iterable as it's
     only argument.  Therefore, the args value is not used here.
@@ -150,7 +152,8 @@ class Consumer(mp.Process):
 
 class Processor(mp.Process):
     """
-    Consumes items from a Queue and yield processed items to another Queue
+    Consumes items from a ZMQ pipeline, coming from a Producer and sent them
+    downstream to a Consumer.
 
     The "target" must be a generator function which yields
     pickable items derived from DataItems and which expects an iterable as its
@@ -196,7 +199,7 @@ class Processor(mp.Process):
                 if control_sub in socks and socks[control_sub] == zmq.POLLIN:
                     message = control_sub.recv()
                     if message == "STOP":
-                        print "Received exit command, client %s stopped" % self.name
+                        print "Received STOP %s" % self.name
                         break  # Exit poll loop
 
             self.producers -= 1
