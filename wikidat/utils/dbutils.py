@@ -92,10 +92,6 @@ class MySQLDB(object):
         self.send_query(bs.create_namespaces.format(**params))
         self.send_query(bs.drop_user)
         self.send_query(bs.create_user.format(**params))
-        self.send_query(bs.drop_user_new)
-        self.send_query(bs.create_user_new.format(**params))
-        self.send_query(bs.drop_user_level)
-        self.send_query(bs.create_user_level.format(**params))
         self.send_query(bs.drop_revision_IP)
         self.send_query(bs.create_revision_IP.format(**params))
         self.send_query(bs.drop_revision_user_zero)
@@ -113,6 +109,10 @@ class MySQLDB(object):
         self.send_query(bs.create_logging.format(**params))
         self.send_query(bs.drop_block)
         self.send_query(bs.create_block.format(**params))
+        self.send_query(bs.drop_user_new)
+        self.send_query(bs.create_user_new.format(**params))
+        self.send_query(bs.drop_user_level)
+        self.send_query(bs.create_user_level.format(**params))
 
     def create_pks_revhist(self):
         """
