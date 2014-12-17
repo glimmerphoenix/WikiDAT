@@ -234,14 +234,15 @@ create_block = """CREATE TABLE block (
                   block_action VARCHAR(15) BINARY NOT NULL,
                   block_user INT UNSIGNED NOT NULL,
                   block_timestamp DATETIME NOT NULL,
-                  block_target INT NOT NULL,
+                  block_target VARCHAR(255) BINARY DEFAULT '',
                   block_ip INT(10) UNSIGNED NOT NULL,
-                  block_duration INT UNSIGNED NOT NULL
+                  block_duration DECIMAL(15,1) NOT NULL
                   ) ENGINE {engine!s}
                   """
 
 drop_user_new = """DROP TABLE IF EXISTS user_new"""
 create_user_new = """CREATE TABLE user_new (
+                    user_log_id INT UNSIGNED NOT NULL,
                     user_id INT UNSIGNED NOT NULL,
                     user_name VARCHAR(255) NOT NULL,
                     user_timestamp DATETIME NOT NULL,
@@ -251,7 +252,8 @@ create_user_new = """CREATE TABLE user_new (
 
 drop_user_level = """DROP TABLE IF EXISTS user_level"""
 create_user_level = """CREATE TABLE user_level (
-                  level_id INT UNSIGNED NOT NULL,
+                  level_log_id INT UNSIGNED NOT NULL,
+                  level_granter_id INT UNSIGNED NOT NULL,
                   level_username VARCHAR(255) NOT NULL,
                   level_timestamp DATETIME NOT NULL,
                   level_old VARCHAR(255) NOT NULL,
