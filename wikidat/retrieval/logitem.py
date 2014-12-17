@@ -183,6 +183,7 @@ def process_logitem(log_iter):
         if (logitem['type'] == 'rights' and logitem['action'] == 'rights'):
 
             logitem['rights'] = {}  # Flag new rights granting for later
+            logitem['rights']['username'] = logitem['logtitle'].split(':')[1]
 
             if logitem['params']:
                 pars = logitem['params'].split('\n')
@@ -269,8 +270,8 @@ def logitem_to_file(log_iter):
         if 'rights' in logitem:
             # TODO: Build data packet to be inserted in table new rights
             rights_insert = (int(logitem['id']), int(contrib_dict['id']),
-                             (contrib_dict['username'] if 'username' in
-                             contrib_dict else ""), logitem['timestamp'],
+                             logitem['rights']['username'],
+                             logitem['timestamp'],
                              logitem['rights']['right_old'],
                              logitem['rights']['right_new'],
                              )
