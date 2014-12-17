@@ -15,6 +15,7 @@ processes with Wikipedia data:
 
 from wikidat.retrieval.etl import RevisionHistoryETL, LoggingETL
 from wikidat.retrieval.revision import users_file_to_db
+from wikidat.retrieval.dump import DumpFile
 import download
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
@@ -192,6 +193,14 @@ class RevHistoryTask(Task):
             self.create_DB(complete=False)
         else:
             self.create_DB(complete=True)
+
+        # First insert namespace info in DB
+        dump = DumpFile(self.paths[0])
+        db_schema = MySQLDB(host=self.host, port=self.port, user=self.db_user,
+                            passwd=self.db_passw, db=self.db_name)
+        db_schema.connect()
+        db_schema.insert_namespaces(nsdict=dump.get_namespaces())
+        db_schema.close()
 
         # Complete the queue of paths to be processed and STOP flags for
         # each ETL subprocess

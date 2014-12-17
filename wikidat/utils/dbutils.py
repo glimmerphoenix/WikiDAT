@@ -143,6 +143,12 @@ class MySQLDB(object):
         # PKs for additional tables used in data processing
         self.send_query(bs.pk_block)
 
+    def insert_namespaces(self, nsdict):
+        """
+        Insert namespace info (from RevHist or RevMeta dumps)
+        """
+        self.cursor.executemany(bs.insert_namespaces, nsdict.items())
+
     def send_query(self, query):
         """
         Send query to DB. Attempt 'ntimes' consecutive times before giving up

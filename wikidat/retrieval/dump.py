@@ -10,7 +10,6 @@ import os
 from page import Page
 from revision import Revision
 from logitem import LogItem
-# from user import User
 from wikidat.utils import maps
 
 
@@ -43,6 +42,19 @@ class DumpFile(object):
         # return False
         return p.stdout
 
+    def get_namespaces(self):
+        in_stream = self.open_dump()
+        for event, elem in etree.iterparse(in_stream, recover=True,
+                                           huge_tree=True):
+            # Drop tag namespace
+            tag = elem.tag.split('}')[1]
+
+            # Return namespace info (dict)
+            if tag == 'namespaces':
+                ns_dict = {int(c.attrib.get('key')): c.text for c in elem}
+                ns_dict[0] = ''
+                return ns_dict
+
 
 def process_xml(dump_file=None):
     rev_parent_id = None
@@ -54,23 +66,10 @@ def process_xml(dump_file=None):
         # Drop tag namespace
         tag = elem.tag.split('}')[1]
 
-        # Insert namespace info in DB
+        # Load namespace info
         if tag == 'namespaces':
-            ns_dict = {int(c.attrib.get('key')): c.text for c in elem}
-            ns_dict[0] = ''
-
-            ns_list = ''
-            for ns in ns_dict.iteritems():
-                ns_list = "".join([ns_list, '(', str(ns[0]), ',',
-                                   "'", ns[1], "'),"])
-            ns_list = ns_list[:-1]
-
-#                ns_insert = "".join(["INSERT INTO namespaces VALUES",
-#                                     ns_list])
-
-            # print ns_insert
-            # Write ns_insert to DB
-            # dbutils.send_query(con, cursor, ns_insert, 5, log_file)
+                ns_dict = {int(c.attrib.get('key')): c.text for c in elem}
+                ns_dict[0] = ''
 
         # Retrieve contributor info to be embedded in current revision
         # TODO: Handle contributor information properly

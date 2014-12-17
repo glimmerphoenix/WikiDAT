@@ -281,6 +281,7 @@ create_IP_country = """CREATE TABLE IP_country (
                         country VARCHAR(3) NOT NULL
                         ) ENGINE {engine!s}
                         """
+insert_namespaces = """INSERT INTO namespaces VALUES(%s, %s)"""
 
 pk_page = """ALTER TABLE page ADD PRIMARY KEY page_id(page_id)"""
 pk_revision = """ALTER TABLE revision ADD PRIMARY KEY rev_id(rev_id)"""
