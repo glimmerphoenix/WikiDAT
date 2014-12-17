@@ -6,6 +6,7 @@ Created on Sat Mar 29 22:14:21 2014
 """
 from data_item import DataItem
 import dateutil
+import ipaddress
 import datetime
 import re
 import os
@@ -79,6 +80,7 @@ def process_logitem(log_iter):
              logitem['action'] == 'approve-ia' or
              logitem['action'] == 'approve-i')):
 
+            logitem['flagged'] = True
             # Check presence of params
             # TODO: Investigate review items without params
             if 'params' in logitem:
@@ -103,21 +105,26 @@ def process_logitem(log_iter):
                     logitem['new_flag'] = flags[0]
                     logitem['old_flag'] = flags[1]
 
+            # TODO: Evaluate the possibility of extracting flagged-revs
+            # related data to an independent DB table
+
         # INFO BLOCKED USERS
         if (logitem['type'] == 'block' and
             (logitem['action'] == 'block' or
              logitem['action'] == 'unblock' or
              logitem['action'] == 'reblock')):
+
+            logitem['block'] = {} # Flag block action for later
             # Identify target user from log_title field
             title = logitem['logtitle'].split(':')
             if len(title) == 2:
                 target = title[1]
                 if re.search(ip_pat, target):
                     # Case of IP addresses
-                    logitem['target_ip'] = target
+                    logitem['block']['target_ip'] = int(ipaddress.ip_address(target))
                 else:
                     # Case of logged user
-                    logitem['target'] = target
+                    logitem['block']['target'] = target
 
             # Calculate duration of block action from log_params field
             # This field might be blank
@@ -130,7 +137,7 @@ def process_logitem(log_iter):
                 if re.search('GMT', par_dur[0]):
                     exp = dateutil.parser.parse(par_dur.rsplit(' ', 1)[0])
                     ts = dateutil.parser.parse(logitem['timestamp'])
-                    logitem['duration'] = (exp-ts).total_seconds()
+                    logitem['block']['duration'] = (exp-ts).total_seconds()
                 else:
                     exp_par = re.split(r'(\D+)', par_dur[0])
                     duration = exp_par[0]
@@ -139,18 +146,21 @@ def process_logitem(log_iter):
                     # in "natural language" units
                     if (units == 'infinite' or
                             units == 'indefininte'):
-                        logitem['duration'] = (datetime.timedelta.max.
-                                               total_seconds())
+                        logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
                     elif duration:
                         time_unit = re.search(time_unit_ft,
                                               units).group()
                         delta_args = {time_units[time_unit]:
                                       int(duration) * time_fac[time_unit]}
-                        logitem['duration'] = datetime.timedelta(**delta_args)
+                        logitem['block']['duration'] = datetime.timedelta(**delta_args).total_seconds()
                     else:
                         # TODO: Inspect this case later on
                         # Address case of empty duration
-                        logitem['duration'] = 0
+                        logitem['block']['duration'] = 0.
+            else:
+                # TODO: Inspect this case later on
+                # Address case of empty duration
+                logitem['block']['duration'] = 0.
 
         # INFO DELETIONS
         # TODO:
@@ -165,34 +175,42 @@ def process_logitem(log_iter):
              logitem['action'] == 'create2' or
              logitem['action'] == 'autocreate' or
              logitem['action'] == 'byemail')):
-                logitem['newuser'] = True  # Flag new user for later
+
+                # TODO: Evaluate if we need additional info about newusers
+                logitem['newuser'] = {}  # Flag new user for later
 
         # INFO RIGHTS GRANTING
         if (logitem['type'] == 'rights' and logitem['action'] == 'rights'):
-            logitem['rights'] = True  # Flag new rights granting for later
-            pars = logitem['params'].split('\n')
-            # Case of old format for parameters, with previous status in first
-            # line, then new list of privileges in new line
-            if len(pars) > 1:
-                logitem['right_old'] = pars[0]
-                logitem['right_new'] = pars[1]
-            else:
-                # Case of new single-line format oldgroups --> new groups
-                if (re.search('"4::oldgroups"', pars[0])):
-                    priv_list = (pars[0].partition('"4::oldgroups"')[2].
-                                 partition('"5::newgroups"'))
-                    priv_old = re.findall(r'\"(.+?)\"', priv_list[0])
-                    priv_new = re.findall(r'\"(.+?)\"', priv_list[2])
-                    logitem['right_old'] = unicode(priv_old)
-                    logitem['right_new'] = unicode(priv_new)
 
-                # Case of primitive free format
+            logitem['rights'] = {}  # Flag new rights granting for later
+
+            if logitem['params']:
+                pars = logitem['params'].split('\n')
+                # Case of old format for parameters, with previous status
+                # in first line, then new list of privileges in new line
+                if len(pars) > 1:
+                    logitem['rights']['right_old'] = pars[0]
+                    logitem['rights']['right_new'] = pars[1]
                 else:
-                    logitem['right_old'] = None
-                    logitem['right_new'] = pars[0]
+                    # Case of new single-line format oldgroups --> new groups
+                    if (re.search('"4::oldgroups"', pars[0])):
+                        priv_list = (pars[0].partition('"4::oldgroups"')[2].
+                                     partition('"5::newgroups"'))
+                        priv_old = re.findall(r'\"(.+?)\"', priv_list[0])
+                        priv_new = re.findall(r'\"(.+?)\"', priv_list[2])
+                        logitem['rights']['right_old'] = unicode(priv_old)
+                        logitem['rights']['right_new'] = unicode(priv_new)
 
+                    # Case of primitive free format
+                    else:
+                        logitem['rights']['right_old'] = ""
+                        logitem['rights']['right_new'] = pars[0]
+            else:
+                # No information recorded about new user levels
+                logitem['rights']['right_old'] = ""
+                logitem['rights']['right_new'] = ""
         yield(logitem)
-        logitem = None
+        del logitem
 
 
 def logitem_to_file(log_iter):
@@ -221,17 +239,52 @@ def logitem_to_file(log_iter):
                            else 0),
                           )
 
-        # Case of new user to process
-        if 'newuser' in logitem and logitem['newuser']:
-            # TODO: Build data packet to be inserted in table newusers
-            pass
+        # Case of BLOCKED user
+        if 'block' in logitem:
+            block_insert = (int(logitem['id']), logitem['action'],
+                            (int(contrib_dict['id']) if 'id' in contrib_dict
+                             else -1), logitem['timestamp'],
+                            (logitem['block']['target']
+                             if 'target' in logitem['block'] else ""),
+                            (logitem['block']['target_ip']
+                             if 'target_ip' in logitem['block'] else ""),
+                            logitem['block']['duration'],
+                            )
+        else:
+            block_insert = None
 
-        # Case of new rights granting action
-        if 'rights' in logitem and logitem['rights']:
+        # Case of NEWUSER to process
+        if 'newuser' in logitem:
+            newuser_insert = (int(logitem['id']),
+                              (int(contrib_dict['id']) if 'id' in contrib_dict
+                               else -1),
+                              (contrib_dict['username'] if 'username' in
+                              contrib_dict else ""), logitem['timestamp'],
+                              logitem['action'],
+                              )
+        else:
+            newuser_insert = None
+
+        # Case of new RIGHTS granting action
+        if 'rights' in logitem:
             # TODO: Build data packet to be inserted in table new rights
-            pass
+            rights_insert = (int(logitem['id']), int(contrib_dict['id']),
+                             (contrib_dict['username'] if 'username' in
+                             contrib_dict else ""), logitem['timestamp'],
+                             logitem['rights']['right_old'],
+                             logitem['rights']['right_new'],
+                             )
+        else:
+            rights_insert = None
 
-        yield(logitem_insert)
+        dict_insert = {'logitem': logitem_insert,
+                       # 'flagged_revs': flagged_insert,
+                       'block': block_insert,
+                       'newuser': newuser_insert,
+                       'rights': rights_insert
+                       }
+        yield(dict_insert)
+        del dict_insert
 
 
 def logitem_file_to_db(log_iter, con=None, log_file=None,
@@ -255,26 +308,76 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
                         TERMINATED BY '\t' ESCAPED BY '"'
                         LINES TERMINATED BY '\n'"""
 
-    # TODO: insert newuser
-    # TODO: insert block action
+    insert_block = """LOAD DATA INFILE '%s' INTO TABLE block
+                      FIELDS OPTIONALLY ENCLOSED BY '"'
+                      TERMINATED BY '\t' ESCAPED BY '"'
+                      LINES TERMINATED BY '\n'"""
+
+    insert_newuser = """LOAD DATA INFILE '%s' INTO TABLE user_new
+                        FIELDS OPTIONALLY ENCLOSED BY '"'
+                        TERMINATED BY '\t' ESCAPED BY '"'
+                        LINES TERMINATED BY '\n'"""
+
+    insert_rights = """LOAD DATA INFILE '%s' INTO TABLE user_level
+                       FIELDS OPTIONALLY ENCLOSED BY '"'
+                       TERMINATED BY '\t' ESCAPED BY '"'
+                       LINES TERMINATED BY '\n'"""
 
     path_file_logitem = os.path.join(tmp_dir, etl_prefix + '_logging.csv')
+    path_file_block = os.path.join(tmp_dir, etl_prefix + '_block.csv')
+    path_file_newuser = os.path.join(tmp_dir, etl_prefix + '_user_new.csv')
+    path_file_rights = os.path.join(tmp_dir, etl_prefix + '_user_level.csv')
     # Delete previous versions of tmp files if present
     if os.path.isfile(path_file_logitem):
         os.remove(path_file_logitem)
+    if os.path.isfile(path_file_block):
+        os.remove(path_file_block)
+    if os.path.isfile(path_file_newuser):
+        os.remove(path_file_newuser)
+    if os.path.isfile(path_file_rights):
+        os.remove(path_file_rights)
 
-    for logitem in log_iter:
+    for logdict in log_iter:
         total_logs += 1
+
+        logitem = logdict['logitem']
+        block = logdict['block']
+        newuser = logdict['newuser']
+        rights = logdict['rights']
 
         # Initialize new temp data file
         if insert_rows == 0:
+            # In this case, buffer size to trigger data load only tracks
+            # num. of logitems already processed. We take the same mark to
+            # load data for all associated tables
             file_logitem = open(path_file_logitem, 'wb')
             writer = csv.writer(file_logitem, dialect='excel-tab',
                                 lineterminator='\n')
+            file_block = open(path_file_block, 'wb')
+            writer_block = csv.writer(file_block, dialect='excel-tab',
+                                      lineterminator='\n')
+            file_newuser = open(path_file_newuser, 'wb')
+            writer_new = csv.writer(file_newuser, dialect='excel-tab',
+                                    lineterminator='\n')
+            file_rights = open(path_file_rights, 'wb')
+            writer_rights = csv.writer(file_rights, dialect='excel-tab',
+                                       lineterminator='\n')
         # Write data to tmp file
         try:
             writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
                              else s for s in logitem])
+            if block:
+                writer_block.writerow([s.encode('utf-8')
+                                       if isinstance(s, unicode)
+                                       else s for s in block])
+            if newuser:
+                writer_new.writerow([s.encode('utf-8')
+                                     if isinstance(s, unicode)
+                                     else s for s in newuser])
+            if rights:
+                writer_rights.writerow([s.encode('utf-8')
+                                        if isinstance(s, unicode)
+                                        else s for s in rights])
         except(Exception), e:
             print e
             print logitem
@@ -286,7 +389,14 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
             file_logitem.close()
             con.send_query(insert_logitem % path_file_logitem)
 
-            logging.info("%s revisions %s." % (
+            file_block.close()
+            con.send_query(insert_block % path_file_block)
+            file_newuser.close()
+            con.send_query(insert_newuser % path_file_newuser)
+            file_rights.close()
+            con.send_query(insert_rights % path_file_rights)
+
+            logging.info("%s logitems %s." % (
                          total_logs,
                          time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                        time.localtime())))
@@ -297,10 +407,16 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
 
     # Load remaining entries in last tmp files into DB
     file_logitem.close()
+    file_block.close()
+    file_newuser.close()
+    file_rights.close()
 
     con.send_query(insert_logitem % path_file_logitem)
+    con.send_query(insert_block % path_file_block)
+    con.send_query(insert_newuser % path_file_newuser)
+    con.send_query(insert_rights % path_file_rights)
     # TODO: Clean tmp files, uncomment the following lines
-#    os.remove(path_file_logitem)
+    # os.remove(path_file_logitem)
 
     # Log end of tasks and exit
     logging.info("COMPLETED: %s logging records processed %s." % (
