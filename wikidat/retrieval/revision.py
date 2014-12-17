@@ -544,6 +544,10 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
                            LINES TERMINATED BY '\n'"""
     # Anonymous IPs
     path_file_anons = os.path.join(tmp_dir, lang + '_anon_IPs.csv')
+    # Delete previous versions of tmp files if present
+    if os.path.isfile(path_file_anons):
+        os.remove(path_file_anons)
+
     file_anons = open(path_file_anons, 'wb')
     writer_anons = csv.writer(file_anons, dialect='excel-tab',
                               lineterminator='\n')
@@ -564,6 +568,9 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
 
     # Registered users
     path_file_users = os.path.join(tmp_dir, lang + '_users.csv')
+    # Delete previous versions of tmp files if present
+    if os.path.isfile(path_file_users):
+        os.remove(path_file_users)
     file_users = open(path_file_users, 'wb')
     writer_users = csv.writer(file_users, dialect='excel-tab',
                               lineterminator='\n')
