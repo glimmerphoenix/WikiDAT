@@ -289,7 +289,7 @@ pk_namespaces = """ALTER TABLE namespaces ADD PRIMARY KEY code(code)"""
 pk_user = """ALTER TABLE user ADD PRIMARY KEY user_id(user_id)"""
 pk_logging = """ALTER TABLE logging ADD PRIMARY KEY log_id(log_id)"""
 pk_block = """ALTER TABLE block ADD PRIMARY KEY block_id(block_id)"""
-pk_user_new = """ALTER TABLE user_new ADD PRIMARY KEY user_id(user_id)"""
+pk_user_new = """ALTER TABLE user_new ADD PRIMARY KEY user_log_id(user_log_id)"""
 pk_user_level = """ALTER TABLE user_level ADD PRIMARY KEY
                    level_log_id(level_log_id)"""
 pk_revision_IP = """ALTER TABLE revision_IP ADD PRIMARY KEY rev_id(rev_id)"""
