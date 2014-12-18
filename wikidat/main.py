@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Apr 10 16:36:16 2014
+"""Main module of WikiDAT
 
-Main file WikiDAT
+Currently, it reads configuration options from either a file or command-line
+input arguments (merging them appropriately). Then, it calls individual tools
+if their corresponding optional sections are present in the config file.
 
-Source for combining ConfigParser and argparse:
+Command-line arguments always have higher precedence than options in config
+file.
+
+Source for combining ConfigParser and argparse logic:
 http://blog.vwelch.com/2011/04/combining-configparser-and-argparse.html
 
-@author: jfelipe
 """
 
 import argparse
