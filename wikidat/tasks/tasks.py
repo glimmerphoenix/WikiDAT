@@ -107,12 +107,13 @@ class RevHistoryTask(Task):
             - mirror = Base URL of site hosting XML dumps
         """
         print "----------------------------------------------------------"
-        print "Executing ETL:RevHistory on lang:", self.lang, "date:", self.date
-        print "ETL lines =", self.etl_lines, "page_fan =", page_fan,
-        "rev_fan =", rev_fan
+        print ("""Executing ETL:RevHistory on lang: {0} date: {1}"""
+               .format(self.lang, self.date))
+        print ("ETL lines = {0} page_fan = {1} rev_fan = {2}"
+               .format(self.etl_lines, page_fan, rev_fan))
         print "Download files =", download_files
-        print "Start time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                                  time.localtime()))
+        print "Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                       time.localtime()))
         print "----------------------------------------------------------"
         print
         if download_files:
@@ -313,11 +314,12 @@ class PagesLoggingTask(Task):
             - mirror = Base URL of site hosting XML dumps
         """
         print "----------------------------------------------------------"
-        print "Executing ETL:PagesLogging on lang:", self.lang, "date:", self.date
+        print("Executing ETL:PagesLogging on lang: {0} date: {1}"
+              .format(self.lang, self.date))
         print "log_fan =", log_fan
         print "Download files =", download_files
-        print "Start time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                                  time.localtime()))
+        print "Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                       time.localtime()))
         print "----------------------------------------------------------"
         print
         if download_files:
