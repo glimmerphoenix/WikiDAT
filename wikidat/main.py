@@ -278,6 +278,7 @@ if __name__ == '__main__':
     # Finally, any option directly specified on the command-line will
     # override previous values assigned to any argument
     args = parser.parse_args(remain_args)
+    start = time.time()
     print
     print "*** WIKIPEDIA DATA ANALYSIS TOOLKIT ***"
     print
@@ -333,4 +334,6 @@ if __name__ == '__main__':
 
     print "Finish time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                                time.localtime()))
+    end = time.time()
+    print "Total execution time: %.2f mins." % ((end-start)/60.)
     print "All tasks FINISHED, exit."
