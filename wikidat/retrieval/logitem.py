@@ -5,7 +5,7 @@ Created on Sat Mar 29 22:14:21 2014
 @author: jfelipe
 """
 from data_item import DataItem
-import dateutil
+import dateutil.parser
 import ipaddress
 import datetime
 import re
@@ -121,6 +121,8 @@ def process_logitem(log_iter):
                 target = title[1]
                 if re.search(ip_pat, target):
                     # Case of IP addresses
+                    # Fix malformed records: del leading 0s if present
+                    target = target.lstrip('0').replace('.0', '.')
                     logitem['block']['target_ip'] = int(ipaddress.ip_address(target))
                 else:
                     # Case of logged user
@@ -133,17 +135,22 @@ def process_logitem(log_iter):
             # e.g. Wed, 22 Jan 2014 10:14:10 GMT
             if 'params' in logitem and logitem['params']:
                 # Identify formation of duration param
-                par_dur = logitem['params'].split('\n')
-                if re.search('GMT', par_dur[0]):
-                    exp = dateutil.parser.parse(par_dur.rsplit(' ', 1)[0])
-                    ts = dateutil.parser.parse(logitem['timestamp'])
+                par_dur = logitem['params'].split('\n')[0]
+                try:
+                    # exp = dateutil.parser.parse(par_dur.rsplit(' ', 1)[0])
+                    exp = dateutil.parser.parse(par_dur)
+                    if re.search('GMT', par_dur):
+                        ts = dateutil.parser.parse(logitem['timestamp']+'GMT')
+                    else:
+                        ts = dateutil.parser.parse(logitem['timestamp'])
                     logitem['block']['duration'] = (exp-ts).total_seconds()
-                else:
-                    exp_par = re.split(r'(\D+)', par_dur[0])
+                # Try automated detection of block duration, expressed
+                # in "natural language" units
+                except StandardError:
+                    exp_par = re.split(r'(\D+)', par_dur)
                     duration = exp_par[0]
                     units = exp_par[1]
-                    # Try automated detection of block duration, expressed
-                    # in "natural language" units
+                    
                     if (units == 'infinite' or
                             units == 'indefininte'):
                         logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
@@ -156,11 +163,11 @@ def process_logitem(log_iter):
                     else:
                         # TODO: Inspect this case later on
                         # Address case of empty duration
-                        logitem['block']['duration'] = 0.
+                        logitem['block']['duration'] = 0.0
             else:
                 # TODO: Inspect this case later on
                 # Address case of empty duration
-                logitem['block']['duration'] = 0.
+                logitem['block']['duration'] = 0.0
 
         # INFO DELETIONS
         # TODO:
