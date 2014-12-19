@@ -15,7 +15,7 @@ import os
 import sys
 import hashlib
 import logging
-from utils.misc import hfile_size
+from wikidat.utils import misc
 
 
 class DumpIntegrityError(Exception):
@@ -25,8 +25,10 @@ class DumpIntegrityError(Exception):
         msg  -- explanation of the error
     """
 
-    def __init__(self, msg):
-        self.msg = msg
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.msg = ("""Dump file integrity error detected!\n File: {0}"""
+                    .format(file_path))
 
 
 class Downloader(object):
@@ -132,9 +134,8 @@ class Downloader(object):
         # Verify integrity of downloaded dumps
         try:
             self._verify(self.target_url)
-            # TODO: Raise an exception when integrity problems are detected
         except DumpIntegrityError as e:
-            print "File integrity error({0}): {1}".format(e.errno, e.strerror)
+            print e.msg
 
         print "File integrity checked, no errors found."
         # Return list of paths to dumpfiles for data extraction
@@ -159,7 +160,7 @@ class Downloader(object):
         resp_file = requests.get(file_url, stream=True)
         meta_file_size = float(resp_file.headers.get('content-length'))
         log_size_msg = "Downloading: {0} - [Size: {1}]"
-        print log_size_msg.format(file_name, hfile_size(meta_file_size))
+        print log_size_msg.format(file_name, misc.hfile_size(meta_file_size))
 
         store_file = open(path_file, 'wb')
         part_len = 0
@@ -204,7 +205,7 @@ class Downloader(object):
             # TODO: Compare md5 hash of retrieved file with original
             if file_md5 != original_md5:
                 # Raise error if they do not match
-                raise DumpIntegrityError('Dump file integrity error detected!')
+                raise DumpIntegrityError(path)
 
 
 class RevHistDownloader(Downloader):
