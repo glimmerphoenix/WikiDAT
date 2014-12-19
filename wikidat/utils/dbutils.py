@@ -128,8 +128,6 @@ class MySQLDB(object):
         print "Creating primary key for table user and others..."
         print
         self.send_query(bs.pk_user)
-        self.send_query(bs.pk_user_new)
-        self.send_query(bs.pk_user_level)
         self.send_query(bs.pk_revision_IP)
         self.send_query(bs.pk_IP_country)
 
@@ -142,6 +140,8 @@ class MySQLDB(object):
         self.send_query(bs.pk_logging)
         # PKs for additional tables used in data processing
         self.send_query(bs.pk_block)
+        self.send_query(bs.pk_user_new)
+        self.send_query(bs.pk_user_level)
 
     def insert_namespaces(self, nsdict):
         """
