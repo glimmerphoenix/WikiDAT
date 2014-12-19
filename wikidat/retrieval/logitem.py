@@ -166,8 +166,7 @@ def process_logitem(log_iter):
                                           int(duration) * time_fac[time_unit]}
                             logitem['block']['duration'] = datetime.timedelta(**delta_args).total_seconds()
                         except AttributeError:
-                            print "duration:", duration
-                            print "units: ", units
+                            print "params:", logitem['params']
                             logitem['block']['duration'] = 0.0
                     else:
                         # TODO: Inspect this case later on
