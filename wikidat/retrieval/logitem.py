@@ -42,7 +42,8 @@ def process_logitem(log_iter):
     ip_pat = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
     time_unit_ft = re.compile(r"""sec|min|h|d|week|fortnight|month|year|
                                   indefinite|infinite""")
-
+    lead_zero_pat = re.compile(r"(0\d\d)")
+    triple_zero_pat = re.compile(r"000")
     # Case 'month', rounded to 30 days per month
     # Case 'year', multiply by 365.25 days per year
     # Case 'fortnight' is equivalent to 2 weeks
@@ -122,7 +123,9 @@ def process_logitem(log_iter):
                 if re.search(ip_pat, target):
                     # Case of IP addresses
                     # Fix malformed records: del leading 0s if present
-                    target = target.lstrip('0').replace('.0', '.')
+                    target = re.sub(triple_zero_pat, '0', target)
+                    target = re.sub(lead_zero_pat,
+                                    lambda x: x.group().lstrip('0'), target)
                     logitem['block']['target_ip'] = int(ipaddress.ip_address(target))
                 else:
                     # Case of logged user
@@ -136,6 +139,7 @@ def process_logitem(log_iter):
             if 'params' in logitem and logitem['params']:
                 # Identify formation of duration param
                 par_dur = logitem['params'].split('\n')[0]
+                par_dur = par_dur.replace('Z', '').replace('T', ' ')
                 try:
                     # exp = dateutil.parser.parse(par_dur.rsplit(' ', 1)[0])
                     exp = dateutil.parser.parse(par_dur)
@@ -155,11 +159,16 @@ def process_logitem(log_iter):
                             units == 'indefininte'):
                         logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
                     elif duration:
-                        time_unit = re.search(time_unit_ft,
-                                              units).group()
-                        delta_args = {time_units[time_unit]:
-                                      int(duration) * time_fac[time_unit]}
-                        logitem['block']['duration'] = datetime.timedelta(**delta_args).total_seconds()
+                        try:
+                            time_unit = re.search(time_unit_ft,
+                                                  units).group()
+                            delta_args = {time_units[time_unit]:
+                                          int(duration) * time_fac[time_unit]}
+                            logitem['block']['duration'] = datetime.timedelta(**delta_args).total_seconds()
+                        except AttributeError:
+                            print "duration:", duration
+                            print "units: ", units
+                            logitem['block']['duration'] = 0.0
                     else:
                         # TODO: Inspect this case later on
                         # Address case of empty duration
