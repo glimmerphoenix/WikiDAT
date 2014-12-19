@@ -23,8 +23,21 @@ from wikidat.tasks import tasks
 
 
 def get_config(filename='config.ini'):
-    """
-    Read options from configuration file
+    r"""Read options from configuration file
+
+    Parameters
+    ----------
+    filename: string
+        Name of configuration file with options. Mandatory sections are
+        ``General`` and ``Database``. These sections must always be included
+        in that file.
+
+    Returns
+    -------
+    opts: dict
+        A ``dict`` with all configured options, to be merged with command-line
+        options.
+
     """
     mandatory_secs = ['General', 'Database']
     config = configparser.SafeConfigParser()
