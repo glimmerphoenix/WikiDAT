@@ -153,7 +153,7 @@ def process_logitem(log_iter):
                 except StandardError:
                     exp_par = re.split(r'(\D+)', par_dur)
                     duration = exp_par[0]
-                    units = exp_par[1]
+                    units = exp_par[1].lower()
                     
                     if (units == 'infinite' or
                             units == 'indefininte'):
