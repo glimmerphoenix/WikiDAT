@@ -221,6 +221,9 @@ def process_logitem(log_iter):
                     else:
                         logitem['rights']['right_old'] = ""
                         logitem['rights']['right_new'] = pars[0]
+            elif logitem['comment']:
+                logitem['rights']['right_old'] = ""
+                logitem['rights']['right_new'] = logitem['comment']
             else:
                 # No information recorded about new user levels
                 logitem['rights']['right_old'] = ""
