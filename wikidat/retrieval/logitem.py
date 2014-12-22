@@ -126,7 +126,11 @@ def process_logitem(log_iter):
                     target = re.sub(triple_zero_pat, '0', target)
                     target = re.sub(lead_zero_pat,
                                     lambda x: x.group().lstrip('0'), target)
-                    logitem['block']['target_ip'] = int(ipaddress.ip_address(target))
+                    try:
+                        logitem['block']['target_ip'] = int(ipaddress.ip_address(target))
+                    except ValueError:
+                        print "Invalid IP address to block: ", target
+                        logitem['block']['target_ip'] = 0
                 else:
                     # Case of logged user
                     logitem['block']['target'] = target
