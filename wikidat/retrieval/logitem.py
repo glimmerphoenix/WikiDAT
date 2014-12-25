@@ -156,8 +156,13 @@ def process_logitem(log_iter):
                 # in "natural language" units
                 except StandardError:
                     exp_par = re.split(r'(\D+)', par_dur)
-                    duration = exp_par[0]
-                    units = exp_par[1].lower()
+                    try:
+		        duration = exp_par[0]
+                        units = exp_par[1].lower()
+		    except IndexError:
+			print "No valid pair duration/units found!"
+			print "params:", logitem['params']
+                        logitem['block']['duration'] = 0.0
                     
                     if (units == 'infinite' or
                             units == 'indefininte'):
