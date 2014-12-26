@@ -207,7 +207,12 @@ def process_logitem(log_iter):
         if (logitem['type'] == 'rights' and logitem['action'] == 'rights'):
 
             logitem['rights'] = {}  # Flag new rights granting for later
-            logitem['rights']['username'] = logitem['logtitle'].split(':')[1]
+            try:
+	        logitem['rights']['username'] = logitem['logtitle'].split(':')[1]
+	    except IndexError:
+		print "No user name info in change of user level."
+		print "params:", logitem['params']
+		logitem['rights']['username'] = ""
 
             if logitem['params']:
                 pars = logitem['params'].split('\n')
