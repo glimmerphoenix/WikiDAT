@@ -122,7 +122,7 @@ def process_xml(dump_file=None):
             log_dict = {x.tag.split('}')[1]: x.text for x in elem}
             log_dict['contrib_dict'] = contrib_dict
             # Get namespace for this log item from page title prefix
-            if 'logtitle' in log_dict:
+            if 'logtitle' in log_dict and log_dict['logtitle']:
                 ns_prefix = log_dict['logtitle'].split(':')
                 if (len(ns_prefix) == 2 and ns_prefix[0] in ns_dict):
                     log_dict['namespace'] = str(ns_dict[ns_prefix[0]])
