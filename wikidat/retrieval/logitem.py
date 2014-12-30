@@ -177,6 +177,8 @@ def process_logitem(log_iter):
                         except AttributeError:
                             print "params:", logitem['params']
                             logitem['block']['duration'] = 0.0
+		        except OverflowError:
+			    logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
                     else:
                         # TODO: Inspect this case later on
                         # Address case of empty duration
@@ -211,10 +213,11 @@ def process_logitem(log_iter):
 	        logitem['rights']['username'] = logitem['logtitle'].split(':')[1]
 	    except IndexError:
 		print "No user name info in change of user level."
-		print "params:", logitem['params']
+		if 'params' in logitem:
+		    print "params:", logitem['params']
 		logitem['rights']['username'] = ""
 
-            if logitem['params']:
+            if 'params' in logitem and logitem['params']:
                 pars = logitem['params'].split('\n')
                 # Case of old format for parameters, with previous status
                 # in first line, then new list of privileges in new line
