@@ -70,6 +70,8 @@ def process_xml(dump_file=None):
         if tag == 'namespaces':
                 ns_dict = {int(c.attrib.get('key')): c.text for c in elem}
                 ns_dict[0] = ''
+                ns_names = {c.text: int(c.attrib.get('key')) for c in elem}
+                ns_names[''] = 0
 
         # Retrieve contributor info to be embedded in current revision
         # TODO: Handle contributor information properly
@@ -124,13 +126,13 @@ def process_xml(dump_file=None):
             # Get namespace for this log item from page title prefix
             if 'logtitle' in log_dict and log_dict['logtitle']:
                 ns_prefix = log_dict['logtitle'].split(':')
-                if (len(ns_prefix) == 2 and ns_prefix[0] in ns_dict):
-                    log_dict['namespace'] = str(ns_dict[ns_prefix[0]])
+                if (len(ns_prefix) == 2 and ns_prefix[0] in ns_names):
+                    log_dict['namespace'] = ns_names[ns_prefix[0]]
                 else:
-                    log_dict['namespace'] = '0'
+                    log_dict['namespace'] = 0
             else:
                 log_dict['logtitle'] = ''
-                log_dict['namespace'] = '-1000'  # Fake namespace
+                log_dict['namespace'] = -1000  # Fake namespace
 
             yield LogItem(log_dict)
             # Clear memory

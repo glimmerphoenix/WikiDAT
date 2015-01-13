@@ -263,7 +263,7 @@ def logitem_to_file(log_iter):
                            else -1),
                           (contrib_dict['username'] if 'username' in
                            contrib_dict else ""),
-                          int(logitem['namespace']),
+                          logitem['namespace'],
                           logitem['logtitle'],
                           (logitem['comment'] if 'comment' in logitem and
                            logitem['comment'] else u""),
