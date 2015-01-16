@@ -13,7 +13,7 @@ processes with Wikipedia data:
 @author: jfelipe
 """
 
-from wikidat.retrieval.etl import RevisionHistoryETL, LoggingETL
+from wikidat.retrieval.etl import RevisionHistoryETL, LoggingETL, SQLDumpsETL
 from wikidat.retrieval.revision import users_file_to_db
 from wikidat.retrieval.dump import DumpFile
 import download
@@ -40,8 +40,6 @@ class Task(object):
         """
         self.lang = lang
         self.date = date
-        self.down = None
-        self.etl = None
         self.host = host
         self.port = port
         self.db_user = db_user
@@ -391,7 +389,7 @@ class PagesLoggingTask(Task):
             print "paths: " + unicode(self.paths)
             print
 
-        # Create database if not exists
+        # Create database if it does not exist
         # empty logging table otherwise
         if self.DB_exists():
             self.create_DB(complete=False)
@@ -409,7 +407,7 @@ class PagesLoggingTask(Task):
                              )
         print "ETL:Logging task for administrative records defined OK."
         print "Proceeding with ETL workflow. This may take time..."
-        print 
+        print
         # Extract, process and load information in local DB
         new_etl.start()
         # Wait for ETL line to finish
@@ -429,3 +427,151 @@ class PagesLoggingTask(Task):
         db_pks.connect()
         db_pks.create_pks_logitem()
         db_pks.close()
+
+
+class SQLDumpsTask(Task):
+    """
+    Class docstring
+    """
+    def __init__(self, host, port, db_name, db_user, db_passw, db_engine,
+                 lang='scowiki', date=None):
+        """
+        Builder method of class SQLDumpsTask.
+        Arguments:
+            - language: code of the Wikipedia language to be processed
+            - date: publication date of target dump files collection
+        """
+        super(SQLDumpsTask, self).__init__(lang=lang, date=date, host=host,
+                                           port=port, db_name=db_name,
+                                           db_user=db_user,
+                                           db_passw=db_passw,
+                                           db_engine=db_engine)
+
+    def createDB(self):
+        """
+        Creates new DB to load SQL dump files if required
+        """
+        db_create = MySQLDB(host=self.host, port=self.port,
+                            user=self.db_user, passwd=self.db_passw)
+        db_create.connect()
+        db_create.create_database(self.db_name)
+        db_create.close()
+
+    def execute(self, mirror, download_files, dumps_dir=None, debug=False):
+        """
+        Run data retrieval and loading actions.
+        Arguments:
+            - mirror = Base URL of site hosting XML dumps
+        """
+        print "----------------------------------------------------------"
+        print("Executing ETL:SQLDumps on lang: {0} date: {1}"
+              .format(self.lang, self.date))
+        print "Download files =", download_files
+        print "Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                       time.localtime()))
+        print "----------------------------------------------------------"
+        print
+        if download_files:
+            # TODO: Use proper logging module to track execution progress
+            # Choose corresponding file downloader and etl wrapper
+            print """Downloading new logging dump files from %s,
+                     for language %s""" % (mirror, self.lang)
+            self.down = [download.UserGroupsDownloader(mirror, self.lang, dumps_dir),
+                         download.IWLinksDownloader(mirror, self.lang, dumps_dir),
+                         download.InterWikiDownloader(mirror, self.lang, dumps_dir),
+                         download.PageRestrDownloader(mirror, self.lang, dumps_dir),
+                         download.CategoryDownloader(mirror, self.lang, dumps_dir),
+                         download.CatLinksDownloader(mirror, self.lang, dumps_dir),
+                         download.ExtLinksDownloader(mirror, self.lang, dumps_dir),
+                         download.InterLinksDownloader(mirror, self.lang, dumps_dir),
+                         download.ImageLinksDownloader(mirror, self.lang, dumps_dir)
+                         ]
+            # Donwload latest set of dump files
+            for downloader in self.down:
+                self.paths, self.date = downloader.download(self.date)
+                if not self.paths:
+                    print "Error: dump files with pages-logging info not found."
+                    print "Program will exit now."
+                    sys.exit()
+
+                print "Got files for lang %s, date: %s" % (self.lang, self.date)
+
+        else:
+            print "Looking for compressed SQL dump files in data dir"
+            # Case of dumps folder provided explicity
+            if dumps_dir:
+                # Allow specifying relative paths, as well
+                abs_dumps_path = os.path.expanduser(dumps_dir)
+                dumps_path = os.path.join(abs_dumps_path,
+                                          self.lang + '_dumps', self.date)
+                # Retrieve path to all available files to feed ETL lines
+                if not os.path.exists(dumps_path):
+                    print "No dump files will be downloaded and local folder with dump files not found."
+                    print "Please, specify a valid path to local folder containing dump files."
+                    print "Program will exit now."
+                    sys.exit()
+
+                else:
+                    # Attempt to find list of sql.gz or
+                    # .sql files to be processed
+                    self.paths = glob.glob(os.path.join(dumps_path, '*.sql.gz'))
+                    if not self.paths:
+                        self.paths = glob.glob(os.path.join(dumps_path,
+                                                            '*.sql'))
+                        if not self.paths:
+                            print "Directory %s does not contain any valid dump file." % dumps_path
+                            print "Program will exit now."
+                            sys.exit()
+            # If not provided explicitly, look for default location of
+            # dumps directory
+            else:
+                dumps_dir = os.path.join("data", self.lang + '_dumps',
+                                         self.date)
+                # Look up dump files in default directory name
+                if not os.path.exists(dumps_dir):
+                    print "Default directory %s containing dump files not found." % dumps_dir
+                    print "Program will exit now."
+                    sys.exit()
+
+                else:
+                    self.paths = glob.glob(os.path.join(dumps_dir, '*.sql.gz'))
+                    if not self.paths:
+                        self.paths = glob.glob(os.path.join(dumps_dir, '*.sql'))
+                        if not self.paths:
+                            print "Directory %s does not contain any valid dump file." % dumps_dir
+                            print "Program will exit now."
+                            sys.exit()
+
+            print "Found SQL dump files to process."
+            print
+        if debug:
+            print "paths: " + unicode(self.paths)
+            print
+
+        # Create database if it does not exist
+        if not self.DB_exists():
+            self.createDB()
+
+        # Unpack and pipe all SQL dump files to local DB
+        # Beware that, by default, all dumps include drop/create table queries
+        # and ENGINE is hard set to InnoDB
+        # Primary keys and indexes are also defined by default
+        # TODO: Explore possible options to load data into PostgreSQL
+        # and other different DB backends
+        new_etl = SQLDumpsETL(name="[ETL:SQLDumps-0]",
+                              path=self.paths, lang=self.lang,
+                              db_name=self.db_name,
+                              db_user=self.db_user, db_passw=self.db_passw,
+                              )
+        print "ETL:SQLDumps task defined OK."
+        print "Proceeding with ETL workflow. This may take time..."
+        print
+        # Extract, process and load information in local DB
+        new_etl.start()
+        # Wait for ETL line to finish
+        new_etl.join()
+        # TODO: logger; ETL step completed, proceeding with data
+        # analysis and visualization
+        print "ETL:SQLDumps task finished for lang %s and date %s" % (
+              self.lang, self.date)
+        print

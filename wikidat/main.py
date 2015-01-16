@@ -345,6 +345,18 @@ if __name__ == '__main__':
                      dumps_dir=args.dumps_dir,
                      debug=args.debug)
 
+    if 'ETL:SQLDumps' in opts['tool_secs']:
+        task = tasks.SQLDumpsTask(lang=args.lang, date=args.date,
+                                  host=args.host, port=args.port,
+                                  db_name=args.db_name,
+                                  db_user=args.db_user,
+                                  db_passw=args.db_passw,
+                                  db_engine=args.db_engine)
+
+        task.execute(mirror=args.mirror, download_files=args.download_files,
+                     dumps_dir=args.dumps_dir,
+                     debug=args.debug)
+
     print "Finish time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                                time.localtime()))
     end = time.time()

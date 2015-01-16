@@ -9,6 +9,7 @@ import sys
 import os
 import time
 import multiprocessing as mp
+import subprocess
 from processors import Producer, Processor, Consumer
 from dump import DumpFile, process_xml
 from page import pages_to_file, pages_file_to_db
@@ -345,11 +346,45 @@ class LoggingETL(ETL):
         db_log.close()
 
 
-class SQLDumpETL(ETL):
+class SQLDumpsETL(ETL):
     """
-    Implements workflow to load native SQL dump files (compressed)
+    Implements workflow to load native SQL dump files, created with
+    mysqldump and published in compressed format (gzip file)
     """
-    pass
+    def __init__(self, group=None, target=None, name=None, args=None,
+                 kwargs=None, path=None, lang=None,
+                 db_name=None, db_user=None, db_passw=None):
+        """
+        Initialize new PageRevision workflow
+        """
+        super(SQLDumpsETL,
+              self).__init__(group=None, target=None, name=name, args=None,
+                             kwargs=None, lang=lang, db_name=db_name,
+                             db_user=db_user, db_passw=db_passw)
+        self.path = path
+
+    def run(self):
+        """
+        Docstring
+        """
+        # TODO: Create Popen o similar subprocessing strategy w/ shell
+        # gzip -cd file | mysql [params]
+        # or in case the file is already uncompressed
+        # cat sql | mysql [params]
+        for path in self.path:
+            if '.gz' in path:
+                command = "gzip -cd {0} | mysql -u {1} -p{2} {3}"
+            else:
+                command = "cat {0} | mysql -u {1} -p{2} {3}"
+            p = subprocess.Popen(command.format(path, self.db_user,
+                                                self.db_passw, self.db_name),
+                                 shell=True,
+                                 stdout=subprocess.PIPE,
+                                 stderr=open(os.devnull, "w")
+                                 )
+        # sys.stderr.write(p.stdout.read(1000))
+        # return False
+        return p.stdout
 
 
 if __name__ == '__main__':
@@ -361,6 +396,6 @@ if __name__ == '__main__':
     db_user = sys.argv[6]
     db_passw = sys.argv[7]
 
-    workflow = PageRevisionETL(path, page_fan, rev_fan, lang, db_name,
-                               db_user, db_passw)
+    workflow = RevisionHistoryETL(path, page_fan, rev_fan, lang, db_name,
+                                  db_user, db_passw)
     workflow.run()
