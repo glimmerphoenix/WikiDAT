@@ -48,7 +48,7 @@ class Downloader(object):
         self.language = language
         self.mirror = mirror
         self.base_url = "".join([self.mirror, self.language])
-        print "Base URL is: %s" % (self.base_url)
+        print("Base URL is: %s" % (self.base_url))
         html_dates = requests.get(self.base_url)
         soup_dates = BeautifulSoup(html_dates.text)
 
@@ -80,7 +80,7 @@ class Downloader(object):
             dump_date = self.dump_urldate[-2]
         # Obtain content for dump summary page on requested date
         self.target_url = "".join([self.base_url, "/", dump_date])
-        print "Target URL is: %s" % (self.target_url)
+        print("Target URL is: %s" % (self.target_url))
         html_dumps = requests.get(self.target_url)
         soup_dumps = BeautifulSoup(html_dumps.text)
 
@@ -88,10 +88,10 @@ class Downloader(object):
         status_dumps = soup_dumps.find('p', class_='status').span.text
         if status_dumps != 'Dump complete':
             # TODO: Provide an alternative to the user (e.g. latest dump)
-            print "Data dump for the selected date is not ready yet."
-            print "Please, provide a valid date for a completed dump process"
-            print "or select the latest available dump"
-            print "Program will exit now."
+            print("Data dump for the selected date is not ready yet.")
+            print("Please, provide a valid date for a completed dump process")
+            print("or select the latest available dump")
+            print("Program will exit now.")
             sys.exit()
 
         # Dump file(s) ready, proceed with list of files and download
@@ -105,9 +105,9 @@ class Downloader(object):
         if not os.path.exists(self.logs_dir):
             os.makedirs(self.logs_dir)
 
-        for url1, url2 in itertools.izip_longest(self.dump_urls[::2],
-                                                 self.dump_urls[1::2],
-                                                 fillvalue=None):
+        for url1, url2 in itertools.zip_longest(self.dump_urls[::2],
+                                                self.dump_urls[1::2],
+                                                fillvalue=None):
             file_name1 = url1.split('/')[-1]
             path_file1 = os.path.join(self.dump_dir, file_name1)
             self.dump_paths.append(path_file1)
@@ -130,14 +130,14 @@ class Downloader(object):
             # Wait until all downloads are finished
             proc_get1.join()
 
-        print "Paths in download: " + unicode(self.dump_paths)
+        print("Paths in download: ", str(self.dump_paths))
         # Verify integrity of downloaded dumps
         try:
             self._verify(self.target_url)
         except DumpIntegrityError as e:
-            print e.msg
+            print(e.msg)
 
-        print "File integrity checked, no errors found."
+        print("File integrity checked, no errors found.")
         # Return list of paths to dumpfiles for data extraction
         return self.dump_paths, dump_date
 
@@ -151,7 +151,7 @@ class Downloader(object):
         local_dir = os.path.split(path_file)[0]
         file_name = os.path.split(path_file)[1]
         file_url = "".join([self.mirror, dump_url])
-        print "File URL is: %s" % (file_url)
+        print("File URL is: %s" % (file_url))
 
         # Setup log file
         log_file = os.path.join(local_dir, "logs", file_name + ".log")
@@ -160,7 +160,7 @@ class Downloader(object):
         resp_file = requests.get(file_url, stream=True)
         meta_file_size = float(resp_file.headers.get('content-length'))
         log_size_msg = "Downloading: {0} - [Size: {1}]"
-        print log_size_msg.format(file_name, misc.hfile_size(meta_file_size))
+        print(log_size_msg.format(file_name, misc.hfile_size(meta_file_size)))
 
         store_file = open(path_file, 'wb')
         part_len = 0
@@ -200,7 +200,8 @@ class Downloader(object):
 
         for path in self.dump_paths:
             filename = os.path.split(path)[1]  # Get filename from path
-            file_md5 = hashlib.md5(open(path).read()).hexdigest()
+            with open(path, 'rb') as f:
+                file_md5 = hashlib.md5(f.read()).hexdigest()
             original_md5 = self.md5_codes[filename]
             # TODO: Compare md5 hash of retrieved file with original
             if file_md5 != original_md5:

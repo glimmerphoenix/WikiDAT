@@ -23,9 +23,9 @@ import time
 import multiprocessing as mp
 import zmq
 from wikidat.utils.comutils import send_ujson, recv_ujson
-from page import Page
-from revision import Revision
-from logitem import LogItem
+from .page import Page
+from .revision import Revision
+from .logitem import LogItem
 # from user import User
 
 
@@ -102,7 +102,7 @@ class Producer(mp.Process):
 
         # Send STOP message to all workers and quit
         if self.consumers > 0:
-            channel_control.send('STOP')
+            channel_control.send_string('STOP')
 
         time.sleep(5)
         #channel_control.close()
@@ -179,7 +179,7 @@ class Processor(mp.Process):
 
         control_sub = context.socket(zmq.SUB)
         control_sub.connect("tcp://127.0.0.1:%s" % self.control_port)
-        control_sub.setsockopt(zmq.SUBSCRIBE, "STOP")
+        control_sub.setsockopt_string(zmq.SUBSCRIBE, "STOP")
 
         # Wait a second to wake up and connect
         time.sleep(1)
@@ -197,9 +197,9 @@ class Processor(mp.Process):
                     yield(recv_ujson(data_recv))
 
                 if control_sub in socks and socks[control_sub] == zmq.POLLIN:
-                    message = control_sub.recv()
+                    message = control_sub.recv_string()
                     if message == "STOP":
-                        print "Received STOP %s" % self.name
+                        print("Received STOP %s" % self.name)
                         break  # Exit poll loop
 
             self.producers -= 1

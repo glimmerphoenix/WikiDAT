@@ -5,7 +5,7 @@ Created on Sat Mar 29 22:14:09 2014
 @author: jfelipe
 """
 import time
-from data_item import DataItem
+from .data_item import DataItem
 import logging
 import csv
 import os
@@ -78,9 +78,9 @@ def pages_file_to_db(pages_iter, con=None, log_file=None,
     total_pages = 0
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
-    print "Starting page data loading at %s." % (
+    print("Starting page data loading at %s." % (
         time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                      time.localtime()))
+                      time.localtime())))
     logging.info("Starting page data loading at %s." % (
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
@@ -99,16 +99,16 @@ def pages_file_to_db(pages_iter, con=None, log_file=None,
         total_pages += 1
 
         if insert_rows == 0:
-            file_page = open(path_file_page, 'wb')
+            file_page = open(path_file_page, 'w')
             writer = csv.writer(file_page, dialect='excel-tab',
                                 lineterminator='\n')
         # Write data to tmp file
         try:
-            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                             else s for s in page])
-        except(Exception), e:
-            print e
-            print page
+            writer.writerow([s if isinstance(s, str)
+                             else str(s) for s in page])
+        except Exception as e:
+            print(e)
+            print(page)
 
         insert_rows += 1
 
@@ -130,9 +130,9 @@ def pages_file_to_db(pages_iter, con=None, log_file=None,
                  total_pages,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
-    print "END: %s pages processed %s." % (
+    print("END: %s pages processed %s." % (
         total_pages, time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                   time.localtime()))
+                                   time.localtime())))
 
 
 def store_pages_db(pages_iter, con=None, log_file=None, size_cache=500):
@@ -147,9 +147,9 @@ def store_pages_db(pages_iter, con=None, log_file=None, size_cache=500):
     total_pages = 0
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
-    print "Starting data loading at %s." % (
+    print("Starting data loading at %s." % (
         time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                      time.localtime()))
+                      time.localtime())))
     logging.info("Starting data loading at %s." % (
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
@@ -186,6 +186,6 @@ def store_pages_db(pages_iter, con=None, log_file=None, size_cache=500):
                  total_pages,
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
-    print "END: %s pages processed %s." % (
+    print("END: %s pages processed %s." % (
         total_pages, time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                   time.localtime()))
+                                   time.localtime())))

@@ -16,7 +16,12 @@ processes with Wikipedia data:
 from wikidat.retrieval.etl import RevisionHistoryETL, LoggingETL, SQLDumpsETL
 from wikidat.retrieval.revision import users_file_to_db
 from wikidat.retrieval.dump import DumpFile
-import download
+from .download import (RevHistDownloader, LoggingDownloader,
+                       UserGroupsDownloader, IWLinksDownloader,
+                       InterWikiDownloader, PageRestrDownloader,
+                       CategoryDownloader, CatLinksDownloader,
+                       ExtLinksDownloader, InterLinksDownloader,
+                       ImageLinksDownloader)
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
 import os
@@ -104,36 +109,35 @@ class RevHistoryTask(Task):
             - db_passw = Password for database user
             - mirror = Base URL of site hosting XML dumps
         """
-        print "----------------------------------------------------------"
-        print ("""Executing ETL:RevHistory on lang: {0} date: {1}"""
-               .format(self.lang, self.date))
-        print ("ETL lines = {0} page_fan = {1} rev_fan = {2}"
-               .format(self.etl_lines, page_fan, rev_fan))
-        print "Download files =", download_files
-        print "Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                                       time.localtime()))
-        print "----------------------------------------------------------"
-        print
+        print("----------------------------------------------------------")
+        print(("""Executing ETL:RevHistory on lang: {0} date: {1}"""
+               .format(self.lang, self.date)))
+        print(("ETL lines = {0} page_fan = {1} rev_fan = {2}"
+               .format(self.etl_lines, page_fan, rev_fan)))
+        print("Download files =", download_files)
+        print("Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                       time.localtime())))
+        print("----------------------------------------------------------")
+        print()
         if download_files:
             # TODO: Use proper logging module to track execution progress
             # Choose corresponding file downloader and etl wrapper
-            print "Downloading new dump files from %s, for language %s" % (
-                  mirror, self.lang)
-            self.down = download.RevHistDownloader(mirror,
-                                                   self.lang, dumps_dir)
+            print("Downloading new dump files from %s, for language %s" % (
+                  mirror, self.lang))
+            self.down = RevHistDownloader(mirror, self.lang, dumps_dir)
             # Donwload latest set of dump files
             self.paths, self.date = self.down.download(self.date)
             if not self.paths:
-                print "Error: dump files with pages-logging info not found."
-                print "Program will exit now."
+                print("Error: dump files with pages-logging info not found.")
+                print("Program will exit now.")
                 sys.exit()
 
-            print "Retrieved dump files for lang %s, date: %s" % (self.lang,
-                                                                  self.date)
-            print
+            print("Retrieved dump files for lang %s, date: %s" % (self.lang,
+                                                                  self.date))
+            print()
 
         else:
-            print "Looking for revision-history dump file(s) in data dir"
+            print("Looking for revision-history dump file(s) in data dir")
             # Case of dumps folder provided explicity
             if dumps_dir:
                 # Allow specifying relative paths, as well
@@ -142,9 +146,9 @@ class RevHistoryTask(Task):
                                           self.lang + '_dumps', self.date)
                 # Retrieve path to all available files to feed ETL lines
                 if not os.path.exists(dumps_path):
-                    print "No dump files will be downloaded and local folder with dump files not found."
-                    print "Please, specify a valid path to local folder containing dump files."
-                    print "Program will exit now."
+                    print("No dump files will be downloaded and local folder with dump files not found.")
+                    print("Please, specify a valid path to local folder containing dump files.")
+                    print("Program will exit now.")
                     sys.exit()
 
                 else:
@@ -155,8 +159,8 @@ class RevHistoryTask(Task):
                         self.paths = glob.glob(os.path.join(dumps_path,
                                                             '*pages-meta-hsitory*.xml'))
                         if not self.paths:
-                            print "Directory %s does not contain any valid dump file." % dumps_path
-                            print "Program will exit now."
+                            print("Directory %s does not contain any valid dump file." % dumps_path)
+                            print("Program will exit now.")
                             sys.exit()
             # If not provided explicitly, look for default location of
             # dumps directory
@@ -165,8 +169,8 @@ class RevHistoryTask(Task):
                                          self.date)
                 # Look up dump files in default directory name
                 if not os.path.exists(dumps_dir):
-                    print "Default directory %s containing dump files not found." % dumps_dir
-                    print "Program will exit now."
+                    print("Default directory %s containing dump files not found." % dumps_dir)
+                    print ("Program will exit now.")
                     sys.exit()
 
                 else:
@@ -175,15 +179,15 @@ class RevHistoryTask(Task):
                         self.paths = glob.glob(os.path.join(dumps_dir,
                                                             '*pages-meta-hsitory*.xml'))
                         if not self.paths:
-                            print "Directory %s does not contain any valid dump file." % dumps_dir
-                            print "Program will exit now."
+                            print("Directory %s does not contain any valid dump file." % dumps_dir)
+                            print("Program will exit now.")
                             sys.exit()
-            print "Found revision-history dump file(s) to process."
-            print
+            print("Found revision-history dump file(s) to process.")
+            print()
         # Print list of file paths in debug mode
         if debug:
-            print "paths: " + unicode(self.paths)
-            print
+            print("paths: ", str(self.paths))
+            print()
 
         # Create database
         # TODO: Empty correspoding tables if DB already exists
@@ -224,9 +228,9 @@ class RevHistoryTask(Task):
                 )
             self.etl_list.append(new_etl)
 
-        print "ETL:RevHistory task defined OK."
-        print "Proceeding with ETL workflows. This may take time..."
-        print
+        print("ETL:RevHistory task defined OK.")
+        print("Proceeding with ETL workflows. This may take time...")
+        print()
         # Extract, process and load information in local DB
         for etl in self.etl_list:
             etl.start()
@@ -251,14 +255,14 @@ class RevHistoryTask(Task):
         db_users.close()
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
-        print "ETL:RevHistory task finished for language %s and date %s" % (
-              self.lang, self.date)
-        print
+        print("ETL:RevHistory task finished for language %s and date %s" % (
+              self.lang, self.date))
+        print()
         # Create primary keys for all tables
         # TODO: This must also be tracked by main logging module
-        print "Now creating primary key indexes in database tables."
-        print "This may take a while..."
-        print
+        print("Now creating primary key indexes in database tables.")
+        print("This may take a while...")
+        print()
         db_pks = MySQLDB(host='localhost', port=3306, user=self.db_user,
                          passwd=self.db_passw, db=self.db_name)
         db_pks.connect()
@@ -311,33 +315,33 @@ class PagesLoggingTask(Task):
             - db_passw = Password for database user
             - mirror = Base URL of site hosting XML dumps
         """
-        print "----------------------------------------------------------"
+        print("----------------------------------------------------------")
         print("Executing ETL:PagesLogging on lang: {0} date: {1}"
               .format(self.lang, self.date))
-        print "log_fan =", log_fan
-        print "Download files =", download_files
-        print "Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                                       time.localtime()))
-        print "----------------------------------------------------------"
-        print
+        print("log_fan =", log_fan)
+        print("Download files =", download_files)
+        print("Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                       time.localtime())))
+        print("----------------------------------------------------------")
+        print()
         if download_files:
             # TODO: Use proper logging module to track execution progress
             # Choose corresponding file downloader and etl wrapper
-            print """Downloading new logging dump files from %s,
-                     for language %s""" % (mirror, self.lang)
-            self.down = download.LoggingDownloader(mirror,
+            print("""Downloading new logging dump files from %s,
+                     for language %s""" % (mirror, self.lang))
+            self.down = LoggingDownloader(mirror,
                                                    self.lang, dumps_dir)
             # Donwload latest set of dump files
             self.paths, self.date = self.down.download(self.date)
             if not self.paths:
-                print "Error: dump files with pages-logging info not found."
-                print "Program will exit now."
+                print("Error: dump files with pages-logging info not found.")
+                print("Program will exit now.")
                 sys.exit()
 
-            print "Got files for lang %s, date: %s" % (self.lang, self.date)
+            print("Got files for lang %s, date: %s" % (self.lang, self.date))
 
         else:
-            print "Looking for pages-logging dump file in data dir"
+            print("Looking for pages-logging dump file in data dir")
             # Case of dumps folder provided explicity
             if dumps_dir:
                 # Allow specifying relative paths, as well
@@ -346,9 +350,9 @@ class PagesLoggingTask(Task):
                                           self.lang + '_dumps', self.date)
                 # Retrieve path to all available files to feed ETL lines
                 if not os.path.exists(dumps_path):
-                    print "No dump files will be downloaded and local folder with dump files not found."
-                    print "Please, specify a valid path to local folder containing dump files."
-                    print "Program will exit now."
+                    print("No dump files will be downloaded and local folder with dump files not found.")
+                    print("Please, specify a valid path to local folder containing dump files.")
+                    print("Program will exit now.")
                     sys.exit()
 
                 else:
@@ -359,8 +363,8 @@ class PagesLoggingTask(Task):
                         self.paths = glob.glob(os.path.join(dumps_path,
                                                             '*pages-logging*.xml'))
                         if not self.paths:
-                            print "Directory %s does not contain any valid dump file." % dumps_path
-                            print "Program will exit now."
+                            print("Directory %s does not contain any valid dump file." % dumps_path)
+                            print("Program will exit now.")
                             sys.exit()
             # If not provided explicitly, look for default location of
             # dumps directory
@@ -369,8 +373,8 @@ class PagesLoggingTask(Task):
                                          self.date)
                 # Look up dump files in default directory name
                 if not os.path.exists(dumps_dir):
-                    print "Default directory %s containing dump files not found." % dumps_dir
-                    print "Program will exit now."
+                    print("Default directory %s containing dump files not found." % dumps_dir)
+                    print("Program will exit now.")
                     sys.exit()
 
                 else:
@@ -379,15 +383,15 @@ class PagesLoggingTask(Task):
                         self.paths = glob.glob(os.path.join(dumps_dir,
                                                             '*pages-logging*.xml'))
                         if not self.paths:
-                            print "Directory %s does not contain any valid dump file." % dumps_dir
-                            print "Program will exit now."
+                            print("Directory %s does not contain any valid dump file." % dumps_dir)
+                            print("Program will exit now.")
                             sys.exit()
 
-            print "Found pages-logging dump file to process."
-            print
+            print("Found pages-logging dump file to process.")
+            print()
         if debug:
-            print "paths: " + unicode(self.paths)
-            print
+            print("paths: ", str(self.paths))
+            print()
 
         # Create database if it does not exist
         # empty logging table otherwise
@@ -405,23 +409,23 @@ class PagesLoggingTask(Task):
                              base_port=base_ports[0]+(30),
                              control_port=control_ports[0]+(30)
                              )
-        print "ETL:Logging task for administrative records defined OK."
-        print "Proceeding with ETL workflow. This may take time..."
-        print
+        print("ETL:Logging task for administrative records defined OK.")
+        print("Proceeding with ETL workflow. This may take time...")
+        print()
         # Extract, process and load information in local DB
         new_etl.start()
         # Wait for ETL line to finish
         new_etl.join()
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
-        print "ETL:Logging task finished for lang %s and date %s" % (
-              self.lang, self.date)
-        print
+        print("ETL:Logging task finished for lang %s and date %s" % (
+              self.lang, self.date))
+        print()
         # Create primary keys for all tables
         # TODO: This must also be tracked by official logging module
-        print "Now creating primary key indexes in database tables."
-        print "This may take a while..."
-        print
+        print("Now creating primary key indexes in database tables.")
+        print("This may take a while...")
+        print()
         db_pks = MySQLDB(host='localhost', port=3306, user=self.db_user,
                          passwd=self.db_passw, db=self.db_name)
         db_pks.connect()
@@ -463,41 +467,41 @@ class SQLDumpsTask(Task):
         Arguments:
             - mirror = Base URL of site hosting XML dumps
         """
-        print "----------------------------------------------------------"
+        print("----------------------------------------------------------")
         print("Executing ETL:SQLDumps on lang: {0} date: {1}"
               .format(self.lang, self.date))
-        print "Download files =", download_files
-        print "Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                                       time.localtime()))
-        print "----------------------------------------------------------"
-        print
+        print("Download files =", download_files)
+        print("Start time is {0}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                                       time.localtime())))
+        print("----------------------------------------------------------")
+        print()
         if download_files:
             # TODO: Use proper logging module to track execution progress
             # Choose corresponding file downloader and etl wrapper
-            print """Downloading new logging dump files from %s,
-                     for language %s""" % (mirror, self.lang)
-            self.down = [download.UserGroupsDownloader(mirror, self.lang, dumps_dir),
-                         download.IWLinksDownloader(mirror, self.lang, dumps_dir),
-                         download.InterWikiDownloader(mirror, self.lang, dumps_dir),
-                         download.PageRestrDownloader(mirror, self.lang, dumps_dir),
-                         download.CategoryDownloader(mirror, self.lang, dumps_dir),
-                         download.CatLinksDownloader(mirror, self.lang, dumps_dir),
-                         download.ExtLinksDownloader(mirror, self.lang, dumps_dir),
-                         download.InterLinksDownloader(mirror, self.lang, dumps_dir),
-                         download.ImageLinksDownloader(mirror, self.lang, dumps_dir)
+            print("""Downloading new logging dump files from %s,
+                     for language %s""" % (mirror, self.lang))
+            self.down = [UserGroupsDownloader(mirror, self.lang, dumps_dir),
+                         IWLinksDownloader(mirror, self.lang, dumps_dir),
+                         InterWikiDownloader(mirror, self.lang, dumps_dir),
+                         PageRestrDownloader(mirror, self.lang, dumps_dir),
+                         CategoryDownloader(mirror, self.lang, dumps_dir),
+                         CatLinksDownloader(mirror, self.lang, dumps_dir),
+                         ExtLinksDownloader(mirror, self.lang, dumps_dir),
+                         InterLinksDownloader(mirror, self.lang, dumps_dir),
+                         ImageLinksDownloader(mirror, self.lang, dumps_dir)
                          ]
             # Donwload latest set of dump files
             for downloader in self.down:
                 self.paths, self.date = downloader.download(self.date)
                 if not self.paths:
-                    print "Error: dump files with pages-logging info not found."
-                    print "Program will exit now."
+                    print("Error: dump files with pages-logging info not found.")
+                    print("Program will exit now.")
                     sys.exit()
 
-                print "Got files for lang %s, date: %s" % (self.lang, self.date)
+                print("Got files for lang %s, date: %s" % (self.lang, self.date))
 
         else:
-            print "Looking for compressed SQL dump files in data dir"
+            print("Looking for compressed SQL dump files in data dir")
             # Case of dumps folder provided explicity
             if dumps_dir:
                 # Allow specifying relative paths, as well
@@ -506,9 +510,9 @@ class SQLDumpsTask(Task):
                                           self.lang + '_dumps', self.date)
                 # Retrieve path to all available files to feed ETL lines
                 if not os.path.exists(dumps_path):
-                    print "No dump files will be downloaded and local folder with dump files not found."
-                    print "Please, specify a valid path to local folder containing dump files."
-                    print "Program will exit now."
+                    print("No dump files will be downloaded and local folder with dump files not found.")
+                    print("Please, specify a valid path to local folder containing dump files.")
+                    print("Program will exit now.")
                     sys.exit()
 
                 else:
@@ -519,8 +523,8 @@ class SQLDumpsTask(Task):
                         self.paths = glob.glob(os.path.join(dumps_path,
                                                             '*.sql'))
                         if not self.paths:
-                            print "Directory %s does not contain any valid dump file." % dumps_path
-                            print "Program will exit now."
+                            print("Directory %s does not contain any valid dump file." % dumps_path)
+                            print("Program will exit now.")
                             sys.exit()
             # If not provided explicitly, look for default location of
             # dumps directory
@@ -529,8 +533,8 @@ class SQLDumpsTask(Task):
                                          self.date)
                 # Look up dump files in default directory name
                 if not os.path.exists(dumps_dir):
-                    print "Default directory %s containing dump files not found." % dumps_dir
-                    print "Program will exit now."
+                    print("Default directory %s containing dump files not found." % dumps_dir)
+                    print("Program will exit now.")
                     sys.exit()
 
                 else:
@@ -538,15 +542,15 @@ class SQLDumpsTask(Task):
                     if not self.paths:
                         self.paths = glob.glob(os.path.join(dumps_dir, '*.sql'))
                         if not self.paths:
-                            print "Directory %s does not contain any valid dump file." % dumps_dir
-                            print "Program will exit now."
+                            print("Directory %s does not contain any valid dump file." % dumps_dir)
+                            print("Program will exit now.")
                             sys.exit()
 
-            print "Found SQL dump files to process."
-            print
+            print("Found SQL dump files to process.")
+            print()
         if debug:
-            print "paths: " + unicode(self.paths)
-            print
+            print("paths: ", str(self.paths))
+            print()
 
         # Create database if it does not exist
         if not self.DB_exists():
@@ -563,15 +567,15 @@ class SQLDumpsTask(Task):
                               db_name=self.db_name,
                               db_user=self.db_user, db_passw=self.db_passw,
                               )
-        print "ETL:SQLDumps task defined OK."
-        print "Proceeding with ETL workflow. This may take time..."
-        print
+        print("ETL:SQLDumps task defined OK.")
+        print("Proceeding with ETL workflow. This may take time...")
+        print()
         # Extract, process and load information in local DB
         new_etl.start()
         # Wait for ETL line to finish
         new_etl.join()
         # TODO: logger; ETL step completed, proceeding with data
         # analysis and visualization
-        print "ETL:SQLDumps task finished for lang %s and date %s" % (
-              self.lang, self.date)
-        print
+        print("ETL:SQLDumps task finished for lang %s and date %s" % (
+              self.lang, self.date))
+        print()
