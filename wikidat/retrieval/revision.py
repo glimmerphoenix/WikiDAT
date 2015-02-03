@@ -608,7 +608,7 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
         try:
             writer_users_zero.writerow([(s.encode('utf-8')
                                          if isinstance(s, unicode)
-                                         else s for s in item_user)])
+                                         else s for s in item_user_zero)])
         except(Exception), e:
             print e
     file_users_zero.close()
