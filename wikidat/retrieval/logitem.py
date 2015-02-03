@@ -385,35 +385,33 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
             # In this case, buffer size to trigger data load only tracks
             # num. of logitems already processed. We take the same mark to
             # load data for all associated tables
-            file_logitem = open(path_file_logitem, 'wb')
+            file_logitem = open(path_file_logitem, 'w')
             writer = csv.writer(file_logitem, dialect='excel-tab',
                                 lineterminator='\n')
-            file_block = open(path_file_block, 'wb')
+            file_block = open(path_file_block, 'w')
             writer_block = csv.writer(file_block, dialect='excel-tab',
                                       lineterminator='\n')
-            file_newuser = open(path_file_newuser, 'wb')
+            file_newuser = open(path_file_newuser, 'w')
             writer_new = csv.writer(file_newuser, dialect='excel-tab',
                                     lineterminator='\n')
-            file_rights = open(path_file_rights, 'wb')
+            file_rights = open(path_file_rights, 'w')
             writer_rights = csv.writer(file_rights, dialect='excel-tab',
                                        lineterminator='\n')
         # Write data to tmp file
         try:
-            writer.writerow([s.encode('utf-8') if isinstance(s, str)
-                             else s for s in logitem])
+            writer.writerow([s if isinstance(s, str)
+                             else str(s) for s in logitem])
             if block:
-                writer_block.writerow([s.encode('utf-8')
-                                       if isinstance(s, str)
-                                       else s for s in block])
+                writer_block.writerow([s if isinstance(s, str)
+                                       else str(s) for s in block])
             if newuser:
-                writer_new.writerow([s.encode('utf-8')
-                                     if isinstance(s, str)
-                                     else s for s in newuser])
+                writer_new.writerow([s if isinstance(s, str)
+                                     else str(s) for s in newuser])
             if rights:
-                writer_rights.writerow([s.encode('utf-8')
-                                        if isinstance(s, str)
-                                        else s for s in rights])
+                writer_rights.writerow([s if isinstance(s, str)
+                                        else str(s) for s in rights])
         except Exception as e:
+            print("Error writing logitem temp files...")
             print(e)
             print(logitem)
 
