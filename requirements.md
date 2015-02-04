@@ -45,7 +45,7 @@ Python modules from packages: `python-zmq` and `python-dateutil`, respectively.
 * lxml (v3.3.1-0 or later).
 * beautifulsoup4 (v4.2.1 or later).
 * pyzmq (v14.3.0 or later, see above).
-* dateutil (v2.2 or later, see above).
+* dateutils (v2.2 or later, see above).
 * requests (v2.2.1 or later).
 * ujson (v1.3.0 or later).
 * configparser (v3.3.0r2 or later).
