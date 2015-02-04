@@ -48,7 +48,7 @@ class Downloader(object):
         self.language = language
         self.mirror = mirror
         self.base_url = "".join([self.mirror, self.language])
-        print("Base URL is: %s" % (self.base_url))
+        # print("Base URL is: %s" % (self.base_url))
         html_dates = requests.get(self.base_url)
         soup_dates = BeautifulSoup(html_dates.text)
 
