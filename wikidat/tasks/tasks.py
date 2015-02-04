@@ -329,8 +329,7 @@ class PagesLoggingTask(Task):
             # Choose corresponding file downloader and etl wrapper
             print("""Downloading new logging dump files from %s,
                      for language %s""" % (mirror, self.lang))
-            self.down = LoggingDownloader(mirror,
-                                                   self.lang, dumps_dir)
+            self.down = LoggingDownloader(mirror, self.lang, dumps_dir)
             # Donwload latest set of dump files
             self.paths, self.date = self.down.download(self.date)
             if not self.paths:
@@ -478,9 +477,9 @@ class SQLDumpsTask(Task):
         if download_files:
             # TODO: Use proper logging module to track execution progress
             # Choose corresponding file downloader and etl wrapper
-            print("""Downloading new logging dump files from %s,
-                     for language %s""" % (mirror, self.lang))
-            self.down = [UserGroupsDownloader(mirror, self.lang, dumps_dir),
+            print("Downloading new logging dump files from %s" % mirror,
+                  "for language %s" % self.lang)
+            self.down = (UserGroupsDownloader(mirror, self.lang, dumps_dir),
                          IWLinksDownloader(mirror, self.lang, dumps_dir),
                          InterWikiDownloader(mirror, self.lang, dumps_dir),
                          PageRestrDownloader(mirror, self.lang, dumps_dir),
@@ -489,17 +488,20 @@ class SQLDumpsTask(Task):
                          ExtLinksDownloader(mirror, self.lang, dumps_dir),
                          InterLinksDownloader(mirror, self.lang, dumps_dir),
                          ImageLinksDownloader(mirror, self.lang, dumps_dir)
-                         ]
+                         )
+            self.paths = []
             # Donwload latest set of dump files
             for downloader in self.down:
-                self.paths, self.date = downloader.download(self.date)
-                if not self.paths:
-                    print("Error: dump files with pages-logging info not found.")
-                    print("Program will exit now.")
-                    sys.exit()
+                t = downloader.download(self.date)
+                self.paths.append(t[0][0])
+            # Save actual date from method if not specified before
+            self.date = t[1]
+            if not self.paths:
+                print("Error: dump files with pages-logging info not found.")
+                print("Program will exit now.")
+                sys.exit()
 
-                print("Got files for lang %s, date: %s" % (self.lang, self.date))
-
+            print("Got files for lang %s, date: %s" % (self.lang, self.date))
         else:
             print("Looking for compressed SQL dump files in data dir")
             # Case of dumps folder provided explicity

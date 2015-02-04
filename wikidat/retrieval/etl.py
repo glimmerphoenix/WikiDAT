@@ -376,6 +376,7 @@ class SQLDumpsETL(ETL):
                 command = "gzip -cd {0} | mysql -u {1} -p{2} {3}"
             else:
                 command = "cat {0} | mysql -u {1} -p{2} {3}"
+            print("Processing file ", os.path.split(path)[1])
             p = subprocess.Popen(command.format(path, self.db_user,
                                                 self.db_passw, self.db_name),
                                  shell=True,
