@@ -166,7 +166,8 @@ class Downloader(object):
         part_len = 0
         completed = 0
         total_length = int(meta_file_size)
-        logging.info(log_size_msg)
+        logging.info(log_size_msg.format(file_name,
+                                         misc.hfile_size(meta_file_size)))
         for data in resp_file.iter_content(chunk_size=65536):
             part_len += len(data)
             store_file.write(data)
