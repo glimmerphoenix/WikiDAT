@@ -6,6 +6,7 @@ WikiDAT
 + **Author**: Felipe Ortega.
 + **Contributors**: Carlos Martínez, Efrayim D Zitron, Aaron Halfaker.
 + **License**: [GPLv3](http://www.gnu.org/licenses/gpl.txt).
++ **Python version**: 3.4.2
 
 The aim of WikiDAT is to create an extensible toolkit for Wikipedia data 
 analysis, using Python and R.
@@ -25,6 +26,14 @@ Currently, WikiDAT is compatible with either MySQL or MariaDB for local
 data storage. Support for PostgreSQL will be available soon (code is being 
 ported). Additional support for unstructured data with MongoDB is also 
 planned.
+
+### Ongoing changes
+
+The toolkit is currently being migrated to Python 3 (v 3.4.2). The bulk of this
+task is already done but the codebase should still be thoroughly tested to
+ensure proper functioning and absence of bugs. Likewise, all documentation
+is undergoing a complete update to reflect the new changes for execution under
+Python 3.
 
 ### Required dependencies
 
