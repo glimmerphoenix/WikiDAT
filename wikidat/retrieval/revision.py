@@ -7,7 +7,7 @@ Created on Sat Mar 29 22:13:42 2014
 import hashlib
 import time
 from wikidat.utils import maps
-from data_item import DataItem
+from .data_item import DataItem
 import csv
 import os
 import redis
@@ -294,7 +294,7 @@ def revs_to_file(rev_iter, lang=None):
         rev['is_ga'] = '0'
 
         if rev['text'] is not None:
-            text = rev['text'].encode('utf-8')
+            text = rev['text'].encode()
             text_hash.update(text)
             rev['len_text'] = str(len(text))
 
@@ -335,7 +335,7 @@ def revs_to_file(rev_iter, lang=None):
         # This way, we avoid computing the hash twice for revisions with text
         else:
             rev['len_text'] = '0'
-            text_hash.update('')
+            text_hash.update(b'')
 
         # USER PROCESSING
         # Case of known user
@@ -343,7 +343,7 @@ def revs_to_file(rev_iter, lang=None):
             # Anonymous user
             if 'ip' in contrib_dict:
                 user = 0
-                ip = unicode(contrib_dict['ip'])
+                ip = str(contrib_dict['ip'])
                 redis_cache.hset(lang + ':revsanon', int(rev['id']),
                                  int(ipaddress.ip_address(ip)))
             # Registered user
@@ -419,9 +419,9 @@ def revs_file_to_db(rev_iter, con=None, log_file=None,
     total_revs = 0
 
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
-    print "Starting revision data loading at %s." % (
+    print("Starting revision data loading at %s." % (
         time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                      time.localtime()))
+                      time.localtime())))
     logging.info("Starting revision data loading at %s." % (
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
@@ -452,8 +452,8 @@ def revs_file_to_db(rev_iter, con=None, log_file=None,
 
         # Initialize new temp data file
         if insert_rows == 0:
-            file_rev = open(path_file_rev, 'wb')
-            file_rev_hash = open(path_file_rev_hash, 'wb')
+            file_rev = open(path_file_rev, 'w')
+            file_rev_hash = open(path_file_rev_hash, 'w')
             writer = csv.writer(file_rev, dialect='excel-tab',
                                 lineterminator='\n')
             writer2 = csv.writer(file_rev_hash, dialect='excel-tab',
@@ -461,14 +461,15 @@ def revs_file_to_db(rev_iter, con=None, log_file=None,
 
         # Write data to tmp file
         try:
-            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                             else s for s in rev])
+            writer.writerow([s if isinstance(s, str)
+                             else str(s) for s in rev])
 
-            writer2.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                             else s for s in rev_hash])
-        except(Exception), e:
-            print e
-            print rev
+            writer2.writerow([s if isinstance(s, str)
+                              else str(s) for s in rev_hash])
+        except Exception as e:
+            print("Error writing CSV files with revision info...")
+            print(e)
+            print(rev)
 
         insert_rows += 1
 
@@ -519,7 +520,7 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
     """
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
     # Initialize connections to Redis DBs
-    redis_cache = redis.Redis(host='localhost')
+    redis_cache = redis.Redis(host='localhost', decode_responses=True)
 
     # Add special values to hash 'users'
     redis_cache.hset(lang + ':users', 0, 'Anonymous user')
@@ -548,7 +549,7 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
     if os.path.isfile(path_file_anons):
         os.remove(path_file_anons)
 
-    file_anons = open(path_file_anons, 'wb')
+    file_anons = open(path_file_anons, 'w')
     writer_anons = csv.writer(file_anons, dialect='excel-tab',
                               lineterminator='\n')
 
@@ -561,8 +562,9 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
     for rev_anon in list_anons:  # Save list of anonymous revs to tmp file
         try:
             writer_anons.writerow([s for s in rev_anon])
-        except(Exception), e:
-            print e
+        except Exception as e:
+            print("Error writing CSV file for anonymous users...")
+            print(e)
     file_anons.close()
     del list_anons
 
@@ -571,7 +573,7 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
     # Delete previous versions of tmp files if present
     if os.path.isfile(path_file_users):
         os.remove(path_file_users)
-    file_users = open(path_file_users, 'wb')
+    file_users = open(path_file_users, 'w')
     writer_users = csv.writer(file_users, dialect='excel-tab',
                               lineterminator='\n')
 
@@ -583,17 +585,18 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
 
     for item_user in list_users:
         try:
-            writer_users.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                                   else s for s in item_user])
-        except(Exception), e:
-            print e
+            writer_users.writerow([s if isinstance(s, str)
+                                   else str(s) for s in item_user])
+        except Exception as e:
+            print("Error writing CSV file for registered users...")
+            print(e)
     file_users.close()
     del list_users
 
     # Users with ID = 0 in dump file
     path_file_users_zero = os.path.join(tmp_dir,
                                         lang + '_users_zero.csv')
-    file_users_zero = open(path_file_users_zero, 'wb')
+    file_users_zero = open(path_file_users_zero, 'w')
     writer_users_zero = csv.writer(file_users_zero, dialect='excel-tab',
                                    lineterminator='\n')
 
@@ -606,27 +609,27 @@ def users_file_to_db(con=None, lang=None, log_file=None, tmp_dir=None):
 
     for item_user_zero in list_users_zero:
         try:
-            writer_users_zero.writerow([(s.encode('utf-8')
-                                         if isinstance(s, unicode)
-                                         else s for s in item_user_zero)])
-        except(Exception), e:
-            print e
+            writer_users_zero.writerow([s if isinstance(s, str)
+                                        else str(s) for s in item_user_zero])
+        except Exception as e:
+            print(e)
+
     file_users_zero.close()
     del list_users_zero
 
-    print "Inserting anonymous revisions info in DB"
+    print("Inserting anonymous revisions info in DB")
     con.send_query(insert_anons % path_file_anons)
-    print "Inserting users info in DB"
+    print("Inserting users info in DB")
     con.send_query(insert_users % path_file_users)
-    print "Inserting missing users info in DB"
-    print
+    print("Inserting missing users info in DB")
+    print()
     con.send_query(insert_users_zero % path_file_users_zero)
     # TODO: Clean tmp files, uncomment the following lines
     # os.remove(path_file_anons)
     # os.remove(path_file_users)
     # Clean up Redis databases to free memory
-    redis_cache.delete(lang + ':revsanon', lang + ':users')
-    redis_cache.delete(lang + ':userzero')
+#    redis_cache.delete(lang + ':revsanon', lang + ':users')
+#    redis_cache.delete(lang + ':userzero')
 
     logging.info("COMPLETED: %s anonymous revisions processed %s." % (
                  total_anons,

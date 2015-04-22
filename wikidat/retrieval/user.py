@@ -6,7 +6,7 @@ Created on Mon Mar 31 18:02:54 2014
 """
 
 from wikidat.utils import dbutils
-from data_item import DataItem
+from .data_item import DataItem
 
 
 class User(DataItem):

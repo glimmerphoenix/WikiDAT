@@ -4,7 +4,7 @@ Created on Sat Mar 29 22:14:21 2014
 
 @author: jfelipe
 """
-from data_item import DataItem
+from .data_item import DataItem
 import dateutil.parser
 import ipaddress
 import datetime
@@ -115,7 +115,7 @@ def process_logitem(log_iter):
              logitem['action'] == 'unblock' or
              logitem['action'] == 'reblock')):
 
-            logitem['block'] = {} # Flag block action for later
+            logitem['block'] = {}  # Flag block action for later
             # Identify target user from log_title field
             title = logitem['logtitle'].split(':')
             if len(title) == 2:
@@ -129,7 +129,7 @@ def process_logitem(log_iter):
                     try:
                         logitem['block']['target_ip'] = int(ipaddress.ip_address(target))
                     except ValueError:
-                        print "Invalid IP address to block: ", target
+                        print("Invalid IP address to block: ", target)
                         logitem['block']['target_ip'] = 0
                 else:
                     # Case of logged user
@@ -154,18 +154,17 @@ def process_logitem(log_iter):
                     logitem['block']['duration'] = (exp-ts).total_seconds()
                 # Try automated detection of block duration, expressed
                 # in "natural language" units
-                except StandardError:
+                except Exception:
                     exp_par = re.split(r'(\D+)', par_dur)
                     try:
-		        duration = exp_par[0]
+                        duration = exp_par[0]
                         units = exp_par[1].lower()
-		    except IndexError:
-			print "No valid pair duration/units found!"
-			print "params:", logitem['params']
+                    except IndexError:
+                        print("No valid pair duration/units found!")
+                        print("params:", logitem['params'])
                         logitem['block']['duration'] = 0.0
-                    
-                    if (units == 'infinite' or
-                            units == 'indefininte'):
+
+                    if (units == 'infinite' or units == 'indefininte'):
                         logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
                     elif duration:
                         try:
@@ -175,10 +174,10 @@ def process_logitem(log_iter):
                                           int(duration) * time_fac[time_unit]}
                             logitem['block']['duration'] = datetime.timedelta(**delta_args).total_seconds()
                         except AttributeError:
-                            print "params:", logitem['params']
+                            print("params:", logitem['params'])
                             logitem['block']['duration'] = 0.0
-		        except OverflowError:
-			    logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
+                        except OverflowError:
+                            logitem['block']['duration'] = (datetime.timedelta.max.total_seconds())
                     else:
                         # TODO: Inspect this case later on
                         # Address case of empty duration
@@ -210,12 +209,12 @@ def process_logitem(log_iter):
 
             logitem['rights'] = {}  # Flag new rights granting for later
             try:
-	        logitem['rights']['username'] = logitem['logtitle'].split(':')[1]
-	    except IndexError:
-		print "No user name info in change of user level."
-		if 'params' in logitem:
-		    print "params:", logitem['params']
-		logitem['rights']['username'] = ""
+                logitem['rights']['username'] = logitem['logtitle'].split(':')[1]
+            except IndexError:
+                print("No user name info in change of user level.")
+                if 'params' in logitem:
+                    print("params:", logitem['params'])
+                logitem['rights']['username'] = ""
 
             if 'params' in logitem and logitem['params']:
                 pars = logitem['params'].split('\n')
@@ -231,8 +230,8 @@ def process_logitem(log_iter):
                                      partition('"5::newgroups"'))
                         priv_old = re.findall(r'\"(.+?)\"', priv_list[0])
                         priv_new = re.findall(r'\"(.+?)\"', priv_list[2])
-                        logitem['rights']['right_old'] = unicode(priv_old)
-                        logitem['rights']['right_new'] = unicode(priv_new)
+                        logitem['rights']['right_old'] = str(priv_old)
+                        logitem['rights']['right_new'] = str(priv_new)
 
                     # Case of primitive free format
                     else:
@@ -332,9 +331,9 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
     total_logs = 0
 
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
-    print "Starting logitem data loading at %s." % (
+    print("Starting logitem data loading at %s." % (
         time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                      time.localtime()))
+                      time.localtime())))
     logging.info("Starting logitem data loading at %s." % (
                  time.strftime("%Y-%m-%d %H:%M:%S %Z",
                                time.localtime())))
@@ -386,37 +385,35 @@ def logitem_file_to_db(log_iter, con=None, log_file=None,
             # In this case, buffer size to trigger data load only tracks
             # num. of logitems already processed. We take the same mark to
             # load data for all associated tables
-            file_logitem = open(path_file_logitem, 'wb')
+            file_logitem = open(path_file_logitem, 'w')
             writer = csv.writer(file_logitem, dialect='excel-tab',
                                 lineterminator='\n')
-            file_block = open(path_file_block, 'wb')
+            file_block = open(path_file_block, 'w')
             writer_block = csv.writer(file_block, dialect='excel-tab',
                                       lineterminator='\n')
-            file_newuser = open(path_file_newuser, 'wb')
+            file_newuser = open(path_file_newuser, 'w')
             writer_new = csv.writer(file_newuser, dialect='excel-tab',
                                     lineterminator='\n')
-            file_rights = open(path_file_rights, 'wb')
+            file_rights = open(path_file_rights, 'w')
             writer_rights = csv.writer(file_rights, dialect='excel-tab',
                                        lineterminator='\n')
         # Write data to tmp file
         try:
-            writer.writerow([s.encode('utf-8') if isinstance(s, unicode)
-                             else s for s in logitem])
+            writer.writerow([s if isinstance(s, str)
+                             else str(s) for s in logitem])
             if block:
-                writer_block.writerow([s.encode('utf-8')
-                                       if isinstance(s, unicode)
-                                       else s for s in block])
+                writer_block.writerow([s if isinstance(s, str)
+                                       else str(s) for s in block])
             if newuser:
-                writer_new.writerow([s.encode('utf-8')
-                                     if isinstance(s, unicode)
-                                     else s for s in newuser])
+                writer_new.writerow([s if isinstance(s, str)
+                                     else str(s) for s in newuser])
             if rights:
-                writer_rights.writerow([s.encode('utf-8')
-                                        if isinstance(s, unicode)
-                                        else s for s in rights])
-        except(Exception), e:
-            print e
-            print logitem
+                writer_rights.writerow([s if isinstance(s, str)
+                                        else str(s) for s in rights])
+        except Exception as e:
+            print("Error writing logitem temp files...")
+            print(e)
+            print(logitem)
 
         insert_rows += 1
 

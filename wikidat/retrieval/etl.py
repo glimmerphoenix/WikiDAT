@@ -10,11 +10,11 @@ import os
 import time
 import multiprocessing as mp
 import subprocess
-from processors import Producer, Processor, Consumer
-from dump import DumpFile, process_xml
-from page import pages_to_file, pages_file_to_db
-from revision import revs_to_file, revs_file_to_db
-from logitem import logitem_to_file, logitem_file_to_db
+from .processors import Producer, Processor, Consumer
+from .dump import DumpFile, process_xml
+from .page import pages_to_file, pages_file_to_db
+from .revision import revs_to_file, revs_file_to_db
+from .logitem import logitem_to_file, logitem_file_to_db
 from wikidat.utils.dbutils import MySQLDB
 
 
@@ -80,9 +80,9 @@ class RevisionHistoryETL(ETL):
         In this case, the logical combination is usually N:N:1 (P, CP, C)
         """
         start = time.time()
-        print self.name, "Starting PageRevisionETL workflow at %s" % (
+        print(self.name, "Starting PageRevisionETL workflow at %s" % (
                          time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                       time.localtime()))
+                                       time.localtime())))
 
         db_ns = MySQLDB(host='localhost', port=3306, user=self.db_user,
                         passwd=self.db_passw, db=self.db_name)
@@ -117,16 +117,16 @@ class RevisionHistoryETL(ETL):
                                   push_revs_port=self.base_port+1,
                                   control_port=self.control_port)
             xml_reader.start()
-            print xml_reader_name, "started"
-            print self.name, "Extracting data from XML revision history file:"
-            print path
+            print(xml_reader_name, "started")
+            print(self.name, "Extracting data from XML revision history file:")
+            print(path)
 
             # List to keep tracking of page and revision workers
             workers = []
             db_workers_revs = []
             # Create and start page processes
             for worker in range(self.page_fan):
-                page_worker_name = '-'.join([page_proc_name, unicode(worker)])
+                page_worker_name = '-'.join([page_proc_name, str(worker)])
                 process_page = Processor(name=page_worker_name,
                                          target=pages_to_file,
                                          producers=1, consumers=1,
@@ -135,11 +135,11 @@ class RevisionHistoryETL(ETL):
                                          control_port=self.control_port)
                 process_page.start()
                 workers.append(process_page)
-                print page_worker_name, "started"
+                print(page_worker_name, "started")
 
             # Create and start revision processes
             for worker in range(self.rev_fan):
-                rev_worker_name = '-'.join([rev_proc_name, unicode(worker)])
+                rev_worker_name = '-'.join([rev_proc_name, str(worker)])
 
                 db_wrev = MySQLDB(host='localhost', port=3306,
                                   user=self.db_user,
@@ -157,7 +157,7 @@ class RevisionHistoryETL(ETL):
                 process_revision.start()
                 workers.append(process_revision)
                 db_workers_revs.append(db_wrev)
-                print rev_worker_name, "started"
+                print(rev_worker_name, "started")
 
             # Create directory for logging files if it does not exist
             log_dir = os.path.join(os.path.split(path)[0], 'logs')
@@ -191,12 +191,12 @@ class RevisionHistoryETL(ETL):
                                      pull_port=self.base_port+3)
 
             page_insert_db.start()
-            print page_insert_name, "started"
+            print(page_insert_name, "started")
             rev_insert_db.start()
-            print rev_insert_name, "started"
+            print(rev_insert_name, "started")
 
-            print self.name, "Waiting for all processes to finish..."
-            print
+            print(self.name, "Waiting for all processes to finish...")
+            print()
             xml_reader.join()
             for w in workers:
                 w.join()
@@ -210,8 +210,8 @@ class RevisionHistoryETL(ETL):
         self.paths_queue.task_done()
 
         end = time.time()
-        print self.name, ": All tasks done in %.4f sec." % ((end-start)/1.)
-        print
+        print(self.name, ": All tasks done in %.4f sec." % ((end-start)/1.))
+        print()
         db_ns.close()
         db_pages.close()
         db_revs.close()
@@ -267,9 +267,9 @@ class LoggingETL(ETL):
         In this case, the usual combination is 1:N:1 (P, CP, C)
         """
         start = time.time()
-        print "Starting LoggingETL workflow at %s" % (
+        print("Starting LoggingETL workflow at %s" % (
               time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                            time.localtime()))
+                            time.localtime())))
 
         # DATA EXTRACTION
         xml_reader_name = '-'.join([self.name, 'xml_reader'])
@@ -286,15 +286,15 @@ class LoggingETL(ETL):
                               push_logs_port=self.base_port,
                               control_port=self.control_port)
         xml_reader.start()
-        print xml_reader_name, "started"
-        print self.name, "Extracting data from XML revision history file:"
-        print unicode(self.path[0])
+        print(xml_reader_name, "started")
+        print(self.name, "Extracting data from XML revision history file:")
+        print(str(self.path[0]))
 
         # List to keep tracking of logitem workers
         workers = []
         # Create and start page processes
         for worker in range(self.log_fan):
-            worker_name = '-'.join([logitem_proc_name, unicode(worker)])
+            worker_name = '-'.join([logitem_proc_name, str(worker)])
             process_logitems = Processor(name=worker_name,
                                          target=logitem_to_file,
                                          producers=1, consumers=1,
@@ -303,7 +303,7 @@ class LoggingETL(ETL):
                                          control_port=self.control_port)
             process_logitems.start()
             workers.append(process_logitems)
-            print worker_name, "started"
+            print(worker_name, "started")
 
         # Create directory for logging files if it does not exist
         log_dir = os.path.join(os.path.split(file_path)[0], 'logs')
@@ -329,11 +329,11 @@ class LoggingETL(ETL):
                                      producers=self.log_fan,
                                      pull_port=self.base_port+2)
 
-        print logitem_insert_name, "started"
+        print(logitem_insert_name, "started")
         logitem_insert_db.start()
 
-        print "Waiting for all processes to finish..."
-        print
+        print("Waiting for all processes to finish...")
+        print()
         xml_reader.join()
         for w in workers:
             w.join()
@@ -341,8 +341,8 @@ class LoggingETL(ETL):
 
         # All operations finished
         end = time.time()
-        print "All tasks done in %.4f sec." % ((end-start)/1.)
-        print
+        print("All tasks done in %.4f sec." % ((end-start)/1.))
+        print()
         db_log.close()
 
 
@@ -376,6 +376,7 @@ class SQLDumpsETL(ETL):
                 command = "gzip -cd {0} | mysql -u {1} -p{2} {3}"
             else:
                 command = "cat {0} | mysql -u {1} -p{2} {3}"
+            print("Processing file ", os.path.split(path)[1])
             p = subprocess.Popen(command.format(path, self.db_user,
                                                 self.db_passw, self.db_name),
                                  shell=True,

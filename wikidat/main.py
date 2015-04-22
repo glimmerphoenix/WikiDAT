@@ -50,11 +50,11 @@ def get_config(filename='config.ini'):
 
     for section in mandatory_secs:
         if not config.has_section(section):
-            print "Sorry, information about %s is mandatory " % section
-            print "but no section named %s was found." % section
-            print "Please add the required options for section %s" % section
-            print "to proceed with execution."
-            print "The program will quit now!"
+            print("Sorry, information about %s is mandatory " % section)
+            print("but no section named %s was found." % section)
+            print("Please add the required options for section %s" % section)
+            print("to proceed with execution.")
+            print("The program will quit now!")
             sys.exit()
 
     # Read all options with type
@@ -292,11 +292,11 @@ if __name__ == '__main__':
     # override previous values assigned to any argument
     args = parser.parse_args(remain_args)
     start = time.time()
-    print
-    print "*** WIKIPEDIA DATA ANALYSIS TOOLKIT ***"
-    print
+    print()
+    print("*** WIKIPEDIA DATA ANALYSIS TOOLKIT ***")
+    print()
     if args.debug:
-        print args
+        print(args)
 
     # TODO: Control for incompatible combinations of command-line arguments
 
@@ -357,8 +357,8 @@ if __name__ == '__main__':
                      dumps_dir=args.dumps_dir,
                      debug=args.debug)
 
-    print "Finish time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
-                                               time.localtime()))
+    print("Finish time is %s" % (time.strftime("%Y-%m-%d %H:%M:%S %Z",
+                                               time.localtime())))
     end = time.time()
-    print "Total execution time: %.2f mins." % ((end-start)/60.)
-    print "All tasks FINISHED, exit."
+    print("Total execution time: %.2f mins." % ((end-start)/60.))
+    print("All tasks FINISHED, exit.")

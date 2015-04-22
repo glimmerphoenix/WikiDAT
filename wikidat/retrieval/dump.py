@@ -7,9 +7,9 @@ Created on Sat Mar 29 22:13:19 2014
 from lxml import etree
 import subprocess
 import os
-from page import Page
-from revision import Revision
-from logitem import LogItem
+from .page import Page
+from .revision import Revision
+from .logitem import LogItem
 from wikidat.utils import maps
 
 
@@ -29,7 +29,6 @@ class DumpFile(object):
             path : `str`
                 the path to the dump file to read
         """
-#        print "Path: "+unicode(self.path)
         match = maps.EXT_RE.search(self.path)
         ext = match.groups()[0]
         p = subprocess.Popen(
