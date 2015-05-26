@@ -1,0 +1,168 @@
+---
+layout: default
+title: home
+author: Felipe Ortega
+---
+
+<div class="container">
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="bs-component">
+		<div class="jumbotron" id="jumbobg">
+			<h1 id="jumbotitle">Wikipedia Data Analysis Toolkit</h1>
+			<p>
+				An extensible toolkit for Wikipedia data analytics,
+				based on <a href="https://www.python.org/downloads/">Python</a>
+				and <a href="http://www.r-project.org/">R</a>.
+			</p>
+		</div>
+	</div><!-- /.bs-component jumbotron -->
+
+	<!-- Three-column layout for text below the jumbotron -->
+	<div class="container">
+		<div class="col-lg-4 col-centered">
+			<span class="fa-stack fa-5x"> <i class="fa fa-circle fa-stack-2x text-info"></i> <i class="fa fa-download fa-stack-1x fa-inverse"></i> </span>
+			<h2>Installation</h2>
+			<p>
+				Install WikiDAT to process and analyze the collection of public Wikipedia data
+				dump files (history of all edits, administrative actions, etc.).
+			</p>
+			<p>
+				<a class="btn btn-info" href="https://github.com/glimmerphoenix/WikiDAT/wiki/Installation-guide" role="button">Instructions &raquo;</a>
+			</p>
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4 col-centered">
+			<span class="fa-stack fa-5x"> <i class="fa fa-circle fa-stack-2x text-success"></i> <i class="fa fa-book fa-stack-1x fa-inverse"></i> </span>
+			<h2>Documentation</h2>
+			<p>
+				Learn details about the <a href="pages/data.html">format and content of Wikipedia dump files</a>,
+				and how to use and extend WikiDAT for your own projects.
+			</p>
+			<p>
+				<a class="btn btn-success" href="https://github.com/glimmerphoenix/WikiDAT/wiki" role="button">Read &raquo;</a>
+			</p>
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4 col-centered">
+			<span class="fa-stack fa-5x"> <i class="fa fa-circle fa-stack-2x text-warning"></i> <i class="fa fa-area-chart fa-stack-1x fa-inverse"></i> </span>
+			<h2>Examples</h2>
+			<p>
+				These case studies introduce and explain methods, processes and hints
+				to anlayze data from Wikipedia, including reproductions of previous
+				studies.
+			</p>
+			<p>
+				<a class="btn btn-warning" href="#" role="button">Browse &raquo;</a>
+			</p>
+		</div><!-- /.col-lg-4 -->
+	</div><!-- /.row -->
+
+	<!-- Project Info
+	================================================== -->
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<div class="page-header">
+				<h1 id="container">Project Info</h1>
+			</div>
+			<p>
+				<ul class="list-unstyled">
+					<li>
+						<a href="https://github.com/glimmerphoenix/WikiDAT" class="btn btn-default btn-sm"><i class="fa fa-github fa-lg"></i> Contribute on GitHub</a>
+					</li>
+				</ul>
+				<ul class="fa-ul">
+					<li>
+						<i class="fa-li fa fa-tag"></i><strong>Project name</strong>: WikiDAT.
+					</li>
+					<li>
+						<i class="fa-li fa fa-pencil-square-o"></i><strong>Main author</strong>: Felipe Ortega
+					</li>
+					<li>
+						<i class="fa-li fa fa-flag-o"></i><strong>License</strong>: <a href="http://www.gnu.org/licenses/gpl.txt">GPLv3</a>
+					</li>
+				</ul>
+			</p>
+
+			<p class="text-justify">
+				WikiDAT is an extensible toolkit for Wikipedia data analytics, based on <a href="http://www.python.org/">Python</a> and <a href="http://www.r-project.org/">R</a>.
+				Currently supported database backends include <a href="http://www.mysql.com/">MySQL</a> and <a href="https://mariadb.com/products/mariadb">MariaDB</a>. Additional database engines
+				may be also supported in the future.
+			</p>
+
+			<p class="text-justify">
+				WikiDAT includes several <a href="pages/examples.html">case studies</a>
+				describing exemplary projects using Wikipedia data sources.
+				Each case study implements a different type of analysis and results
+				and returned in form of data files, figures, PDF reports or interactive web pages.
+				Case studies also include Python and R code embedded in literate programming documents
+				(such as IPython or RMarkdown). These documents show how to replicate every case study,
+				including data preparation, cleaning and analysis steps.
+			</p>
+
+			<p class="text-justify">
+				The long-term goal is to incorporate more case examples progressively, in order
+				to cover the most illustrative and salient quantitative analyses with
+				Wikipedia data. In the future, this may also involve the use
+				of distributed computing tools (Hadoop, Spark) for the analysis of really
+				huge data sets in high-resolution studies.
+			</p>
+			<!--
+			<h2>Required dependencies</h2>
+			<p class="text-justify">
+			The following software dependencies are required to run all examples currently
+			included in WikiDAT:
+			</p>
+
+			<ul>
+			<li>The 7zip toolkit.</li>
+			<li>Redis server and tools.</li>
+			<li>
+			<a href="http://www.mysql.com/">MySQL</a> server and client (&gt;= v5.5).
+			</li>
+			<li>
+			<a href="http://www.python.org/">Python</a> programming language (&gt;= v3.4) and the following modules:
+			<ul>
+			<li><a href="http://sourceforge.net/projects/mysql-python/">mysqldb (Python MySQLdb)</a> (&gt;= v1.2.3)</li>
+			<li>python-dateutil (Dateutils)</li>
+			<li>bs4 (Beautiful Soup)</li>
+			<li>ujson (Ultra JSON)</li>
+			<li>redis (Python to Redis connector)</li>
+			<li>python-zmq (Python to 0MQ connector)</li>
+			</ul>
+			</li>
+			<li>
+			R project for statistical computing (&gt;= v2.15.0).
+			</li>
+			</ul>
+			<p>
+			Additional <a href="http://cran.r-project.org/">R packages</a> that may be required to run some case examples (the list will be updated as new features are included):
+			</p>
+
+			<ul>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/RMySQL/index.html">RMySQL</a>: Connect to MySQL dbs from R.
+			</li>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/Hmisc/index.html">Hmisc</a>: Frank Harrell's miscelaneous functions (essential).
+			</li>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/car/index.html">car</a>: Companion package for "R Companion to Applied Regression", 2nd ed.
+			</li>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/DAAG/index.html">DAAG</a>: Companion package for "Data Analysis and Graphics using R."
+			</li>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/ineq/index.html">ineq</a>: Calcualte inequality metrics and graphics.
+			</li>
+			<li>
+			<a href="http://ggplot2.org/">ggplot2</a>: A wonderful package to create appealing graphics in R.
+			</li>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/eha/index.html">eha</a>: Package for event history and survival analysis.
+			</li>
+			<li>
+			<a href="http://cran.r-project.org/web/packages/zoo/index.html">zoo</a>: Excellent library to handle timeseries data.
+			</li>
+			</ul>
+			-->
+		</div>
+	</div>
+</div><!-- /container three-column layout -->
