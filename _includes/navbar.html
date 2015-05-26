@@ -1,0 +1,68 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{{ site.baseurl }}">WikiDAT</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li{% if page.slug == "index" %} class="active"{% endif %}>
+					<a href="{{ site.baseurl }}">Home</a>
+				</li>
+				<li{% if page.slug == "about" %} class="active"{% endif %}>
+					<a href="{{ site.baseurl }}pages/about">About</a>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href="{{ site.baseurl }}pages/data">Introduction</a>
+						</li>
+						<li class="dropdown-header">
+							XML Dumps
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/full-history">Full history</a>
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/meta-history">Meta history</a>
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/logging">Logged events</a>
+						</li>
+						<li class="divider"></li>
+						<li class="dropdown-header">
+							SQL Dumps
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/user-groups">User groups</a>
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/category">Categories</a>
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/inlinks">Internal links</a>
+						</li>
+						<li>
+							<a href="{{ site.baseurl }}pages/outlinks">External links</a>
+						</li>
+					</ul>
+				</li>
+				<li{% if page.slug == "examples" %} class="active"{% endif %}>
+					<a href="{{ site.baseurl }}pages/examples">Examples</a>
+				</li{% if page.slug == "publications" %} class="active"{% endif %}>
+				<li>
+					<a href="{{ site.baseurl }}pages/publications">Publications</a>
+				</li>
+				<li{% if page.slug == "resources" %} class="active"{% endif %}>
+					<a href="{{ site.baseurl }}pages/resources">Resources</a>
+				</li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</nav>
