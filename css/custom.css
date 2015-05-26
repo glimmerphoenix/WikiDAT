@@ -1,0 +1,44 @@
+/*!
+ * Some customizations to fine-tune look and feel
+ */
+
+/* Main elements styles */
+
+body {
+	padding-top: 50px;
+}
+
+p {
+	line-height: 1.6em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+/* Columns with center alignment */
+/* centered columns styles */
+.col-centered {
+    /* reset the text-align */
+    text-align: center;
+}
+
+/* Jumbotron component styles */
+
+#jumbobg {
+	background: url('../img/squairy_light.png');
+}
+
+/*#jumbobg {
+ background-image: url('../img/binding_light_@2X.png');
+ background-repeat: 0 0;
+ background-position: center 35%;
+ background-size: 100% 960px;
+ }*/
+
+#jumbotitle {
+	color: #404040;
+	text-shadow: 3px 3px 2px #707070;
+}
+
+ol.linenums {
+    margin-left: -5px !important;
+}
