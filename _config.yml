@@ -1,0 +1,26 @@
+# General info
+name:             WikiDAT - Wikipedia Data Analysis Toolkit
+baseurl:          /WikiDAT/
+highlighter:      pygments
+
+exclude:          [wikidat, doc, images, javascripts, stylesheets]
+
+# Server
+host:             0.0.0.0
+port:             4001
+url:              http://glimmerphoenix.github.io
+encoding:         UTF-8
+
+# Custom variables
+version:          0.2
+repo:             https://github.com/glimmerphoenix/WikiDAT
+license_url:      https://creativecommons.org/licenses/by/4.0/
+license:          CC-BY-SA 4.0
+theme:            Bootswatch's Spacelab
+theme_url:        http://bootswatch.com/spacelab/
+
+website:          http://felipeortega.net
+blog:             http://felipeortega.net/category/blog
+twitter:          https://twitter.com/jfelipe
+twitter_username: jfelipe
+github_username:  glimmerphoenix
