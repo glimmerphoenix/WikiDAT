@@ -89,36 +89,36 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 		<div class="col-lg-7 col-lg-offset-1">
 			<h3>File content</h3>
 			<h4>Heading elements</h4>
-			<ul>
+			<ul class="fa-ul">
 				<li>
-					<code>&lt;mediawiki&gt;</code>: This is the root element. It provides
+					<i class="fa-li fa fa-tag"></i> <code>&lt;mediawiki&gt;</code>: This is the root element. It provides
 					information about the XML namespace and the URL of the schema describing
 					some of the XML elements (v0.6, still work in progress).
 				</li>
 
 				<li>
-					<code>&lt;siteinfo&gt;</code>: Includes general information about
+					<i class="fa-li fa fa-tag"></i> <code>&lt;siteinfo&gt;</code>: Includes general information about
 					this Wikipedia site, with the following subelements:
 				</li>
-				<ul>
+				<ul class="fa-ul">
 					<li>
-						<code>&lt;sitename&gt;</code>: Name of this Wikipedia site (in
+						<i class="fa-li fa fa-tag"></i> <code>&lt;sitename&gt;</code>: Name of this Wikipedia site (in
 						the corresponding language).
 					</li>
 					<li>
-						<code>&lt;base&gt;</code>: Base URL for all pages in this
+						<i class="fa-li fa fa-tag"></i> <code>&lt;base&gt;</code>: Base URL for all pages in this
 						Wikipedia site.
 					</li>
 					<li>
-						<code>&lt;generator&gt;</code>: Version of the MediaWiki engine
+						<i class="fa-li fa fa-tag"></i> <code>&lt;generator&gt;</code>: Version of the MediaWiki engine
 						that produced this dump.
 					</li>
 					<li>
-						<code>&lt;case&gt;</code>: Convention for text case (usually,
+						<i class="fa-li fa fa-tag"></i> <code>&lt;case&gt;</code>: Convention for text case (usually,
 						first letter of each word).
 					</li>
 					<li>
-						<code>&lt;namespaces&gt;</code>: A list of the name (localized
+						<i class="fa-li fa fa-tag"></i> <code>&lt;namespaces&gt;</code>: A list of the name (localized
 						for that language) and the internal numerical code for each namespace
 						in this MediaWiki site. Codes are important, since they identify the
 						namespace for each <code>&lt;page&gt;</code> element.
@@ -143,7 +143,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="mediawiki">
-					</br>
+					<br>
 {% highlight xml %}
   <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -152,7 +152,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 {% endhighlight %}
 				</div>
 				<div class="tab-pane fade" id="siteinfo">
-					</br>
+					<br>
 {% highlight xml %}
   <siteinfo>
     <sitename>Wikipedia</sitename>
@@ -297,7 +297,6 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 						information about a wiki page and its complete collection of edits (as a sublist
 						of <code>&lt;revision&gt;</code> elements).
 					</li>
-					</br>
 					<ul class="fa-ul">
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;title&gt;</code>: String,
@@ -331,7 +330,6 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 						</li>
 					</ul>
 				</ul>
-				</br>
 
 				<ul class="fa-ul">
 					<li>
@@ -339,7 +337,6 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 						performed on the corresponding page, indicated by its parent <code>&lt;page&gt;</code>
 						element.
 					</li>
-					</br>
 					<ul class="fa-ul">
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Positive integer,
@@ -363,7 +360,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 							<i class="fa-li fa fa-tag"></i><code>&lt;contributor&gt;</code>: Element
 							showing information about the user who performed this revision. There are two
 							options:
-												
+						</li>				
 						<ul class="fa-ul">
 							<li>
 								<i class="fa-li fa fa-user"></i><em> Anonymous editor</em>: Only 
@@ -376,8 +373,6 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 								as subelements. See the example code below.
 							</li>
 						</ul>
-						</li>
-						<br/>
 						
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;minor /&gt;</code>: If present, this
@@ -410,7 +405,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 					</ul>
 					</li>
 				</ul>
-				</br>
+
 				<!-- TAB FRAME -->
 				<ul class="nav nav-tabs">
 					<li class="active">
@@ -431,7 +426,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade active in" id="page">
-						</br>
+						<br>
 {% highlight xml %}
   <page>
     <title>States of India by Punjabi speakers</title>
@@ -448,7 +443,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 {% endhighlight %}
 					</div>
 					<div class="tab-pane fade" id="revision">
-						</br>
+						<br>
 {% highlight xml %}
 <revision>
       <id>276395626</id>
@@ -476,7 +471,7 @@ Examples: eswiki-20150429-pages-meta-history1.xml.7z
 {% endhighlight %}
 					</div>
 					<div class="tab-pane fade" id="timestamp">
-						</br>
+						<br>
 {% highlight xml %}
 Format: YYYY-MM-DDTHH:MM:SSZ
 The 'T' character marks end of the date info, 'Z' marks the end of the time info.
@@ -484,7 +479,7 @@ Example: <timestamp>2005-08-30T11:37:22Z</timestamp>
 {% endhighlight %}
 					</div>
 					<div class="tab-pane fade" id="cont-anon">
-						</br>
+						<br>
 {% highlight xml %}
 <contributor>
   <ip>24.251.243.233</ip>
@@ -492,7 +487,7 @@ Example: <timestamp>2005-08-30T11:37:22Z</timestamp>
 {% endhighlight %}
 					</div>
 					<div class="tab-pane fade" id="cont-reg">
-						</br>
+						<br>
 {% highlight xml %}
 <contributor>
   <username>MyLogin Name</username>
