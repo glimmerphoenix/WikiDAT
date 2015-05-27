@@ -5,15 +5,581 @@ author: Felipe Ortega
 ---
 <div class="container">
 	<div class="row">
-		<div class="col-lg-10 col-lg-offset-1">
+		<div class="col-lg-8 col-lg-offset-1">
 			<div class="page-header">
-				<h1 id="container">Meta history</h1>
+				<h1 id="container">Metadata History</h1>
 			</div>
 
 			<p class="text-justify">
-				Description of XML dump files with metadata from pages revision history.
+				History dump files with <strong>metadata</strong> describing
+				all edits performed by any user on any page in a Wikipedia language site. 
+				We can find the complete history of edits for pages in all namespaces, not only
+				encyclopedic articles (Talk, User, User talk, etc.).
+			</p>
+			<p class="text-justify">
+				These dump files <strong>do not contain the text for every revision</strong>.
+				Instead, only descriptive metadata fields are provided. Hence, the size
+				of these files can be quite smaller compared to the
+				<a href="{{ site.baseurl }}pages/full-history">full history</a> 
+				(<em>pages-meta-history</em> files).
 			</p>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<h4>Standard filename format</h4>
+			<p>
+				These files are named using the following format:
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-7 col-lg-offset-1">
+{% highlight ruby %}
+File: %lang%-%date%-stub-meta-history[num].xml.%compress%
+
+Example: eswiki-20150429-stub-meta-history1.xml.gz
+{% endhighlight %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-1">
+			<p class="text-justify">
+				Mandatory elements are shown in % %, while optional elements are shown
+				in [ ]. The meaning of each field is:
+			</p>
+			<ul>
+				<li>
+					<strong>lang</strong>: Identifier of the Wikipedia language. The current convention is
+					to prepend the corresponding <a href="http://en.wikipedia.org/wiki/ISO_639">ISO 639</a>
+					code for the language to the term
+					<em>wiki</em>, identifying Wikipedia dumps. Dumps from other Wikimedia projects
+					use their own identifier ("wikiquote", "wikibooks", etc.).
+				</li>
+				<li>
+					<strong>date</strong>: The date on which the dump file was produced. For large dump
+					files, this date does not correspond to the date of the last revision included in the
+					file (compression and integrity checks may take some time).
+				</li>
+				<li>
+					<strong>stub-meta-history</strong>: Identifier of the type of dump file, in this
+					case historical metadata of all edits on all pages in a Wikipedia language (text
+					content not included).
+				</li>
+				<li>
+					<strong>num</strong>: In large Wikipedia languages with too many pages and edits,
+					producing a single dump file would be impractical. In these cases, the dump is split
+					in different files, usually by page id in ascending order. Thus, we will need to
+					process all these individual files to recover all metadata about pages
+					and revisions in that language.
+				</li>
+				<li>
+					<strong>xml</strong>: Type of data file. Currently, edit dumps are only provided
+					in XML format.
+				</li>
+				<li>
+					<strong>compress</strong>: Algorithm used to compress the file.
+					It is customary to use <em>gzip</em> , as these files are smaller
+					than the <a href="{{ site.baseurl }}pages/full-history">full history</a> version
+					and the compression algorithm is fast.
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- HEADING ELEMENTS -->
+	<div class="row">
+		<div class="col-lg-7 col-lg-offset-1">
+			<h3>File content</h3>
+			<h4>Heading elements</h4>
+			
+			<p class="text-justify">
+				The heading elements are identical as for the
+				<a href="{{ site.baseurl }}pages/full-history">full history</a> version.
+			</p>
+			
+			<ul>
+				<li>
+					<code>&lt;mediawiki&gt;</code>: This is the root element. It provides
+					information about the XML namespace and the URL of the schema describing
+					some of the XML elements (v0.6, still work in progress).
+				</li>
+
+				<li>
+					<code>&lt;siteinfo&gt;</code>: Includes general information about
+					this Wikipedia site, with the following subelements:
+				</li>
+				<ul>
+					<li>
+						<code>&lt;sitename&gt;</code>: Name of this Wikipedia site (in
+						the corresponding language).
+					</li>
+					<li>
+						<code>&lt;base&gt;</code>: Base URL for all pages in this
+						Wikipedia site.
+					</li>
+					<li>
+						<code>&lt;generator&gt;</code>: Version of the MediaWiki engine
+						that produced this dump.
+					</li>
+					<li>
+						<code>&lt;case&gt;</code>: Convention for text case (usually,
+						first letter of each word).
+					</li>
+					<li>
+						<code>&lt;namespaces&gt;</code>: A list of the name (localized
+						for that language) and the internal numerical code for each namespace
+						in this MediaWiki site. Codes are important, since they identify the
+						namespace for each <code>&lt;page&gt;</code> element.
+					</li>
+				</ul>
+			</ul>
+
+			<p>
+				Below you can find XML code snippets with examples for each of these elements.
+			</p>
+			<!-- TABS FRAME -->
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a aria-expanded="true" href="#mediawiki" data-toggle="tab">&lt;mediawiki&gt;</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#siteinfo" data-toggle="tab">&lt;siteinfo&gt;</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#namespaces" data-toggle="tab">List of namespaces</a>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade active in" id="mediawiki">
+					</br>
+{% highlight xml %}
+  <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/
+  http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="en">
+{% endhighlight %}
+				</div>
+				<div class="tab-pane fade" id="siteinfo">
+					</br>
+{% highlight xml %}
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>enwiki</dbname>
+    <base>http://en.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.25wmf10</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      [... rest of namespace definitions ...]
+    </namespaces>
+  </siteinfo> 
+{% endhighlight %}
+				</div>
+				<div class="tab-pane fade" id="namespaces">
+					<div class="row">
+						<div class="col-md-4">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Namespace</th>
+										<th>Code</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Media</td>
+										<td>-2</td>
+									</tr>
+									<tr>
+										<td>Special</td>
+										<td>-1</td>
+									</tr>
+									<tr>
+										<td>Main (none)</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>Talk</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>User</td>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>User talk</td>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>Wikipedia</td>
+										<td>4</td>
+									</tr>
+									<tr>
+										<td>Wikipedia talk</td>
+										<td>5</td>
+									</tr>
+									<tr>
+										<td>File</td>
+										<td>6</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-4">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Namespace</th>
+										<th>Code</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>File talk</td>
+										<td>7</td>
+									</tr>
+									<tr>
+										<td>Mediawiki</td>
+										<td>8</td>
+									</tr>
+									<tr>
+										<td>Mediawiki talk</td>
+										<td>9</td>
+									</tr>
+									<tr>
+										<td>Template</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>Template talk</td>
+										<td>11</td>
+									</tr>
+									<tr>
+										<td>Help</td>
+										<td>12</td>
+									</tr>
+									<tr>
+										<td>Help talk</td>
+										<td>13</td>
+									</tr>
+									<tr>
+										<td>Category</td>
+										<td>14</td>
+									</tr>
+									<tr>
+										<td>Category talk</td>
+										<td>15</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<p>
+					<strong>Warning</strong>: The above list of namespaces is non-exhaustive. It only
+					shows some of the most common namespaces and their standard codes in Wikipedia. Please
+					refer to the database table <em>namespaces</em> created by WikiDAT for the actual list
+					of namespaces and codes in the Wikipedia dump that you are analyzing.
+				</p>
+			</div>
+		</div>
+	
+	<!-- MAIN ELEMENTS -->
+		<div class="row">
+			<div class="col-lg-7 col-lg-offset-1">
+				<h4>Main elements</h4>
+				<p class="text-justify">
+					The main body of this XML dump files is a list of <code>&lt;page&gt;</code> elements.
+					Each <strong>&lt;page&gt;</strong> block shows descriptive information about a wiki page,
+					along with the complete collection of all <code>&lt;revision&gt;</code> elements
+					(edit actions) performed on that page over time.
+				</p>
+				<p class="text-justify">
+					The main difference with respect to the 
+					<a href="{{ site.baseurl }}pages/full-history">full history</a> version
+					files is that <code>&lt;text&gt;</code> elements inside <code>&lt;revision&gt;</code>
+					do not contain any text. However, additional attributes provide metadata about
+					the text (in particular, its length in bytes).
+				</p>
+				<ul class="fa-ul">
+					<li>
+						<i class="fa-li fa fa-file-o"></i><code>&lt;page&gt</code>: Element containing
+						information about a wiki page and its complete collection of edits (as a sublist
+						of <code>&lt;revision&gt;</code> elements).
+					</li>
+					</br>
+					<ul class="fa-ul">
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;title&gt;</code>: String,
+							the title of this page.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;ns&gt;</code>: Integer,
+							the code of the namespace in which this page is stored.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Positive integer,
+							unique numerical identifier for this page.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tags"></i><code>&lt;revision&gt;</code>: Element
+							encapsulating information about a single edit on this page. For each page element,
+							there will be a list of subelements of this type describing the complete record of
+							all edits performed on this page.
+						</li>
+					</ul>
+				</ul>
+				</br>
+
+				<ul class="fa-ul">
+					<li>
+						<i class="fa-li fa fa-pencil-square-o"></i><code>&lt;revision&gt;</code>: An edit
+						performed on the corresponding page, indicated by its parent <code>&lt;page&gt;</code>
+						element.
+					</li>
+					</br>
+					<ul class="fa-ul">
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Positive integer,
+							unique numerical identifier for this revision. This identifier is globally
+							unique (not within this page, but for the entire database).
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;parentid&gt;</code>: Positive integer,
+							identifier of the previous revision (the parent of this version), following
+							the same coding as for <code>&lt;id&gt;</code>. If absent, this is the first
+							revision for this page and the parent revision is assumed to be
+							<code>NULL</code>.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;timestamp&gt;</code>: String,
+							timestamp (date and time) indicating when this revision was performed. There
+							is no information about time zones. See example below for details about
+							the specific format.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;contributor&gt;</code>: Element
+							showing information about the user who performed this revision. There are two
+							options:
+												
+						<ul class="fa-ul">
+							<li>
+								<i class="fa-li fa fa-user"></i><em> Anonymous editor</em>: Only 
+								the IP address is provided, as a subelement.
+							</li>	
+							<li>
+								<i class="fa-li fa fa-user"></i><em> Registered editor</em>: 
+								Both the unique numerical identifier of the user 
+								(for the whole database) and the login name of the user are provided 
+								as subelements. See the example code below.
+							</li>
+						</ul>
+						</li>
+						<br/>
+						
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;minor /&gt;</code>: If present, this
+							single tag indicates that this is <strong>not a minor</strong> revision. If
+							absent, this is a minor revision.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;comment&gt;</code>: String, contains
+							the comment introduced by the user to summarize the changes introduced in this
+							revision.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;model&gt;</code>: String, identifies
+							the model to interpret the content inside <code>&lt;text&gt;</code>.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;format&gt;</code>: String, indicates
+							the format to parse the wiki text inside <code>&lt;text&gt;</code>.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;text&gt;</code>: Empty element, with
+							the following attributes:
+							
+							<ul class="fa-ul">
+								<li>
+									<i class="fa-li fa fa-plus-square"></i><code>id</code>: Same id
+									of the revision.
+								</li>
+								<li>
+									<i class="fa-li fa fa-plus-square"></i><code>bytes</code>: Length
+									of the text of the page on this revision, in bytes.
+								</li>
+							</ul>
+						</br>
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;sha1&gt;</code>: String, provides
+							the <a href="http://en.wikipedia.org/wiki/SHA-1">SHA-1</a> hash computed 
+							on the text content of this revision. 
+						</li>
+					</ul>
+					</li>
+				</ul>
+				</br>
+				<!-- TAB FRAME -->
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a aria-expanded="true" href="#page" data-toggle="tab">&lt;page&gt;</a>
+					</li>
+					<li class="">
+						<a aria-expanded="false" href="#revision" data-toggle="tab">&lt;revision&gt;</a>
+					</li>
+					<li class="">
+						<a aria-expanded="false" href="#timestamp" data-toggle="tab">&lt;timestamp&gt;</a>
+					</li>
+					<li class="">
+						<a aria-expanded="false" href="#cont-anon" data-toggle="tab">&lt;contributor&gt; (IP)</a>
+					</li>
+					<li class="">
+						<a aria-expanded="false" href="#cont-reg" data-toggle="tab">&lt;contributor&gt; (user)</a>
+					</li>
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="page">
+						</br>
+{% highlight xml %}
+  <page>
+    <title>Inglis leid</title>
+    <ns>0</ns>
+    <id>2</id>
+    <revision>
+    [... metadata and content of first revision ...]
+    </revision>
+    <revision>
+    [... metadata and content of second revision ...]
+    </revision>
+    [... rest of revisions for this page ...]
+  </page>
+{% endhighlight %}
+					</div>
+					<div class="tab-pane fade" id="revision">
+						</br>
+{% highlight xml %}
+  <revision>
+  <id>7</id>
+  <timestamp>2005-06-22T10:17:05Z</timestamp>
+  <contributor>
+    <ip>24.251.198.251</ip>
+  </contributor>
+  <model>wikitext</model>
+  <format>text/x-wiki</format>
+  <text id="7" bytes="334" />
+  <sha1>6m5yxiaalrm6te7e3x3fiw1aq7wk9ir</sha1>
+</revision>
+{% endhighlight %}
+					</div>
+					<div class="tab-pane fade" id="timestamp">
+						</br>
+{% highlight xml %}
+Format: YYYY-MM-DDTHH:MM:SSZ
+The 'T' character marks end of the date info, 'Z' marks the end of the time info.
+Example: <timestamp>2005-06-22T10:17:05Z</timestamp>
+{% endhighlight %}
+					</div>
+					<div class="tab-pane fade" id="cont-anon">
+						</br>
+{% highlight xml %}
+<contributor>
+  <ip>24.251.243.233</ip>
+</contributor>
+{% endhighlight %}
+					</div>
+					<div class="tab-pane fade" id="cont-reg">
+						</br>
+{% highlight xml %}
+<contributor>
+  <username>MyLogin Name</username>
+  <id>3344555</id>
+</contributor>
+{% endhighlight %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-7 col-lg-offset-1">
+				<h3>Example content</h3>
+				<p>
+					The following code snippet shows a complete excerpt of the content in one of these files:
+				</p>
+{% highlight xml %}
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="sco">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>scowiki</dbname>
+    <base>http://sco.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.25wmf24</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal talk</namespace>
+      <namespace key="828" case="first-letter">Module</namespace>
+      <namespace key="829" case="first-letter">Module talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Inglis leid</title>
+    <ns>0</ns>
+    <id>2</id>
+    <revision>
+      <id>7</id>
+      <timestamp>2005-06-22T10:17:05Z</timestamp>
+      <contributor>
+        <ip>24.251.198.251</ip>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text id="7" bytes="334" />
+      <sha1>6m5yxiaalrm6te7e3x3fiw1aq7wk9ir</sha1>
+    </revision>
+    <revision>
+      <id>8</id>
+      <parentid>7</parentid>
+      <timestamp>2005-06-22T12:13:55Z</timestamp>
+      <contributor>
+        <username>Saforrest</username>
+        <id>5</id>
+      </contributor>
+      <minor/>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text id="8" bytes="351" />
+      <sha1>p09d2l9c1gc8tat2e3x2e72o9fxori2</sha1>
+    </revision>
+  </page>
+</mediawiki>
+{% endhighlight %}
+			</div>
+		</div>
+	</div>	
 </div>
 <!-- container -->
