@@ -5,14 +5,757 @@ author: Felipe Ortega
 ---
 <div class="container">
 	<div class="row">
-		<div class="col-lg-10 col-lg-offset-1">
+		<div class="col-lg-8 col-lg-offset-1">
 			<div class="page-header">
 				<h1 id="container">Logged events</h1>
 			</div>
 
 			<p class="text-justify">
-				Description of XML dump files with logged events (Mediawiki <code>logging</code> table).
+				These XML dump files contain metadata about events logged by the MediaWiki engine that
+				powers each Wikipedia site. The list of events tracked by the system is long (see
+				below) and corresponds to the information stored in Mediawiki's <code>logging</code>
+				database table.
+			</p>
+			<p class="text-justify">
+				Some examples of logged events include administrative actions performed by admins and other
+				users with special attributions, like blocking/unblocking other editors, page protection/unprotection,
+				page deletion, page moving, granting/revoking privileges to other users, etc.
+			</p>
+			<p class="text-justify">
+				As a result, these metadata are quite valuable to study the behaviour of Wikipedia power
+				users, as well as to track special actions on Wikipedia pages.
+			</p>
+		</div>	
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<h4>Standard filename format</h4>
+			<p>
+				These files are named using the following format:
 			</p>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-lg-7 col-lg-offset-1">
+{% highlight ruby %}
+File: {lang}-{date}-pages-logging.xml.{compress}
+
+Example: eswiki-20150429-pages-logging.xml.gz
+{% endhighlight %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-1">
+			<p class="text-justify">
+				Mandatory elements are shown in {}, while optional elements are shown
+				in []. The meaning of each field is:
+			</p>
+			<ul>
+				<li>
+					<strong>lang</strong>: Identifier of the Wikipedia language. The current convention is
+					to prepend the corresponding <a href="http://en.wikipedia.org/wiki/ISO_639">ISO 639</a>
+					code for the language to the term
+					<em>wiki</em>, identifying Wikipedia dumps. Dumps from other Wikimedia projects
+					use their own identifier ("wikiquote", "wikibooks", etc.).
+				</li>
+				<li>
+					<strong>date</strong>: The date on which the dump file was produced. For large dump
+					files, this date does not correspond to the date of the last revision included in the
+					file (compression and integrity checks may take some time).
+				</li>
+				<li>
+					<strong>pages-logging</strong>: Identifier of the type of dump file, in this
+					case metadata describing all relevant events logged by MediaWiki on each Wikipedia
+					site.
+				</li>
+				<li>
+					<strong>num</strong>: In large Wikipedia languages with too many pages and edits,
+					producing a single dump file would be impractical. In these cases, the dump is split
+					in different files, usually by page id in ascending order. Thus, we will need to
+					process all these individual files to recover all metadata about pages
+					and revisions in that language.
+				</li>
+				<li>
+					<strong>xml</strong>: Type of data file. Currently, edit dumps are only provided
+					in XML format.
+				</li>
+				<li>
+					<strong>compress</strong>: Algorithm used to compress the file.
+					It is customary to use <em>gzip</em>.
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- HEADING ELEMENTS -->
+	<div class="row">
+		<div class="col-lg-7 col-lg-offset-1">
+			<h3>File content</h3>
+			<h4>Heading elements</h4>
+			
+			<p class="text-justify">
+				The heading elements are identical as for the
+				<a href="{{ site.baseurl }}pages/full-history">full history</a> version.
+			</p>
+			
+			<ul>
+				<li>
+					<code>&lt;mediawiki&gt;</code>: This is the root element. It provides
+					information about the XML namespace and the URL of the schema describing
+					some of the XML elements (v0.6, still work in progress).
+				</li>
+
+				<li>
+					<code>&lt;siteinfo&gt;</code>: Includes general information about
+					this Wikipedia site, with the following subelements:
+				</li>
+				<ul>
+					<li>
+						<code>&lt;sitename&gt;</code>: Name of this Wikipedia site (in
+						the corresponding language).
+					</li>
+					<li>
+						<code>&lt;base&gt;</code>: Base URL for all pages in this
+						Wikipedia site.
+					</li>
+					<li>
+						<code>&lt;generator&gt;</code>: Version of the MediaWiki engine
+						that produced this dump.
+					</li>
+					<li>
+						<code>&lt;case&gt;</code>: Convention for text case (usually,
+						first letter of each word).
+					</li>
+					<li>
+						<code>&lt;namespaces&gt;</code>: A list of the name (localized
+						for that language) and the internal numerical code for each namespace
+						in this MediaWiki site. Codes are important, since they identify the
+						namespace for each <code>&lt;page&gt;</code> element.
+					</li>
+				</ul>
+			</ul>
+
+			<p>
+				Below you can find XML code snippets with examples for each of these elements.
+			</p>
+			<!-- TABS FRAME -->
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a aria-expanded="true" href="#mediawiki" data-toggle="tab">&lt;mediawiki&gt;</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#siteinfo" data-toggle="tab">&lt;siteinfo&gt;</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#namespaces" data-toggle="tab">List of namespaces</a>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade active in" id="mediawiki">
+					</br>
+{% highlight xml %}
+  <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/
+  http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="en">
+{% endhighlight %}
+				</div>
+				<div class="tab-pane fade" id="siteinfo">
+					</br>
+{% highlight xml %}
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>enwiki</dbname>
+    <base>http://en.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.25wmf10</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      [... rest of namespace definitions ...]
+    </namespaces>
+  </siteinfo> 
+{% endhighlight %}
+				</div>
+				<div class="tab-pane fade" id="namespaces">
+					<div class="row">
+						<div class="col-md-4">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Namespace</th>
+										<th>Code</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Media</td>
+										<td>-2</td>
+									</tr>
+									<tr>
+										<td>Special</td>
+										<td>-1</td>
+									</tr>
+									<tr>
+										<td>Main (none)</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>Talk</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>User</td>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>User talk</td>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>Wikipedia</td>
+										<td>4</td>
+									</tr>
+									<tr>
+										<td>Wikipedia talk</td>
+										<td>5</td>
+									</tr>
+									<tr>
+										<td>File</td>
+										<td>6</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-4">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Namespace</th>
+										<th>Code</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>File talk</td>
+										<td>7</td>
+									</tr>
+									<tr>
+										<td>Mediawiki</td>
+										<td>8</td>
+									</tr>
+									<tr>
+										<td>Mediawiki talk</td>
+										<td>9</td>
+									</tr>
+									<tr>
+										<td>Template</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>Template talk</td>
+										<td>11</td>
+									</tr>
+									<tr>
+										<td>Help</td>
+										<td>12</td>
+									</tr>
+									<tr>
+										<td>Help talk</td>
+										<td>13</td>
+									</tr>
+									<tr>
+										<td>Category</td>
+										<td>14</td>
+									</tr>
+									<tr>
+										<td>Category talk</td>
+										<td>15</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<p>
+					<strong>Warning</strong>: The above list of namespaces is non-exhaustive. It only
+					shows some of the most common namespaces and their standard codes in Wikipedia. Please
+					refer to the database table <em>namespaces</em> created by WikiDAT for the actual list
+					of namespaces and codes in the Wikipedia dump that you are analyzing.
+				</p>
+			</div>
+		</div>
+	
+	<!-- MAIN ELEMENTS -->
+		<div class="row">
+			<div class="col-lg-7 col-lg-offset-1">
+				<h4>Main elements</h4>
+				<p class="text-justify">
+					The main body of this XML dump files is a list of <code>&lt;logitem&gt;</code> elements.
+					Each <code>&lt;logitem&gt;</code> block provides metadata describing the special action or
+					event recorded by MediaWiki. Types of events and modalities for each event are identified
+					by the <code>&lt;type&gt;</code> and <code>&lt;action&gt;</code> subelements.
+				</p>
+				
+				<p class="text-justify">
+					The following tabs show a list of possible events and their modalities.
+				</p>
+				
+				<!-- TABS FRAME -->
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a aria-expanded="true" href="#delete" data-toggle="tab">Delete</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#block" data-toggle="tab">Block</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#protect" data-toggle="tab">Protect</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#rights" data-toggle="tab">Rights</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#newusers" data-toggle="tab">Newusers</a>
+				</li>
+				<li class="">
+					<a aria-expanded="false" href="#review" data-toggle="tab">Review</a>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade active in" id="delete">
+					<div class="row">
+						<div class="col-md-8">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>&lt;type&gt;</th>
+											<th>&lt;action&gt;</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="4">delete</td>
+											<td>delete</td>
+											<td>Deletion of an entire page (and all revisions).</td>
+										</tr>
+										<tr>
+											<td>restore</td>
+											<td>Restore a page (and all revisions) or individual revisions.</td>
+										</tr>
+										<tr>
+											<td>revision</td>
+											<td>Deletion of individual revisions.</td>
+										</tr>
+										<tr>
+											<td>event</td>
+											<td>Deletion of particular events (for instance, personal attack on
+											another editor).</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							</div>
+				</div>
+				<div class="tab-pane fade" id="block">
+						<div class="row">
+							<div class="col-md-8">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>&lt;type&gt;</th>
+											<th>&lt;action&gt;</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="3">block</td>
+											<td>block</td>
+											<td>Block an editor for some period or permanently.</td>
+										</tr>
+										<tr>
+											<td>unblock</td>
+											<td>Unblock an editor who was previously blocked.</td>
+										</tr>
+										<tr>
+											<td>reblock</td>
+											<td>Block again an editor for some period.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				<div class="tab-pane fade" id="protect">
+						<div class="row">
+							<div class="col-md-8">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>&lt;type&gt;</th>
+											<th>&lt;action&gt;</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="4">protect</td>
+											<td>protect</td>
+											<td>Put a page under protection or semiprotection.</td>
+										</tr>
+										<tr>
+											<td>unprotect</td>
+											<td>Release the protection over a page.</td>
+										</tr>
+										<tr>
+											<td>modify</td>
+											<td>Change protection parameters (like type or duration).</td>
+										</tr>
+										<tr>
+											<td>move_prot</td>
+											<td>Move protection target so that the protected status
+												follows moved pages (keeping protection for the new
+												title.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="rights">
+						<div class="row">
+							<div class="col-md-8">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>&lt;type&gt;</th>
+											<th>&lt;action&gt;</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="2">rights</td>
+											<td>rights</td>
+											<td>Grant/revoke rights on a user.</td>
+										</tr>
+										<tr>
+											<td>autopromote</td>
+											<td>Self-assing or self-revoke rights to my own user
+												(for instance, admin self-demotions).</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="newusers">
+						<div class="row">
+							<div class="col-md-8">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>&lt;type&gt;</th>
+											<th>&lt;action&gt;</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="5">newusers</td>
+											<td>newusers</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>create</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>create2</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>autocreate</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>byemail</td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="review">
+						<div class="row">
+							<div class="col-md-8">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>&lt;type&gt;</th>
+											<th>&lt;action&gt;</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="5">review</td>
+											<td>approve</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>approve-a</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>unapprove</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>approve-i</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>approve-ia</td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<p class="text-justify">
+					<strong>Warning</strong>: The collection of events above is
+					non-exhaustive. More types will be added as soon as WikiDAT includes 
+					new features to interpret them.
+				</p>
+				
+				<p class="text-justify">
+					The format and content of XML elements in this file is:
+				</p>
+
+				<ul class="fa-ul">
+					<li>
+						<i class="fa-li fa fa-file-code-o"></i><code>
+							&lt;logitem&gt</code>: Element containing
+						information about special event logged by MediaWiki).
+					</li>
+					</br>
+					<ul class="fa-ul">
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Positive integer,
+							unique numerical identifier for each logged event.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;timestamp&gt;</code>: String,
+							timestamp (date and time) indicating when the event was logged. There
+							is no information about time zones. See code example below for details about
+							the specific format.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;contributor&gt;</code>: Metadata
+							about the user who made the event logged by the
+							system. See code example below for details about the specific format.
+						</li>
+						<br/>
+						<ul class="fa-ul">
+							<li>
+								<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Unique
+								numerical identifier of the user who made the event logged by the
+								system.
+							</li>
+							<li>
+								<i class="fa-li fa fa-tag"></i><code>&lt;contributor&gt;</code>: Login 
+								of the user who made the event recorded by the system.
+							</li>
+						</ul>
+						<br/>
+						
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;comment&gt;</code>: Comment
+							from the user, describing the type and motivations to make the 
+							special action.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;type&gt;</code>: Type of
+							special action logged by the system.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;action&gt;</code>: Modality
+							of the special action logged by the system. For some actions, different
+							subtypes can be performed by users (see examples in the tabs above).
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;logtitle&gt;</code>: String,
+							the full title of the page on which the action was performed (for example,
+							the title of the article that has been protected, or the user page of the
+							editor who has been blocked).
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;params&gt;</code>: Any additional
+							metadata describing the action logged by the system (for instance, extra
+							information about reviews performed with the <em>flagged-revisions</em>
+							plugin).
+						</li>
+					</ul>
+				</ul>
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a aria-expanded="true" href="#page" data-toggle="tab">&lt;logitem&gt;</a>
+					</li>
+					<li class="">
+						<a aria-expanded="false" href="#timestamp" data-toggle="tab">&lt;timestamp&gt;</a>
+					</li>
+					<li class="">
+						<a aria-expanded="false" href="#cont-reg" data-toggle="tab">&lt;contributor&gt;</a>
+					</li>
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="page">
+						</br>
+{% highlight xml %}
+<logitem>
+    <id>9</id>
+    <timestamp>2005-07-02T05:06:42Z</timestamp>
+    <contributor>
+      <username>Derek Ross</username>
+      <id>9</id>
+    </contributor>
+    <comment>Needed for copyricht purposes</comment>
+    <type>protect</type>
+    <action>protect</action>
+    <logtitle>Wikipedia:Text o the GNU Free Documentation License</logtitle>
+    <params xml:space="preserve" />
+  </logitem>
+{% endhighlight %}
+					</div>
+					<div class="tab-pane fade" id="timestamp">
+						</br>
+{% highlight xml %}
+Format: YYYY-MM-DDTHH:MM:SSZ
+The 'T' character marks end of the date info, 'Z' marks the end of the time info.
+Example: <timestamp>2005-06-22T10:17:05Z</timestamp>
+{% endhighlight %}
+					</div>
+					<div class="tab-pane fade" id="cont-reg">
+						</br>
+{% highlight xml %}
+<contributor>
+  <username>MyLogin Name</username>
+  <id>3344555</id>
+</contributor>
+{% endhighlight %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+			<div class="col-lg-7 col-lg-offset-1">
+				<h3>Example content</h3>
+				<p>
+					The following code snippet shows a complete excerpt of the content in one of these files:
+				</p>
+{% highlight xml %}
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ 
+http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="sco">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>scowiki</dbname>
+    <base>http://sco.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.25wmf24</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal talk</namespace>
+      <namespace key="828" case="first-letter">Module</namespace>
+      <namespace key="829" case="first-letter">Module talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <logitem>
+    <id>1</id>
+    <timestamp>2005-06-22T12:18:33Z</timestamp>
+    <contributor>
+      <username>Jdforrester</username>
+      <id>6</id>
+    </contributor>
+    <comment>From [[en:Image:Flag of Scotland Pantone300.png]].</comment>
+    <type>upload</type>
+    <action>upload</action>
+    <logtitle>File:Flag of Scotland Pantone300.png</logtitle>
+    <params xml:space="preserve" />
+  </logitem>
+  <logitem>
+    <id>2</id>
+    <timestamp>2005-06-22T20:57:46Z</timestamp>
+    <contributor>
+      <username>Jock</username>
+      <id>11</id>
+    </contributor>
+    <type>upload</type>
+    <action>upload</action>
+    <logtitle>File:ScotsPairlament.png</logtitle>
+    <params xml:space="preserve" />
+  </logitem>
+  <logitem>
+    <id>3</id>
+    <timestamp>2005-06-22T21:11:19Z</timestamp>
+    <contributor>
+      <username>Jock</username>
+      <id>11</id>
+    </contributor>
+    <type>upload</type>
+    <action>upload</action>
+    <logtitle>File:ScotsPairlament.png</logtitle>
+    <params xml:space="preserve" />
+  </logitem>
+  <logitem>
+    <id>4</id>
+    <timestamp>2005-06-26T13:01:52Z</timestamp>
+    <contributor>
+      <username>Colin Angus Mackay</username>
+      <id>20</id>
+    </contributor>
+    <comment>labelled map of scotland</comment>
+    <type>upload</type>
+    <action>upload</action>
+    <logtitle>File:ScotlandLabelled.png</logtitle>
+    <params xml:space="preserve" />
+  </logitem>
+{% endhighlight %}
+			</div>
+		</div>
+	</div>
+	
 </div> <!-- container -->
