@@ -99,36 +99,36 @@ Example: eswiki-20150429-pages-logging.xml.gz
 				<a href="{{ site.baseurl }}pages/full-history">full history</a> version.
 			</p>
 			
-			<ul>
+			<ul class="fa-ul">
 				<li>
-					<code>&lt;mediawiki&gt;</code>: This is the root element. It provides
+					<i class="fa-li fa fa-tag"></i> <code>&lt;mediawiki&gt;</code>: This is the root element. It provides
 					information about the XML namespace and the URL of the schema describing
 					some of the XML elements (v0.6, still work in progress).
 				</li>
 
 				<li>
-					<code>&lt;siteinfo&gt;</code>: Includes general information about
+					<i class="fa-li fa fa-tag"></i> <code>&lt;siteinfo&gt;</code>: Includes general information about
 					this Wikipedia site, with the following subelements:
 				</li>
-				<ul>
+				<ul class="fa-ul">
 					<li>
-						<code>&lt;sitename&gt;</code>: Name of this Wikipedia site (in
+						<i class="fa-li fa fa-tag"></i> <code>&lt;sitename&gt;</code>: Name of this Wikipedia site (in
 						the corresponding language).
 					</li>
 					<li>
-						<code>&lt;base&gt;</code>: Base URL for all pages in this
+						<i class="fa-li fa fa-tag"></i> <code>&lt;base&gt;</code>: Base URL for all pages in this
 						Wikipedia site.
 					</li>
 					<li>
-						<code>&lt;generator&gt;</code>: Version of the MediaWiki engine
+						<i class="fa-li fa fa-tag"></i> <code>&lt;generator&gt;</code>: Version of the MediaWiki engine
 						that produced this dump.
 					</li>
 					<li>
-						<code>&lt;case&gt;</code>: Convention for text case (usually,
+						<i class="fa-li fa fa-tag"></i> <code>&lt;case&gt;</code>: Convention for text case (usually,
 						first letter of each word).
 					</li>
 					<li>
-						<code>&lt;namespaces&gt;</code>: A list of the name (localized
+						<i class="fa-li fa fa-tag"></i> <code>&lt;namespaces&gt;</code>: A list of the name (localized
 						for that language) and the internal numerical code for each namespace
 						in this MediaWiki site. Codes are important, since they identify the
 						namespace for each <code>&lt;page&gt;</code> element.
@@ -550,7 +550,6 @@ Example: eswiki-20150429-pages-logging.xml.gz
 							&lt;logitem&gt</code>: Element containing
 						information about special event logged by MediaWiki).
 					</li>
-					</br>
 					<ul class="fa-ul">
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Positive integer,
@@ -567,7 +566,7 @@ Example: eswiki-20150429-pages-logging.xml.gz
 							about the user who made the event logged by the
 							system. See code example below for details about the specific format.
 						</li>
-						<br/>
+
 						<ul class="fa-ul">
 							<li>
 								<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Unique
@@ -579,7 +578,6 @@ Example: eswiki-20150429-pages-logging.xml.gz
 								of the user who made the event recorded by the system.
 							</li>
 						</ul>
-						<br/>
 						
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;comment&gt;</code>: Comment
