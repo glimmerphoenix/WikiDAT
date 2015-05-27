@@ -9,9 +9,14 @@ body {
 }
 
 p {
-	line-height: 1.6em;
+	line-height: 1.424em;
 	margin-top: 1em;
 	margin-bottom: 1em;
+}
+
+li {
+    margin-bottom: 1em;
+    margin-top: 0;
 }
 
 /* Columns with center alignment */
