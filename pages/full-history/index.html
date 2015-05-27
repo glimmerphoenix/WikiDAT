@@ -139,29 +139,30 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 				<div class="tab-pane fade active in" id="mediawiki">
 					</br>
 {% highlight xml %}
-  <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ 
-  http://www.mediawiki.org/xml/export-0.6.xsd" 
-  version="0.6" xml:lang="fur">
+  <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/
+  http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="en">
 {% endhighlight %}
 				</div>
 				<div class="tab-pane fade" id="siteinfo">
 					</br>
 {% highlight xml %}
-    <siteinfo>
-      <sitename>Vichipedie</sitename>
-      <base>http://fur.wikipedia.org/wiki/Pagjine_princip%C3%A2l</base>
-      <generator>MediaWiki 1.19wmf1</generator>
-      <case>first-letter</case>
-      <namespaces>
-        <namespace key="-2" case="first-letter">Media</namespace>
-        <namespace key="-1" case="first-letter">Speciâl</namespace>
-        <namespace key="0" case="first-letter" />
-        <namespace key="1" case="first-letter">Discussion</namespace>
-        [... rest of namespace definitions ...]
-      </namespaces>
-    </siteinfo> 
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>enwiki</dbname>
+    <base>http://en.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.25wmf10</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      [... rest of namespace definitions ...]
+    </namespaces>
+  </siteinfo> 
 {% endhighlight %}
 				</div>
 				<div class="tab-pane fade" id="namespaces">
@@ -304,7 +305,7 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 							<i class="fa-li fa fa-tag"></i><code>&lt;id&gt;</code>: Positive integer,
 							unique numerical identifier for this page.
 						</li>
-						<li>
+<!--						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;sha1&gt;</code>: Hexadecimal (40 digits),
 							the <a href="http://en.wikipedia.org/wiki/SHA-1">SHA-1</a> hash of the content of
 							this page.
@@ -315,6 +316,7 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 							on this page (at the time of producing the dump file). See the tab below for an
 							example.
 						</li>
+-->
 						<li>
 							<i class="fa-li fa fa-tags"></i><code>&lt;revision&gt;</code>: Element
 							encapsulating information about a single edit on this page. For each page element,
@@ -339,6 +341,13 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 							unique (not within this page, but for the entire database).
 						</li>
 						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;parentid&gt;</code>: Positive integer,
+							identifier of the previous revision (the parent of this version), following
+							the same coding as for <code>&lt;id&gt;</code>. If absent, this is the first
+							revision for this page and the parent revision is assumed to be
+							<code>NULL</code>.
+						</li>
+						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;timestamp&gt;</code>: String,
 							timestamp (date and time) indicating when this revision was performed. There
 							is no information about time zones. See example below for details about
@@ -347,12 +356,40 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;contributor&gt;</code>: Element
 							showing information about the user who performed this revision. There are two
-							options. The first case is that the user was not registered (anonymous editor).
-							In this case, only the IP address is provided, as a subelement.
-
-							The second case is that the user was registered. In that case, both the unique
-							numerical identifier of the user (for the whole database) and the login name
-							of the user are provided as subelements. See below for example code.
+							options:
+												
+						<ul class="fa-ul">
+							<li>
+								<i class="fa-li fa fa-user"></i><em> Anonymous editor</em>: Only 
+								the IP address is provided, as a subelement.
+							</li>	
+							<li>
+								<i class="fa-li fa fa-user"></i><em> Registered editor</em>: 
+								Both the unique numerical identifier of the user 
+								(for the whole database) and the login name of the user are provided 
+								as subelements. See the example code below.
+							</li>
+						</ul>
+						</li>
+						<br/>
+						
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;minor /&gt;</code>: If present, this
+							single tag indicates that this is <strong>not a minor</strong> revision. If
+							absent, this is a minor revision.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;comment&gt;</code>: String, contains
+							the comment introduced by the user to summarize the changes introduced in this
+							revision.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;model&gt;</code>: String, identifies
+							the model to interpret the content inside <code>&lt;text&gt;</code>.
+						</li>
+						<li>
+							<i class="fa-li fa fa-tag"></i><code>&lt;format&gt;</code>: String, indicates
+							the format to parse the wiki text inside <code>&lt;text&gt;</code>.
 						</li>
 						<li>
 							<i class="fa-li fa fa-tag"></i><code>&lt;text&gt;</code>: String containing
@@ -360,9 +397,9 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 							and HTML content.
 						</li>
 						<li>
-							<i class="fa-li fa fa-tag"></i><code>&lt;comment&gt;</code>: String, contains
-							the comment introduced by the user to summarize the changes introduced in this
-							revision.
+							<i class="fa-li fa fa-tag"></i><code>&lt;sha1&gt;</code>: String, provides
+							the <a href="http://en.wikipedia.org/wiki/SHA-1">SHA-1</a> hash computed 
+							on the text content of this revision. 
 						</li>
 					</ul>
 					</li>
@@ -391,16 +428,14 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 						</br>
 {% highlight xml %}
   <page>
-    <title>Pagjine principâl</title>
-    <ns> 0 </ns>
-    <id>1</id>
-    <sha1 />
-    <restrictions>edit=autoconfirmed:move=autoconfirmed</restrictions>
+    <title>States of India by Punjabi speakers</title>
+    <ns>0</ns>
+    <id>18949912</id>
     <revision>
-    [... descriptors of the first revision ...]
+    [... metadata and content of first revision ...]
     </revision>
     <revision>
-    [... descriptors of the second revision ...]
+    [... metadata and content of second revision ...]
     </revision>
     [... rest of revisions for this page ...]
   </page>
@@ -409,32 +444,29 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 					<div class="tab-pane fade" id="revision">
 						</br>
 {% highlight xml %}
-  <revision>
-    <id>2456</id>
-    <timestamp>2005-08-30T11:37:22Z</timestamp>
-    <contributor>
-      <username>CruccoBot</username>
-      <id>29</id>
-    </contributor>
-    <minor />
-    <comment>robot  Adding: an, ar, bg, ca, co, da, de, en, es, fr, 
-    id, it, ja, lb, mt, nl, nn, no, pl, pt, ro, ru, sc, 
-    scn, simple, sv, tl, uk, vi, zh</comment>
-    <text xml:space="preserve">{| width=&quot;100%&quot; cellspacing=&quot;
-    0&quot; cellpadding=&quot;5&quot; style=&quot;
-    border:1px solid #996600;&quot; 
-    | bgcolor=&quot;#fff3f3&quot; style=&quot;font: 95% 
-    Verdana;&quot;| 
-    <big></big>Tu puedis lei articui in tantis lenghis 
-    diferentis:&lt;/big&gt;
-    {{Vichipedielenghis}}&lt;div style=&quot;float: right;
-    &quot;&gt;&lt;small&gt;
-    [{{SERVER}}{{localurl:Template:Vichipedielenghis|action=edit}}   
-    Modificâ]&lt;/small&gt;&lt;/div&gt;&lt;/td&gt;
-    |}
-    {{Exzellent|14. Juni 2008|111222333}}
-    </text>
-  </revision>
+<revision>
+      <id>276395626</id>
+      <parentid>275465083</parentid>
+      <timestamp>2009-03-10T23:39:42Z</timestamp>
+      <contributor>
+        <username>Anshuk</username>
+        <id>1432885</id>
+      </contributor>
+      <minor />
+      <comment>Disambiguate [[Punjabi]] to [[Punjabi language]] using [[:en:Wikipedia:Tools/Navigation_popups|popups]]</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve">This is a '''list of States and Union Territories of India by speakers of [[Punjabi language|Punjabi]]''' as of [http://www.censusindia.gov.in/Census_Data_2001/Census_Data_Online/Language/Statement3.htm census 2001]. Gross population figures are  [http://www.censusindia.gov.in/Census_Data_2001/Census_data_finder/C_Series/Population_by_religious_communities.htm available online.]
+	{| class=&quot;wikitable&quot;
+	|-
+	! Rank || State || Punjabi speakers
+	
+	[... rest of text in this revision ...]
+	</text>
+	<sha1>c1zvmeq0c3ndwm2en1x1hs000efg5ou</sha1>
+</revision>
+
+
 {% endhighlight %}
 					</div>
 					<div class="tab-pane fade" id="timestamp">
@@ -473,55 +505,57 @@ Example: <timestamp>2005-08-30T11:37:22Z</timestamp>
 					The following code snippet shows a complete excerpt of the content in one of these files:
 				</p>
 {% highlight xml %}
-<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ 
-  http://www.mediawiki.org/xml/export-0.6.xsd" 
-  version="0.6" xml:lang="fur">
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ 
+http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="sco">
   <siteinfo>
-    <sitename>Vichipedie</sitename>
-    <base>http://fur.wikipedia.org/wiki/Pagjine_princip%C3%A2l</base>
-    <generator>MediaWiki 1.19wmf1</generator>
+    <sitename>Wikipedia</sitename>
+    <dbname>scowiki</dbname>
+    <base>http://sco.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.25wmf12</generator>
     <case>first-letter</case>
     <namespaces>
       <namespace key="-2" case="first-letter">Media</namespace>
-      <namespace key="-1" case="first-letter">Speciâl</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
       <namespace key="0" case="first-letter" />
-      <namespace key="1" case="first-letter">Discussion</namespace>
-      <namespace key="2" case="first-letter">Utent</namespace>
-      <namespace key="3" case="first-letter">Discussion utent</namespace>
-      <namespace key="4" case="first-letter">Vichipedie</namespace>
-      <namespace key="5" case="first-letter">Discussion Vichipedie</namespace>
-      <namespace key="6" case="first-letter">Figure</namespace>
-      <namespace key="7" case="first-letter">Discussion figure</namespace>
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
       <namespace key="8" case="first-letter">MediaWiki</namespace>
-      <namespace key="9" case="first-letter">Discussion MediaWiki</namespace>
-      <namespace key="10" case="first-letter">Model</namespace>
-      <namespace key="11" case="first-letter">Discussion model</namespace>
-      <namespace key="12" case="first-letter">Jutori</namespace>
-      <namespace key="13" case="first-letter">Discussion jutori</namespace>
-      <namespace key="14" case="first-letter">Categorie</namespace>
-      <namespace key="15" case="first-letter">Discussion categorie</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal talk</namespace>
+      <namespace key="828" case="first-letter">Module</namespace>
+      <namespace key="829" case="first-letter">Module talk</namespace>
     </namespaces>
   </siteinfo>
   <page>
-    <title>Pagjine principâl</title>
-    <ns> 0 </ns>
-    <id>1</id>
-    <sha1 />
-    <restrictions>edit=autoconfirmed:move=autoconfirmed</restrictions>
+    <title>Inglis leid</title>
+    <ns>0</ns>
+    <id>2</id>
     <revision>
-      <id>1</id>
-      <timestamp>2005-01-25T06:55:26Z</timestamp>
+      <id>7</id>
+      <timestamp>2005-06-22T10:17:05Z</timestamp>
       <contributor>
-        <ip>24.251.243.233</ip>
+        <ip>24.251.198.251</ip>
       </contributor>
-      <text xml:space="preserve">
-      '''Benvignût al Vichipedìe furlan!''' 
-      [[Friûl]], [[Lenghe Furlane]], [[Culture Furlane]],
-      [[Statût regjonâl]], [[Europe]] [[Paîs Basc]]
-      </text>
-      <comment>An example comment</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve">Tha '''Inglis''' (English) leid is a west [[Gairmanic leid]] at cam frae Ingland an thats forebear wis [[auld Inglis]]. Tha name &quot;English&quot; cams frae tha pairt o [[Gairmanie]] caw'd &quot;Angeln&quot;. Inglis is tha waruld's seicont maist widelie spaken first leid, an his aboot 340 million hameborn speikers waruldwide.
+
+[[en:English language]]</text>
+      <sha1>6m5yxiaalrm6te7e3x3fiw1aq7wk9ir</sha1>
     </revision>
   </page>
 </mediawiki>
