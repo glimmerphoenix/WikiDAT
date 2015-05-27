@@ -28,23 +28,24 @@ author: Felipe Ortega
 	</div>
 	<div class="row">
 		<div class="col-lg-7 col-lg-offset-1">
-{% highlight console %}
-File: %lang%-%date%-pages-meta-history[num].xml.%compress%
+{% highlight ruby %}
+File: {lang}-{date}-{pages-meta-history}[num].xml[-pSTART-pEND].{compress}
 
-Example: eswiki-20150429-pages-meta-history1.xml.7z
+Examples: eswiki-20150429-pages-meta-history1.xml.7z
+          enwiki-20150304-pages-meta-history1.xml-p000000010p000002944.7z
 {% endhighlight %}
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-8 col-lg-offset-1">
 			<p>
-				Mandatory elements are shown in % %, while optional elements are shown
-				in [ ]. The meaning of each field is:
+				Mandatory elements are shown in {}, while optional elements are shown
+				in []. The meaning of each field is:
 			</p>
 			<ul>
 				<li>
 					<strong>lang</strong>: Identifier of the Wikipedia language. The current convention is
-					to prepend the corresponding <a href="http://en.wikipedia.org/wiki/ISO_639">ISO 639</a>
+					to prepend the corresponding <a href="http://en.wikipedia.org/wiki/ISO_639">ISO-639</a>
 					code for the language to the term
 					<em>wiki</em>, identifying Wikipedia dumps. Dumps from other Wikimedia projects
 					use their own identifier ("wikiquote", "wikibooks", etc.).
@@ -69,6 +70,11 @@ Example: eswiki-20150429-pages-meta-history1.xml.7z
 				<li>
 					<strong>xml</strong>: Type of data file. Currently, edit dumps are only provided
 					in XML format.
+				</li>
+				<li>
+					<strong>pSTART-pEND</strong>: Optional field, displays the identifer of the first and the
+					last page whose information is included in this file. The identifier is the same
+					as for the field <code>&lt;id&gt;</code> in element <code>&lt;page&gt;</code> (see below).
 				</li>
 				<li>
 					<strong>compress</strong>: Extension identifying the algorithm used to compress the
