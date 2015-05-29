@@ -5,16 +5,291 @@ author: Felipe Ortega
 ---
 <div class="container">
 	<div class="row">
-		<div class="col-lg-10 col-lg-offset-1">
+		<div class="col-lg-8 col-lg-offset-1">
 			<div class="page-header">
 				<h1 id="container">User groups</h1>
 			</div>
 
 			<p class="text-justify">
-				Description of SQL dump files with information about group flags
-				granted to each user.
+				This dump file contains information about the current <a href="http://en.wikipedia.org/wiki/Wikipedia:User_access_levels">special roles</a>
+				granted to registered editors in that Wikipedia. Therefore, this is a static snapshot of the
+				assignment of roles among users at the time of creation of the dump.
+			</p>
+			
+			<p class="text-justify">
+				If you are rather interested in tracking the assignment and revocation of special roles
+				over time, you can find data about those actions in the
+				<a href="{{ site.baseurl}}/pages/logging">dump of logged events</a> (compressed XML file), which can also be processed
+				with WikiDAT. Role change events correspond to <code>&lt;type&gt;</code> = <em>rights</em>.
+			</p>
+			
+			<p class="text-justify">
+				<strong>Important</strong>: Currently, SQL dump files are <strong>only compatible with
+			    MySQL or MariaDB</strong> databases. Support for additional database engines like PostgreSQL
+			    is currently contemplated in WikiDAT's development roadmap but not implemented, yet.
 			</p>
 		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<h4>Standard filename format</h4>
+			<p>
+				These files are named using the following format:
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-7 col-lg-offset-1">
+{% highlight ruby %}
+File: {lang}-{date}-{user_groups}.sql.{compress}
+
+Examples: eswiki-20150429-user_groups.sql.gz
+{% endhighlight %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-1">
+			<p>
+				All fields are mandatory and shown in {}. The meaning of each field is:
+			</p>
+			<ul>
+				<li>
+					<strong>lang</strong>: Identifier of the Wikipedia language. The current convention is
+					to prepend the corresponding <a href="http://en.wikipedia.org/wiki/ISO_639">ISO-639</a>
+					code for the language to the term
+					<em>wiki</em>, identifying Wikipedia dumps. Dumps from other Wikimedia projects
+					use their own identifier ("wikiquote", "wikibooks", etc.).
+				</li>
+				<li>
+					<strong>date</strong>: The date on which the dump file was produced. For large dump
+					files, this date does not correspond to the date of the last revision included in the
+					file (compression and integrity checks may take some time).
+				</li>
+				<li>
+					<strong>user_groups</strong>: Identifier of the type of dump file, in this
+					case SQL dump with information about special roles assigned to each 
+					registered editor at the time of producing the dump.
+				</li>
+				<li>
+					<strong>sql</strong>: Type of data file, in this case a dump in SQL format <strong>suitable only
+					for MySQL or MariaDB</strong> databases.
+				</li>
+				<li>
+					<strong>compress</strong>: Extension identifying the algorithm used to compress the
+					file. To date, SQL dumps are only compressed with <em>gzip</em>.
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- SQL content -->
+	<div class="row">
+		<div class="col-lg-7 col-lg-offset-1">
+			<h3>File content</h3>
+			<h4>SQL table fields</h4>
+			<p class="text-justify">
+			This file contains an SQL dump of the <a href="http://www.mediawiki.org/wiki/Manual:User_groups_table">MediaWiki 
+			<code>user_groups</code> table</a>. The following excerpt provides the definition of this
+			table as embedded in the SQL dump.
+			</p>
+			
+			{% highlight sql %}
+mysql> describe user_groups;
++----------+-----------------+------+-----+---------+-------+
+| Field    | Type            | Null | Key | Default | Extra |
++----------+-----------------+------+-----+---------+-------+
+| ug_user  | int(5) unsigned | NO   | PRI | 0       |       |
+| ug_group | varbinary(255)  | NO   | PRI |         |       |
++----------+-----------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+			{% endhighlight %} 
+			
+			<p class="text-justify">
+				Hence, each row in the table shows information about a single role currently
+				granted to a certain user, at the time of dump production. As a result, users
+				who hold various roles simultaneously have several
+				entries, displaying one role per row (see below for an example).
+			</p>
+			
+			<p class="text-justify">
+				Besides, it is important to remark that the <strong>default table definition</strong>, embedded in the
+				dump file, <strong>sets the table engine to</strong> <code>InnoDB</code>. However, since WikiDAT is focused on fast analytics
+				instead of favoring concurrent insertions/deletions, users can modify 
+				<a href="https://github.com/glimmerphoenix/WikiDAT/wiki/Configuration-files">on WikiDAT's
+				config file</a> the database engine to use <code>MyISAM</code> (MySQL) or 
+				<code>Aria</code> (MariaDB) instead.
+			</p>
+		</div>
+	</div>
+	
+	<!-- USER ROLES -->
+		<div class="row">
+			<div class="col-lg-7 col-lg-offset-1">
+				<h4>User roles</h4>
+				
+				<p class="text-justify">
+					The following table summarizes the most relevant user roles and their meaning. This
+					is not a complete list. You can check the <a href="http://en.wikipedia.org/wiki/Wikipedia:User_access_levels">user access levels</a> page
+					on each Wikipedia language to find out the complete list of roles in that community.
+				</p>
+			
+          <table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Tag</th>
+						<th>Role Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>abusefilter</code></td>
+						<td>Edit Filter managers</td>
+						<td>These users can create, modify and delete
+							<a href="http://en.wikipedia.org/wiki/Special:AbuseFilter">
+							edit filters</a>.
+						</td>
+					</tr>
+					<tr>
+						<td><code>accountcreator</code></td>
+						<td>Account creator</td>
+						<td>This right provides accesss to a special tool for opening a large
+							number of accounts to people who request them.
+							<a href="http://en.wikipedia.org/wiki/Wikipedia:Account_creator">
+							Additional info</a>.
+							</td>
+					</tr>
+					<tr>
+						<td><code>autoreviewer</code></td>
+						<td>Autopatrolled</td>
+						<td>Previously known as <em>autoreviewer</em> (hece the tag). Users
+							with this role have their pages automatically marked as patrolled on
+							the <a href="http://en.wikipedia.org/wiki/Special:NewPages">New Pages list</a>.
+						</td>
+					</tr>
+					
+					<tr>
+						<td><code>bot</code></td>
+						<td>Bots (software programs)</td>
+						<td>These user accounts are approved beforehand to make specific type of edits
+							on an automated or semi-automated fashion, driven by software programs. 
+							<strong>Important</strong>:
+							despite a large proportion of bots are correctly identified as such in this
+							table in most Wikipedia languages, there can be cases of bots in some languages
+							that have not been flagged as such in this table. Therefore, it is not
+							guaranteed that this table provides a complete list of all bots in a certain
+							Wikipedia language.</td>
+					</tr>
+					<tr>
+						<td><code>bureaucrat</code></td>
+						<td>Bureaucrats</td>
+						<td>Exceptionally trusted users who are granted this role by the community
+							<a href="http://en.wikipedia.org/wiki/Wikipedia:RfB">upon request</a>.
+							Among other actions, they can add users to the <code>administrator</code>
+							and <code>bot</code> group, and they can also add users to their own
+							group (but not remove them).</td>
+					</tr>
+					<tr>
+						<td><code>checkuser</code></td>
+						<td>Checkusers</td>
+						<td>These users can access <a href="http://en.wikipedia.org/wiki/Special:CheckUser">Special:Checkuser</a>
+							to review all IP addresses used by a user account editing the English Wikipedia, a list of all edits
+							made by a certain IP or all users who have edited under the same IP address.
+						</td>
+					</tr>
+					<tr>
+						<td><code>confirmed</code></td>
+						<td>Autoconfirmed and Confirmed users</td>
+						<td>The Autoconfrimed role is automatically granted by MediaWiki to users who
+							meet certain restrictions for minium trust (for instance, in English Wikipedia
+							is grated to accouts that are more than 4 days old and have made at least
+							10 edits). This level is required to move pages, edit semi-protected pages
+							and upload files.
+							The <em>confirmed</em> role is manually granted by administrators <a href="http://en.wikipedia.org/wiki/Wikipedia:Requests_for_permissions/Confirmed">upon
+							requests from users</a>. Provides the same rights as <em>Autoconfirmed</em>.</td>
+					</tr>
+					<tr>
+						<td><code>ipblock-exempt</code></td>
+						<td>Ipblock-exempt</td>
+						<td>These users are excluded from <a href="http://en.wikipedia.org/wiki/Wikipedia:AUTOBLOCK">autoblocks</a>
+							and blocks of single or ranges
+							of IP addresses that are not performed with the "anonymous users only" setting.
+						</td>
+					</tr>
+					<tr>
+						<td><code>oversight</code></td>
+						<td>Oversight</td>
+						<td>These users can hide revision of pages from any user permanently, using the
+							<a href="http://en.wikipedia.org/wiki/Special:HideRevision">Special:HideRevision</a> tool. Besides, they can view a summary
+							log of such actions on <a href="http://en.wikipedia.org/wiki/Special:Oversight">Special:Oversight</a>.
+							These users must be at least 18 years old and are request to disclosure their real identity to
+							Wikimedia Foundation.</td>
+					</tr>
+					<tr>
+						<td><code>reviewer</code></td>
+						<td>Pending changes reviewer</td>
+						<td>These users can review edits from other users flagged by the
+							<a href="http://en.wikipedia.org/wiki/Wikipedia:Protection_policy#Pending_changes_protection">pending 
+						    changes protection</a> plugin.</td>
+					</tr>
+					<tr>
+						<td><code>rollbacker</code></td>
+						<td>Rollback</td>
+						<td>Provides access to MediaWiki's <a href="http://en.wikipedia.org/wiki/Wikipedia:Rollback">rollback feature</a>, that allows to revert the last consecutive
+							edits made by a user on a given page with a sigle mouse click.</td>
+					</tr>
+					<tr>
+						<td><code>sysop</code></td>
+						<td>Administrator</td>
+						<td>This role is granted by the community <a href="http://en.wikipedia.org/wiki/Wikipedia:RfA">upon request</a> and after a voting process (whose
+							rules may vary from one Wikipedia language to another). Among other actions, administrators can
+							delete, protect and unprotect pages, block and unblock users and edit fully protected pages.
+							<a href="http://en.wikipedia.org/wiki/Wikipedia:User_access_levels#Administrators">additional details</a>.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+        </div>
+	</div>
+	
+	<div class="row">
+			<div class="col-lg-7 col-lg-offset-1">
+				<h3>Example content</h3>
+				<p>
+					The following code snippet shows an excerpt of the table content recovered from
+					a dump file of this type.
+				</p>
+{% highlight sql %}
+MariaDB [test_ug]> select * from user_groups limit 20;
++---------+----------------+
+| ug_user | ug_group       |
++---------+----------------+
+|       1 | autoreviewer   |
+|       1 | reviewer       |
+|       2 | sysop          |
+|       4 | sysop          |
+|      11 | sysop          |
+|      24 | checkuser      |
+|      24 | founder        |
+|      24 | oversight      |
+|      24 | sysop          |
+|      31 | sysop          |
+|      32 | accountcreator |
+|      33 | sysop          |
+|      43 | sysop          |
+|      51 | bureaucrat     |
+|      51 | sysop          |
+|      52 | abusefilter    |
+|      52 | afttest        |
+|      59 | sysop          |
+|      62 | sysop          |
+|      63 | sysop          |
++---------+----------------+
+20 rows in set (0.00 sec)
+{% endhighlight %}
+
+			</div>
 	</div>
 </div>
 <!-- container -->
