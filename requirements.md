@@ -41,7 +41,7 @@ in Debian and Ubuntu).
 Python modules from packages: `python-zmq` and `python-dateutil`, respectively.
 
 #### Python packages
-* MySQLdb (v1.2.3 or later).
+* PyMySQL (v0.6.7 or later).
 * lxml (v3.3.1-0 or later).
 * beautifulsoup4 (v4.2.1 or later).
 * pyzmq (v14.3.0 or later, see above).
