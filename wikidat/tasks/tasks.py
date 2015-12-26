@@ -18,9 +18,9 @@ from wikidat.retrieval.revision import users_file_to_db
 from wikidat.retrieval.dump import DumpFile
 from .download import (RevHistDownloader, LoggingDownloader,
                        UserGroupsDownloader, IWLinksDownloader,
-                       InterWikiDownloader, PageRestrDownloader,
+                       TemplateLinksDownloader, PageRestrDownloader,
                        CategoryDownloader, CatLinksDownloader,
-                       ExtLinksDownloader, InterLinksDownloader,
+                       ExtLinksDownloader, PagesLinksDownloader,
                        ImageLinksDownloader)
 from wikidat.utils.dbutils import MySQLDB
 import multiprocessing as mp
@@ -481,12 +481,12 @@ class SQLDumpsTask(Task):
                   "for language %s" % self.lang)
             self.down = (UserGroupsDownloader(mirror, self.lang, dumps_dir),
                          IWLinksDownloader(mirror, self.lang, dumps_dir),
-                         InterWikiDownloader(mirror, self.lang, dumps_dir),
+                         TemplateLinksDownloader(mirror, self.lang, dumps_dir),
                          PageRestrDownloader(mirror, self.lang, dumps_dir),
                          CategoryDownloader(mirror, self.lang, dumps_dir),
                          CatLinksDownloader(mirror, self.lang, dumps_dir),
                          ExtLinksDownloader(mirror, self.lang, dumps_dir),
-                         InterLinksDownloader(mirror, self.lang, dumps_dir),
+                         PagesLinksDownloader(mirror, self.lang, dumps_dir),
                          ImageLinksDownloader(mirror, self.lang, dumps_dir)
                          )
             self.paths = []

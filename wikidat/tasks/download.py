@@ -50,7 +50,7 @@ class Downloader(object):
         self.base_url = "".join([self.mirror, self.language])
         # print("Base URL is: %s" % (self.base_url))
         html_dates = requests.get(self.base_url)
-        soup_dates = BeautifulSoup(html_dates.text)
+        soup_dates = BeautifulSoup(html_dates.text, "lxml")
 
         # Get hyperlinks and timestamps of dumps for each available date
         # Ignore first line with link to parent folder
@@ -82,7 +82,7 @@ class Downloader(object):
         self.target_url = "".join([self.base_url, "/", dump_date])
         print("Target URL is: %s" % (self.target_url))
         html_dumps = requests.get(self.target_url)
-        soup_dumps = BeautifulSoup(html_dumps.text)
+        soup_dumps = BeautifulSoup(html_dumps.text, "lxml")
 
         # First of all, check that status of dump files is Done (ready)
         status_dumps = soup_dumps.find('p', class_='status').span.text
@@ -188,7 +188,7 @@ class Downloader(object):
         Verify integrity of downloaded dump files against MD5 checksums
         """
         html_dumps = requests.get(target_url)
-        soup_dumps = BeautifulSoup(html_dumps.text)
+        soup_dumps = BeautifulSoup(html_dumps.text, "lxml")
         md5_link = soup_dumps.find('p', class_='checksum').a['href']
         md5_url = "".join([self.mirror, md5_link])
         md5_codes = requests.get(md5_url).text
@@ -270,16 +270,16 @@ class IWLinksDownloader(Downloader):
         self.match_pattern = 'iwlinks[\d]*\.sql\.gz'
 
 
-class InterWikiDownloader(Downloader):
+class TemplateLinksDownloader(Downloader):
     """
     Download SQL dump with interwiki prefixes and links for this Wikipedia
     language
     """
     def __init__(self, mirror, language, dumps_dir):
-        super(InterWikiDownloader, self).__init__(mirror=mirror,
-                                                  language=language)
+        super(TemplateLinksDownloader, self).__init__(mirror=mirror,
+                                                      language=language)
         # Customized pattern to find dump files on mirror server page
-        self.match_pattern = 'interwiki[\d]*\.sql\.gz'
+        self.match_pattern = 'templatelinks[\d]*\.sql\.gz'
 
 
 class PageRestrDownloader(Downloader):
@@ -337,15 +337,15 @@ class ExtLinksDownloader(Downloader):
         self.match_pattern = 'externallinks[\d]*\.sql\.gz'
 
 
-class InterLinksDownloader(Downloader):
+class PagesLinksDownloader(Downloader):
     """
-    Download SQL dump with external URL link records
+    Download SQL dump with wiki page-to-page link records
     """
     def __init__(self, mirror, language, dumps_dir):
-        super(InterLinksDownloader, self).__init__(mirror=mirror,
-                                                   language=language)
+        super(PagesLinksDownloader, self).__init__(mirror=mirror,
+                                                        language=language)
         # Customized pattern to find dump files on mirror server page
-        self.match_pattern = 'categorylinks[\d]*\.sql\.gz'
+        self.match_pattern = 'pagelinks[\d]*\.sql\.gz'
 
 
 class ImageLinksDownloader(Downloader):
