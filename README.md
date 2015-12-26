@@ -11,6 +11,11 @@ WikiDAT
 The aim of WikiDAT is to create an extensible toolkit for Wikipedia data 
 analysis, using Python and R.
 
+**IMPORTANT**: WikiDAT must be executed in **Python 3** (v3.4.2 or 
+later) and **R 3.2.1** (or later) to work correctly. Despite previous versions
+of this toolkit were implemented on Python 2, that platform is not supported
+anymore.
+
 Several tools are included to automate the extraction and preparation of 
 Wikipedia data from different sources. Their execution can be parallelized in 
 multi-core computing environments, and they are highly customizable with a 
@@ -29,11 +34,10 @@ planned.
 
 ### Ongoing changes
 
-The toolkit is currently being migrated to Python 3 (v 3.4.2). The bulk of this
-task is already done but the codebase should still be thoroughly tested to
-ensure proper functioning and absence of bugs. Likewise, all documentation
-is undergoing a complete update to reflect the new changes for execution under
-Python 3.
+The toolkit has been migrated to Python 3 (v 3.4.2 or later). The codebase 
+should still be thoroughly tested to ensure proper functioning and absence 
+of bugs. Likewise, all documentation is undergoing a complete update to 
+reflect the new changes for execution under Python 3.
 
 ### Required dependencies
 
