@@ -25,13 +25,14 @@ WikiDAT has not been tested on Mac platforms, so far.
 
 ### Software dependencies
 
-The following dependencies are required to run all examples currently included 
+The following external dependencies are required to run all examples included 
 in WikiDAT:
 
 * **MySQL** server and client (v5.5 or later) or **MariaDB** server and client 
 (v5.5 or later; v10.0 or later).
-* **Python** programming language (v2.7 or later; **Python3 not supported**).
-* **R** programming language and environment (v 2.15.0 or later).
+* **Python** programming language (v3.4.2 or later; **Python 2 is not 
+supported anymore**).
+* **R** programming language and environment (v3.2.1 or later).
 * **Redis** (server and client). Packages `redis-server` and `redis-tools` in 
 Debian and Ubuntu.
 * Software for file compression/decompression: zip, 7-zip, bz2, etc. In 
@@ -39,6 +40,13 @@ particular, 7-zip is mandatory for large dump data files (package `p7zip-full`
 in Debian and Ubuntu).
 * In Debian and Ubuntu, it is advisable to install the `dateutil` and `pyzmq`
 Python modules from packages: `python-zmq` and `python-dateutil`, respectively.
+
+It is very easy to create an isolated Python execution environment with Python
+3 and the required Python packages to test WikiDAT, either using `virtualenv` 
+or creating a new Python 3.5 environment using the 
+[Anaconda Python distribution] (https://www.continuum.io/downloads):
+
+* http://conda.pydata.org/docs/test-drive.html#managing-envs
 
 #### Python packages
 * PyMySQL (v0.6.7 or later).
