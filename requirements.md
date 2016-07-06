@@ -49,18 +49,23 @@ or creating a new Python 3.5 environment using the
 * http://conda.pydata.org/docs/test-drive.html#managing-envs
 
 #### Python packages
-* PyMySQL (v0.6.7 or later).
+**Included in Python 3.5**
+* configparser (v3.3.0r2 or later).
+* ipaddress (v1.0.7 or later).
+
+**Included in Anaconda distribution (install them with `pip install` if you do not use Anaconda)**
 * lxml (v3.3.1-0 or later).
 * beautifulsoup4 (v4.2.1 or later).
 * pyzmq (v14.3.0 or later, see above).
 * dateutils (v2.2 or later, see above).
 * requests (v2.2.1 or later).
-* ujson (v1.3.0 or later).
-* configparser (v3.3.0r2 or later).
 * redis (v2.10.3 or later).
-* ipaddress (v1.0.7 or later).
 
-#### R packages 
+**To be installed (using `conda install` in Anaconda or `pip install` in regular Python)**
+* PyMySQL (v0.6.7 or later).
+* ujson (v1.3.0 or later).
+
+#### R packages (CRAN)
 * RMySQL: Connect to MySQL databases from R.
 * Hmisc: Frank Harrell's miscelaneous functions (essential).
 * car: Companion library for "R Companion to Applied Regression", 2nd ed.
