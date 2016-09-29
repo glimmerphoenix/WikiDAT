@@ -154,10 +154,10 @@ class RevHistoryTask(Task):
                 else:
                     # Attempt to find list of .7z or .xml files to be processed
                     self.paths = glob.glob(os.path.join(dumps_path,
-                                                        '*pages-meta-hsitory*.7z'))
+                                                        '*pages-meta-history*.7z'))
                     if not self.paths:
                         self.paths = glob.glob(os.path.join(dumps_path,
-                                                            '*pages-meta-hsitory*.xml'))
+                                                            '*pages-meta-history*.xml'))
                         if not self.paths:
                             print("Directory %s does not contain any valid dump file." % dumps_path)
                             print("Program will exit now.")
@@ -177,7 +177,7 @@ class RevHistoryTask(Task):
                     self.paths = glob.glob(os.path.join(dumps_dir, '*pages-meta-history*.7z'))
                     if not self.paths:
                         self.paths = glob.glob(os.path.join(dumps_dir,
-                                                            '*pages-meta-hsitory*.xml'))
+                                                            '*pages-meta-history*.xml'))
                         if not self.paths:
                             print("Directory %s does not contain any valid dump file." % dumps_dir)
                             print("Program will exit now.")
